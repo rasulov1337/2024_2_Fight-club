@@ -1,7 +1,7 @@
 'use strict';
 
 export class Header {
-    constructor(){
+    constructor(headerCallbacks){
         this.menuContainer = document.createElement('header');
 
         this.iconContainer = document.createElement('div');
@@ -12,7 +12,7 @@ export class Header {
 
         this.iconContainer.classList.add('icon');
         this.hrefs.classList.add('header-hrefs');
-        this.nameContainer.classList.add('name');    
+        this.nameContainer.classList.add('name');
         this.signsContainer.classList.add('signs');
         this.buttonContainer.classList.add('entry-button');
 
@@ -27,14 +27,17 @@ export class Header {
                 Main : {
                     'href': '/dashboard',
                     'text': 'Главная',
+                    'callback': headerCallbacks.mainPage
                 },
                 Map : {
                     'href': '/map',
                     'text': 'Карта',
+                    'callback': headerCallbacks.mapPage
                 },
                 Articles : {
                     'href': '/articles',
                     'text': 'Статьи',
+                    'callback': headerCallbacks.articlesPage
                 }
             },
 
@@ -57,7 +60,7 @@ export class Header {
         this.headerState = {
             activePageLink: null,
             headerElements: {}
-        }   
+        }
 
         this.render()
     }
@@ -79,10 +82,14 @@ export class Header {
     }
 
     renderHrefs() {
-        Object.entries(this.config.menu).forEach(([key, {href, text}], index)=>{
+        Object.entries(this.config.menu).forEach(([key, {href, text, callback}], index)=>{
             const menuElement = document.createElement('a');
             menuElement.href = href;
             menuElement.text = text;
+            menuElement.addEventListener('click', (e) => {
+                e.preventDefault()
+                callback()
+            })
             menuElement.classList.add('hrefs')
 
             if (index === 0) {
@@ -117,7 +124,7 @@ export class Header {
         this.renderMainText();
         this.renderSigns();
         this.renderButton();
-    }   
+    }
 
     getMainContainer() {
         return this.menuContainer
