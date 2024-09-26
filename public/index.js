@@ -84,7 +84,7 @@ function renderHrefs() {
         menuElement.text = text;
         menuElement.classList.add('hrefs')
 
-        if (index == 0) {
+        if (index === 0) {
             menuElement.classList.add('active-href');
             headerState.activePageLink = menuElement;
         }

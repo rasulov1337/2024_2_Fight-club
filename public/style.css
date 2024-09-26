@@ -31,6 +31,19 @@ header {
 
 .active-href {
     font-weight: bold;
+    position: relative;
+}
+
+.active-href::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 60px;
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #635B5B;
 }
 
 .name {
