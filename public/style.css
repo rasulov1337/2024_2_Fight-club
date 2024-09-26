@@ -15,7 +15,7 @@ header {
     width: 300px;
     display: flex;
     justify-content: space-between;
-    padding-left: 20px;
+    padding-left: 50px;
 }
 
 .hrefs {
@@ -29,4 +29,33 @@ header {
     padding-left: 50px;
 }
 
+.active-href {
+    font-weight: bold;
+}
+
+.name {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signs {
+    display: flex;
+    width: 130px;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.entry-button button {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #FFA552;
+    border: none;
+    border-radius: 10px;
+    width: 115px;
+    height: 36px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
 
