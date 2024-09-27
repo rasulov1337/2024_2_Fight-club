@@ -117,7 +117,7 @@ header {
     border-radius: 10px 0 0 10px;
     outline: none;
     border: none;
-    padding: 5px 10px 0 10px;
+    padding: 5px 10px 0 5%;
     font-size: 18px;
 }
 
@@ -130,11 +130,11 @@ header {
     background-color: #ffffff;
     background-image: url('./images/svg/search.svg');
     border: none;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 0 15px 10px 0;
     width: 30px;
     height: 100%;
     margin: 0;
-    padding-right: 35px;
+    padding-right: 5%;
     padding-top: 5px;
     cursor: pointer;
 }
