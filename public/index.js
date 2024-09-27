@@ -26,7 +26,7 @@ const header = new Header(headerCallbacks);
 root.appendChild(header.getMainContainer());
 
 const mainPhotoContainer = document.createElement('div')
-function renderMainPoto(mainPhotoContainer) {
+function renderMainPhoto(mainPhotoContainer) {
     const hostsHrefs = document.createElement('div');
     const findHost = document.createElement('a');
     const beHost = document.createElement('a');
@@ -59,5 +59,5 @@ function renderMainPoto(mainPhotoContainer) {
     mainPhotoContainer.appendChild(searchCityForm);
 }
 
-renderMainPoto(mainPhotoContainer);
+renderMainPhoto(mainPhotoContainer);
 root.appendChild(mainPhotoContainer);
