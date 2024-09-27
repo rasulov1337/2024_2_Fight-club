@@ -1,14 +1,15 @@
 'use strict';
 
 export class Header {
-    constructor(headerCallbacks){
+    constructor(headerCallbacks) {
+        this.headerCallbacks = headerCallbacks;
         this.menuContainer = document.createElement('header');
 
         this.iconContainer = document.createElement('div');
         this.hrefs = document.createElement('div');
         this.nameContainer = document.createElement('div');
         this.signsContainer = document.createElement('div');
-        this. buttonContainer = document.createElement('div');
+        this.buttonContainer = document.createElement('div');
 
         this.iconContainer.classList.add('icon');
         this.hrefs.classList.add('header-hrefs');
@@ -24,17 +25,17 @@ export class Header {
 
         this.config = {
             menu: {
-                Main : {
+                Main: {
                     'href': '/dashboard',
                     'text': 'Главная',
                     'callback': headerCallbacks.mainPage
                 },
-                Map : {
+                Map: {
                     'href': '/map',
                     'text': 'Карта',
                     'callback': headerCallbacks.mapPage
                 },
-                Articles : {
+                Articles: {
                     'href': '/articles',
                     'text': 'Статьи',
                     'callback': headerCallbacks.articlesPage
@@ -45,14 +46,17 @@ export class Header {
                 Messages: {
                     'src': './images/svg/messages.svg',
                     'href': '/messages',
+                    'callback': headerCallbacks.messagesPage
                 },
                 Favorites: {
                     'src': './images/svg/favorites.svg',
-                    'href': '/favorites'
+                    'href': '/favorites',
+                    'callback': headerCallbacks.favoritesPage
                 },
                 Notifications: {
                     'src': './images/svg/notifications.svg',
-                    'href': '/notifications'
+                    'href': '/notifications',
+                    'callback': headerCallbacks.notificationsPage
                 }
             }
         }
@@ -67,7 +71,7 @@ export class Header {
 
     renderIcon() {
         const imgElement = document.createElement('img');
-        imgElement.src="./images/icon.jpg"
+        imgElement.src = "./images/icon.jpg"
         imgElement.width = 100;
         imgElement.height = 100;
         this.iconContainer.appendChild(imgElement);
@@ -82,7 +86,7 @@ export class Header {
     }
 
     renderHrefs() {
-        Object.entries(this.config.menu).forEach(([key, {href, text, callback}], index)=>{
+        Object.entries(this.config.menu).forEach(([key, {href, text, callback}], index) => {
             const menuElement = document.createElement('a');
             menuElement.href = href;
             menuElement.text = text;
@@ -103,10 +107,14 @@ export class Header {
     }
 
     renderSigns() {
-        Object.entries(this.config.signs).forEach(([_, {href, src}])=>{
+        Object.entries(this.config.signs).forEach(([_, {href, src, callback}]) => {
             const signElement = document.createElement('a');
             signElement.href = href;
             signElement.innerHTML = `<img src="${src}" width="30" height="30">`;
+            signElement.addEventListener('click', (e) => {
+                e.preventDefault()
+                callback()
+            })
 
             this.signsContainer.appendChild(signElement);
         })
@@ -115,6 +123,7 @@ export class Header {
     renderButton() {
         const button = document.createElement('button');
         button.textContent = "Войти!";
+        button.addEventListener('click', this.headerCallbacks.signInPage)
         this.buttonContainer.appendChild(button);
     }
 
