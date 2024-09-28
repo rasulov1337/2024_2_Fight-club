@@ -1,6 +1,6 @@
 'use strict';
 
-export class Header {
+class Header {
     constructor(headerCallbacks) {
         this.headerCallbacks = headerCallbacks;
         this.menuContainer = document.createElement('header');
@@ -140,3 +140,5 @@ export class Header {
     }
 
 }
+
+export default Header;

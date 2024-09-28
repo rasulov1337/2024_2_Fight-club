@@ -1,6 +1,6 @@
 'use strict';
 
-export class Filter {
+class Filter {
     constructor(){
         this.config = {
             geoposition:{
@@ -132,3 +132,5 @@ export class Filter {
         return this.filterContainer;
     }
 }
+
+export default Filter;

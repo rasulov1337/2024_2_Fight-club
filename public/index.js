@@ -1,7 +1,7 @@
 'use strict';
 
-import {Header} from "./components/header.js";
-import {Filter} from "./components/filter.js";
+import Header from "./components/Header/Header.js";
+import Filter from "./components/Filter/Filter.js";
 import AdCard from "./components/AdCard/AdCard.js";
 
 const root = document.getElementById('root');
