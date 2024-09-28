@@ -1,6 +1,7 @@
 'use strict';
 
 import {Header} from "./components/header.js";
+import {Filter} from "./components/filter.js";
 
 const root = document.getElementById('root');
 
@@ -69,8 +70,21 @@ function loadMainPage() {
         </div>
     </div>`
 
-    root.appendChild(card);
+    //Контент главной страницы
+    const pageContent = document.createElement('div');
+    pageContent.id = 'main-content';
+    
+    //Фильтр
+    const filter = new Filter();
+    pageContent.appendChild(filter.getFilter());
 
+    //Здесь будет витрина
+    const addShowcaseContent = document.createElement('div');
+    addShowcaseContent.classList.add('advert');
+    addShowcaseContent.appendChild(card);
+    pageContent.appendChild(addShowcaseContent);
+
+    root.appendChild(pageContent);
 }
 
 function loadMapPage() {
@@ -94,6 +108,7 @@ function loadSignInPage() {
 const header = new Header(headerCallbacks);
 root.appendChild(header.getMainContainer());
 
+//mainPhotoContainer предлагаю тоже в отдельную компоненту вынести
 const mainPhotoContainer = document.createElement('div')
 
 function renderMainPhoto(mainPhotoContainer) {
