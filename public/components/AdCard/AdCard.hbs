@@ -37,16 +37,16 @@
 
     <div class="ad-card-info">
         <div class="location">
-            <p class="location-city-country">Россия, г. Москва</p>
-            <p class="location-street">Малая Ботаническая ул., 10А</p>
-            <a href="" class="show-on-map-btn">Показать на карте</a>
+            <p class="location-city-country">{{locationMain}}</p>
+            <p class="location-street">{{locationStreet}}</p>
+            <a href="{{onMap}}" class="show-on-map-btn">Показать на карте</a>
         </div>
         <div class="ad-author-info">
-            <img src="images/di-caprio.png" alt="User avatar">
-            <p>Leo D.</p>
+            <img src="{{author.avatar}}" alt="User avatar">
+            <p>{{author.name}}</p>
             <div class="score-container">
                 <img class="star-img" src="images/star.png" alt="star">
-                <span class="score">4.98</span>
+                <span class="score">{{author.score}}</span>
             </div>
         </div>
     </div>

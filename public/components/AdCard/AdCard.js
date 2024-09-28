@@ -1,5 +1,6 @@
-export class AdCard {
-    constructor(parent) {
+class AdCard {
+    constructor(data, parent) {
+        this.data = data
         this.parent = parent;
 
         if (parent === undefined || parent === null) {
@@ -9,7 +10,8 @@ export class AdCard {
 
     render() {
         const template = Handlebars.templates['AdCard.hbs']
-        this.parent.innerHTML += template({})
+        console.log(this.data)
+        this.parent.innerHTML += template(this.data)
     }
 }
 

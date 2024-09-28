@@ -6,6 +6,21 @@ import AdCard from "./components/AdCard/AdCard.js";
 
 const root = document.getElementById('root');
 
+const AD_CARDS = [
+    {
+        locationMain: 'Россия, г. Москва',
+        locationStreet: 'Малая Ботаническая ул., 10А',
+        position: null,
+        pictures: [],
+        onMap: undefined,  // ??? What should be here?
+        author: {
+            name: 'Leo D.',
+            score: 4.98,
+            avatar: ''
+        },
+    }
+]
+
 const headerCallbacks = {
     mainPage: loadMainPage,
     mapPage: loadMapPage,
@@ -28,7 +43,7 @@ function loadMainPage() {
     //Здесь будет витрина
     const addShowcaseContent = document.createElement('div');
     addShowcaseContent.classList.add('advert');
-    const adCard = new AdCard(addShowcaseContent);
+    const adCard = new AdCard(AD_CARDS[0], addShowcaseContent);
     adCard.render()
     pageContent.appendChild(addShowcaseContent);
 
