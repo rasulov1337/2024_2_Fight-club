@@ -4,14 +4,13 @@ import Header from "./components/Header/Header.js";
 import Filter from "./components/Filter/Filter.js";
 import AdCard from "./components/AdCard/AdCard.js";
 
-const root = document.getElementById('root');
 
 const AD_CARDS = [
     {
         locationMain: 'Россия, г. Москва',
         locationStreet: 'Малая Ботаническая ул., 10А',
         position: null,
-        pictures: [],
+        pictures: ['images/1.webp', 'images/2.webp', 'images/3.webp'],
         onMap: undefined,  // ??? What should be here?
         author: {
             name: 'Leo D.',
@@ -68,8 +67,6 @@ function loadNotificationsPage() {
 function loadSignInPage() {
 }
 
-const header = new Header(headerCallbacks);
-root.appendChild(header.getMainContainer());
 
 //mainPhotoContainer предлагаю тоже в отдельную компоненту вынести
 const mainPhotoContainer = document.createElement('div')
@@ -107,7 +104,14 @@ function renderMainPhoto(mainPhotoContainer) {
     mainPhotoContainer.appendChild(searchCityForm);
 }
 
-renderMainPhoto(mainPhotoContainer);
-root.appendChild(mainPhotoContainer);
 
-loadMainPage()
+window.onload = () => {
+    const root = document.getElementById('root');
+
+    const header = new Header(headerCallbacks);
+    root.appendChild(header.getMainContainer());
+
+    renderMainPhoto(mainPhotoContainer);
+    root.appendChild(mainPhotoContainer);
+    loadMainPage()
+}

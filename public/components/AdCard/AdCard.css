@@ -1,8 +1,8 @@
 .ad-card {
     display: flex;
     flex-direction: column;
-    width: 343px;
-    height: 400px;
+    min-width: 343px;
+    max-width: 343px;
     border-radius: 20px;
     border: 1px #000 solid;
     overflow: hidden;
@@ -38,7 +38,9 @@
 }
 
 .ad-images-container {
+    min-width: 100%;
     max-width: 100%;
+    min-height: 290px;
     max-height: 290px;
     display: flex;
     flex-direction: column;
@@ -108,17 +110,14 @@
     gap: 5px;
 }
 
-.circle-empty {
+.circle {
     border-radius: 50%;
     width: 7px;
     height: 7px;
     background: #fff;
 }
 
-.circle-full {
-    border-radius: 50%;
-    width: 7px;
-    height: 7px;
+.circle-fill {
     background: #FFA552;
 }
 
