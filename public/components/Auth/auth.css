@@ -1,0 +1,86 @@
+.popup{
+    position: absolute;
+    width: 25%;
+    height: 70%;
+    top: 25%;
+    left: 37%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-img {
+    padding-top: 40px;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.auth-message {
+    padding-top: 40px;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+}
+
+.input-container {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-left: 15%;
+    padding-right: 15%;
+    height: 20%;
+}
+
+.input-container input {
+    border-radius: 5px;
+    height: 40%;
+    font-size: 16px;
+    padding-left: 10%;
+}
+
+.input-container input::placeholder {
+    color: #635B5B;
+    font-size: 16px;
+}
+
+.login-button {
+    background-color: #FFA552;
+    color: #ffffff;
+    cursor: pointer;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10%;
+    margin-bottom: 15%;
+    border: none;
+    border-radius: 10px;
+    height: 7%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.have-account {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 22%;
+    margin-right: 22%;
+}
+
+.have-account a {
+    color: #FFA552;
+    text-decoration: none;
+}
+
+.close-cross {
+    position: relative;
+    top: 5%;
+    left: 85%;
+    cursor: pointer;
+}
+
+.hide-div {
+    display: none !important;
+}

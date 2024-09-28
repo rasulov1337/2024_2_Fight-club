@@ -3,7 +3,9 @@
 import Header from "./components/Header/Header.js";
 import Filter from "./components/Filter/Filter.js";
 import AdCard from "./components/AdCard/AdCard.js";
+import Auth from "./components/Auth/auth.js";
 
+const root = document.getElementById('root');
 
 const AD_CARDS = [
     {
@@ -65,6 +67,8 @@ function loadNotificationsPage() {
 }
 
 function loadSignInPage() {
+    const auth = new Auth();
+    root.appendChild(auth.getAuth());
 }
 
 
