@@ -1,3 +1,3 @@
 node_modules/
 .idea/
-public/precompiled-templates.js
+public/components/precompiled-templates.js
