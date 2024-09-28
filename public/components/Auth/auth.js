@@ -2,8 +2,14 @@
 
 class Auth {
     constructor() {
-        this.loginPage = document.createElement('div');
-        this.loginPage.classList.add('popup');
+        this.overlay = document.createElement('div');
+        this.overlay.classList.add('overlay');
+
+        this.popup = document.createElement('div');
+        this.popup.classList.add('popup');
+        this.overlay.appendChild(this.popup);
+
+        document.body.classList.add('no-scroll')
 
         this.render();
     }
@@ -14,11 +20,12 @@ class Auth {
         crossContainer.classList.add('close-cross');
         cross.innerHTML = `<img src="./images/svg/cross.svg" width="30px" height="30px">`
         crossContainer.appendChild(cross);
-        cross.addEventListener('click', (e)=>{
-            e.preventDefault = '';
-            this.loginPage.classList.add('hide-div');
+        cross.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.overlay.remove()
+            document.body.classList.remove('no-scroll')
         })
-        this.loginPage.appendChild(crossContainer);
+        this.popup.appendChild(crossContainer);
     }
 
     renderImg() {
@@ -27,14 +34,14 @@ class Auth {
         imgElement.src = './images/name.png';
         imgElement.height = 200;
         imgElement.height = 60;
-        this.loginPage.appendChild(imgElement);
+        this.popup.appendChild(imgElement);
     }
 
     renderMessage() {
         const messageContainer = document.createElement('div');
         messageContainer.classList.add('auth-message')
         messageContainer.textContent = "Войти в аккаунт";
-        this.loginPage.appendChild(messageContainer);
+        this.popup.appendChild(messageContainer);
     }
 
     renderInputs() {
@@ -48,14 +55,14 @@ class Auth {
 
         inputContainer.appendChild(loginInput);
         inputContainer.appendChild(passwordInput);
-        this.loginPage.appendChild(inputContainer);
+        this.popup.appendChild(inputContainer);
     }
 
     renderButton() {
         const loginButton = document.createElement('button');
         loginButton.classList.add('login-button');
         loginButton.textContent = "Войти";
-        this.loginPage.appendChild(loginButton);
+        this.popup.appendChild(loginButton);
     }
 
     renderHaveAccount() {
@@ -66,10 +73,12 @@ class Auth {
         const haveAccountHref = document.createElement('a');
         haveAccountHref.href = "#";
         haveAccountHref.textContent = "Создать"
+        haveAccountHref.classList.add('bold');
         haveAccount.appendChild(haveAccountText);
         haveAccount.appendChild(haveAccountHref);
-        this.loginPage.appendChild(haveAccount);
+        this.popup.appendChild(haveAccount);
     }
+
 
     render() {
         this.renderCross();
@@ -81,7 +90,7 @@ class Auth {
     }
 
     getAuth() {
-        return this.loginPage;
+        return this.overlay;
     }
 }
 
