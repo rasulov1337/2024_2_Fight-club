@@ -18,6 +18,8 @@ class AdCard {
         const template = Handlebars.templates['AdCard.hbs']
         this.parent.innerHTML = template(this.data)
 
+        this.parent.querySelector('.fav-btn').addEventListener('click', this.addToFavorite)
+
         setTimeout(() => {
             console.log(this.parent.querySelector('.ad-images-container').getBoundingClientRect())
             this.addImageScrolling()
@@ -27,7 +29,7 @@ class AdCard {
     addImageScrolling() {
         const imageContainer = this.parent.querySelector('.ad-images-container');
         const imagePaginationDiv = this.parent.querySelector('.image-pagination-div');
-        const img = imageContainer.firstElementChild;
+        const imgElem = imageContainer.firstElementChild;
 
         const imagesAmount = Math.min(this.data.pictures.length, 7)  // We must only show max amount of 7!
         const areaFraction = imageContainer.getBoundingClientRect().width / imagesAmount
@@ -40,35 +42,41 @@ class AdCard {
             imagePaginationDiv.appendChild(circle)
         }
 
-
-        imageContainer.addEventListener('mousemove', (e) => {
-            const rect = e.target.getBoundingClientRect()
-            const x = e.clientX - rect.left
-            if (x < 0)
-                return
-            
-            const toShowIndex = Math.floor(x / areaFraction)
-            if (toShowIndex === this.currentImgIndex) {
-                return
-            }
-
-            this.makeCircleActive(toShowIndex)
-            this.currentImgIndex = toShowIndex
-            img.src = this.data.pictures[toShowIndex]
-        })
-
-        imageContainer.addEventListener('mouseout', () => {
-            this.makeCircleActive(0)
-            this.currentImgIndex = 0
-            img.src = this.data.pictures[0]
-        })
+        imageContainer.addEventListener('mousemove', (e) => this.onMouseMove(e, areaFraction, imgElem))
+        imageContainer.addEventListener('mouseout', () => this.onMouseOut(imgElem))
 
         this.makeCircleActive(0)
+    }
+
+    onMouseMove(e, areaFraction, imgElem) {
+        const rect = e.target.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        if (x < 0)
+            return
+
+        const toShowIndex = Math.floor(x / areaFraction)
+        if (toShowIndex === this.currentImgIndex) {
+            return
+        }
+
+        this.makeCircleActive(toShowIndex)
+        this.currentImgIndex = toShowIndex
+        imgElem.src = this.data.pictures[toShowIndex]
+    }
+
+    onMouseOut(imgElem) {
+        this.makeCircleActive(0)
+        this.currentImgIndex = 0
+        imgElem.src = this.data.pictures[0]
     }
 
     makeCircleActive(index) {
         this.circles[this.currentImgIndex].classList.remove('circle-fill')
         this.circles[index].classList.add('circle-fill')
+    }
+
+    addToFavorite() {
+        console.log("fav btn was clicked!")
     }
 }
 
