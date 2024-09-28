@@ -44,6 +44,9 @@ class AdCard {
         imageContainer.addEventListener('mousemove', (e) => {
             const rect = e.target.getBoundingClientRect()
             const x = e.clientX - rect.left
+            if (x < 0)
+                return
+            
             const toShowIndex = Math.floor(x / areaFraction)
             if (toShowIndex === this.currentImgIndex) {
                 return
