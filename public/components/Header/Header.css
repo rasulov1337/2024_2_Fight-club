@@ -70,3 +70,12 @@
     margin-right: 50px;
     cursor: pointer;
 }
+
+.header__avatar-container {
+    width: 50px;
+    height: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}

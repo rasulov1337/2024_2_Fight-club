@@ -1,28 +1,12 @@
 'use strict'
 
 class Header {
-    constructor(headerCallbacks) {
+    constructor(headerCallbacks, isAuth) {
         this.headerCallbacks = headerCallbacks
         this.menuContainer = document.createElement('header')
         this.menuContainer.classList.add('header')
 
-        this.logoImg = document.createElement('img')
-        this.hrefs = document.createElement('div')
-        this.nameImg = document.createElement('img')
-        this.signsContainer = document.createElement('div')
-        this.entryButton = document.createElement('button')
-
-        this.logoImg.classList.add('header__img1')
-        this.hrefs.classList.add('header__hrefs')
-        this.nameImg.classList.add('header__img2')
-        this.signsContainer.classList.add('header__signs')
-        this.entryButton.classList.add('header__button')
-
-        this.menuContainer.appendChild(this.logoImg)
-        this.menuContainer.appendChild(this.hrefs)
-        this.menuContainer.appendChild(this.nameImg)
-        this.menuContainer.appendChild(this.signsContainer)
-        this.menuContainer.appendChild(this.entryButton)
+        this.isAuthorized = isAuth;
 
         this.config = {
             menu: {
@@ -71,14 +55,22 @@ class Header {
     }
 
     renderIcon() {
-        this.logoImg.src = './images/icon.jpg'
+        const logoImg = document.createElement('img')
+        logoImg.src = './images/icon.jpg'
+        logoImg.classList.add('header__img1')
+        this.menuContainer.appendChild(logoImg)
     }
 
     renderMainText() {
-        this.nameImg.src = './images/name.png'
+        const nameImg = document.createElement('img')
+        nameImg.classList.add('header__img2')
+        nameImg.src = './images/name.png'
+        this.menuContainer.appendChild(nameImg)
     }
 
     renderHrefs() {
+        const hrefs = document.createElement('div')
+        hrefs.classList.add('header__hrefs')
         Object.entries(this.config.menu).forEach(
             ([key, { href, text, callback }], index) => {
                 const menuElement = document.createElement('a')
@@ -96,12 +88,15 @@ class Header {
                 }
 
                 this.headerState.headerElements[key] = menuElement
-                this.hrefs.appendChild(menuElement)
+                hrefs.appendChild(menuElement)
             }
         )
+        this.menuContainer.appendChild(hrefs)
     }
 
     renderSigns() {
+        const signsContainer = document.createElement('div')
+        signsContainer.classList.add('header__signs')
         Object.entries(this.config.signs).forEach(
             ([_, { href, src, callback }]) => {
                 const signElement = document.createElement('a')
@@ -115,17 +110,33 @@ class Header {
                     callback()
                 })
 
-                this.signsContainer.appendChild(signElement)
+                signsContainer.appendChild(signElement)
             }
         )
+        this.menuContainer.appendChild(signsContainer)
     }
 
-    renderButton() {
-        this.entryButton.textContent = 'Войти!'
-        this.entryButton.addEventListener(
-            'click',
-            this.headerCallbacks.signInPage
-        )
+    renderButtonOrAvatar() {
+        if (this.isAuthorized) {
+            const avatarContainer = document.createElement('div');
+            avatarContainer.classList.add('header__avatar-container');
+            const avatar = document.createElement('img');
+            avatar.src = "/images/default_user_icon.png"
+            avatar.width = 50;
+            avatar.height = 50;
+            avatarContainer.appendChild(avatar);
+            this.menuContainer.appendChild(avatarContainer);
+
+        } else {
+            const entryButton = document.createElement('button')
+            entryButton.classList.add('header__button')
+            entryButton.textContent = 'Войти!'
+            entryButton.addEventListener(
+                'click',
+                this.headerCallbacks.signInPage
+            )
+            this.menuContainer.appendChild(entryButton)
+        }
     }
 
     render() {
@@ -133,7 +144,7 @@ class Header {
         this.renderHrefs()
         this.renderMainText()
         this.renderSigns()
-        this.renderButton()
+        this.renderButtonOrAvatar()
     }
 
     getMainContainer() {

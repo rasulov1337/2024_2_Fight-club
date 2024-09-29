@@ -1,5 +1,7 @@
 'use strict'
 
+// import Auth from "../../modules/Auth.js"
+
 class AuthPopup {
     constructor() {
         this.overlay = document.createElement('div')
@@ -9,6 +11,8 @@ class AuthPopup {
         this.popup.classList.add('popup')
         this.overlay.appendChild(this.popup)
 
+        this.isAuthorized = false;
+
         document.body.classList.add('no-scroll')
 
         this.currentState = 'auth'
@@ -16,8 +20,16 @@ class AuthPopup {
             auth: {
                 message: 'Войти в аккаунт',
                 inputs: {
-                    login: 'Логин (почта)',
-                    password: 'Пароль',
+                    login: {
+                        placeholder: 'Логин (почта)',
+                        type: "email",
+                        minLen: 6,
+                    },
+                    password: {
+                        placeholder: 'Пароль',
+                        type: "password",
+                        minLen: 6,
+                    },
                 },
                 buttonText: 'Войти',
                 haveAccountText: 'Еще нет аккаунта?',
@@ -27,10 +39,26 @@ class AuthPopup {
             signup: {
                 message: 'Зарегистрироваться',
                 inputs: {
-                    name: 'Полное имя',
-                    login: 'Почта',
-                    password: 'Пароль',
-                    password2: 'Повторите пароль',
+                    name: {
+                        placeholder: 'Полное имя',
+                        type: "text",
+                        minLen: 6,
+                    },
+                    login: {
+                        placeholder: 'Почта',
+                        type: "email",
+                        minLen: 6,
+                    },
+                    password: {
+                        placeholder: 'Пароль',
+                        type: "password",
+                        minLen: 6,
+                    },
+                    password2: {
+                        placeholder: 'Повторите пароль',
+                        type: "password",
+                        minLen: 6,
+                    },
                 },
                 buttonText: 'Создать аккаунт',
                 haveAccountText: 'Уже есть аккаунт?',
@@ -73,11 +101,13 @@ class AuthPopup {
     }
 
     renderInputs(inputs) {
-        Object.entries(inputs).forEach(([name, placeholderText]) => {
+        Object.entries(inputs).forEach(([name, {placeholder, type, minLen}]) => {
             const input = document.createElement('input')
             input.classList.add('inputs')
             input.name = name
-            input.placeholder = placeholderText
+            input.placeholder = placeholder
+            input.type = type;
+            input.minLength = minLen;
             this.popup.appendChild(input)
         })
     }
@@ -86,6 +116,10 @@ class AuthPopup {
         const loginButton = document.createElement('button')
         loginButton.classList.add('login-button')
         loginButton.textContent = text
+        loginButton.addEventListener('click', ()=>{
+            this.isAuthorized = true;
+            console.log(this.isAuthorized);
+        });
         this.popup.appendChild(loginButton)
     }
 
@@ -120,7 +154,6 @@ class AuthPopup {
     render() {
         const method = this._getMethod()
         const config = this.config[method]
-        console.log(config)
 
         this.renderCross()
         this.renderImg()
@@ -139,6 +172,10 @@ class AuthPopup {
 
     getAuth() {
         return this.overlay
+    }
+
+    getAuthStatus() {
+        return this.isAuthorized;
     }
 }
 

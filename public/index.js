@@ -6,6 +6,7 @@ import MainPage from './components/MainPage/MainPage.js'
 
 const root = document.getElementById('root')
 const pageContainer = document.createElement('div')
+let isAuthorized = false
 
 /** Объект с коллбеками для header`а */
 const headerCallbacks = {
@@ -40,11 +41,11 @@ function renderSignInPage() {
 
 /** Главная функция */
 ;(() => {
-    const header = new Header(headerCallbacks)
+    const header = new Header(headerCallbacks, isAuthorized)
     root.appendChild(header.getMainContainer())
 
     pageContainer.classList.add('page-container')
     root.appendChild(pageContainer)
 
-    renderMainPage(pageContainer)
+    renderMainPage()
 })()
