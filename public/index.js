@@ -8,7 +8,7 @@ import Ajax from './modules/Ajax.js'
 const root = document.getElementById('root')
 const pageContainer = document.createElement('div')
 
-window.BACKEND_URL = 'http://localhost:8080/api'
+window.BACKEND_URL = `http://${window.location.hostname}:8080/api`
 
 /** Объект с коллбеками для header`а */
 const headerCallbacks = {
