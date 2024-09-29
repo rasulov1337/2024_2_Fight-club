@@ -62,7 +62,6 @@ class AuthPopup {
         const imgElement = document.createElement('img')
         imgElement.classList.add('auth-img')
         imgElement.src = '/images/name.png'
-        imgElement.height = 60
         this.popup.appendChild(imgElement)
     }
 

@@ -1,7 +1,9 @@
+@import "components/Header/Header.css";
 @import "components/AdCard/AdCard.css";
 @import "components/Filter/Filter.css";
 @import "components/AuthPopup/AuthPopup.css";
 @import "components/MainPhoto/MainPhoto.css";
+@import "components/MainPage/MainPage.css";
 
 * {
     margin: 0;
@@ -12,80 +14,4 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #f6f6f6;
     margin: 0;
-}
-
-header {
-    background-color: #ffffff;
-    height: 156px;
-    display: flex;
-    align-items: center;
-}
-
-.header-hrefs {
-    width: 300px;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 50px;
-}
-
-.hrefs {
-    color: #635B5B;
-    text-decoration: none;
-    font-size: 24px;
-    font-style: italic;
-}
-
-.icon {
-    padding-left: 50px;
-}
-
-.active-href {
-    font-weight: bold;
-    position: relative;
-}
-
-.active-href::after {
-    content: "";
-    display: block;
-    height: 2px;
-    width: 60px;
-    position: absolute;
-    bottom: -3px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #635B5B;
-}
-
-.name {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.signs {
-    display: flex;
-    width: 130px;
-    justify-content: space-between;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.entry-button button {
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: #FFA552;
-    border: none;
-    border-radius: 10px;
-    width: 115px;
-    height: 36px;
-    margin-left: 50px;
-    margin-right: 50px;
-    cursor: pointer;
-}
-
-
-.advert {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
 }
