@@ -80,7 +80,6 @@ class Header {
     renderMainText() {
         const imgElement = document.createElement('img');
         imgElement.src = './images/name.png';
-        imgElement.width = 200;
         imgElement.height = 60;
         this.nameContainer.appendChild(imgElement);
     }
