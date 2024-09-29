@@ -41,9 +41,7 @@ function renderSignInPage() {
 
 /** Главная функция */
 ;(async () => {
-    const response = await Ajax.get(
-        'http://37.139.41.110:8080/api/getSessionData'
-    )
+    const response = await Ajax.get('http://localhost:8080/api/getSessionData')
     let isAuthorized = true
     if (!response.ok) {
         console.log('not ok')

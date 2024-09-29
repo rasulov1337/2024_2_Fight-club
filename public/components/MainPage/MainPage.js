@@ -22,7 +22,7 @@ class MainPage {
     }
 
     render() {
-        fetch('http://37.139.41.110:8080/api/ads')
+        fetch('http://localhost:8080/api/ads')
             .then((res) => res.json())
             .then((data) => {
                 data = data['places']
