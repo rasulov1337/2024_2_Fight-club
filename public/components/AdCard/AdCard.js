@@ -8,7 +8,7 @@ class AdCard {
         this.data = data
         this.parent = parent
 
-        this.data.mainPicture = 'images/' + data.pictures[0]
+        this.data.mainPicture = data.pictures[0]
         this.currentImgIndex = 0
         this.circles = []
 
@@ -75,7 +75,7 @@ class AdCard {
 
         this.makeCircleActive(toShowIndex)
         this.currentImgIndex = toShowIndex
-        imgElem.src = 'images/' + this.data.pictures[toShowIndex]
+        imgElem.src = this.data.pictures[toShowIndex]
     }
 
     /**
@@ -84,7 +84,7 @@ class AdCard {
     onMouseOut(imgElem) {
         this.makeCircleActive(0)
         this.currentImgIndex = 0
-        imgElem.src = 'images/' + this.data.pictures[0]
+        imgElem.src = this.data.pictures[0]
     }
 
     /**
