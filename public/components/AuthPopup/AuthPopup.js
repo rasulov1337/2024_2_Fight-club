@@ -1,6 +1,6 @@
 'use strict'
 
-// import Auth from "../../modules/Auth.js"
+import { register, login } from '../../modules/Auth.js'
 
 class AuthPopup {
     constructor() {
@@ -8,10 +8,12 @@ class AuthPopup {
         this.overlay.classList.add('overlay')
 
         this.popup = document.createElement('form')
+        this.popup.method = 'POST'
+        this.popup.onsubmit = this.onFormSubmit
         this.popup.classList.add('popup')
         this.overlay.appendChild(this.popup)
 
-        this.isAuthorized = false;
+        this.isAuthorized = false
 
         document.body.classList.add('no-scroll')
 
@@ -20,14 +22,14 @@ class AuthPopup {
             auth: {
                 message: 'Войти в аккаунт',
                 inputs: {
-                    login: {
-                        placeholder: 'Логин (почта)',
-                        type: "email",
+                    username: {
+                        placeholder: 'Логин',
+                        type: 'text',
                         minLen: 6,
                     },
                     password: {
                         placeholder: 'Пароль',
-                        type: "password",
+                        type: 'password',
                         minLen: 6,
                     },
                 },
@@ -41,22 +43,27 @@ class AuthPopup {
                 inputs: {
                     name: {
                         placeholder: 'Полное имя',
-                        type: "text",
+                        type: 'text',
                         minLen: 6,
                     },
-                    login: {
+                    username: {
+                        placeholder: 'Логин',
+                        type: 'text',
+                        minLen: 6,
+                    },
+                    email: {
                         placeholder: 'Почта',
-                        type: "email",
+                        type: 'email',
                         minLen: 6,
                     },
                     password: {
                         placeholder: 'Пароль',
-                        type: "password",
+                        type: 'password',
                         minLen: 6,
                     },
                     password2: {
                         placeholder: 'Повторите пароль',
-                        type: "password",
+                        type: 'password',
                         minLen: 6,
                     },
                 },
@@ -101,25 +108,27 @@ class AuthPopup {
     }
 
     renderInputs(inputs) {
-        Object.entries(inputs).forEach(([name, {placeholder, type, minLen}]) => {
-            const input = document.createElement('input')
-            input.classList.add('inputs')
-            input.name = name
-            input.placeholder = placeholder
-            input.type = type;
-            input.minLength = minLen;
-            this.popup.appendChild(input)
-        })
+        Object.entries(inputs).forEach(
+            ([name, { placeholder, type, minLen }]) => {
+                const input = document.createElement('input')
+                input.classList.add('inputs')
+                input.name = name
+                input.placeholder = placeholder
+                input.type = type
+                input.minLength = minLen
+                this.popup.appendChild(input)
+            }
+        )
     }
 
     renderButton(text) {
         const loginButton = document.createElement('button')
         loginButton.classList.add('login-button')
         loginButton.textContent = text
-        loginButton.addEventListener('click', ()=>{
-            this.isAuthorized = true;
-            console.log(this.isAuthorized);
-        });
+        loginButton.addEventListener('click', () => {
+            this.isAuthorized = true
+            console.log(this.isAuthorized)
+        })
         this.popup.appendChild(loginButton)
     }
 
@@ -175,7 +184,28 @@ class AuthPopup {
     }
 
     getAuthStatus() {
-        return this.isAuthorized;
+        return this.isAuthorized
+    }
+
+    onFormSubmit(e) {
+        e.preventDefault()
+
+        const data = {}
+        Array.from(e.target.elements).forEach((el) => {
+            const { name, value } = el
+            data[name] = value
+        })
+        console.log(data)
+
+        // todo: validate data
+        register({
+            username: data['username'],
+            password: data['password'],
+            email: data['email'],
+        }).then(() => {
+            // todo: on success
+            location.reload()
+        })
     }
 }
 

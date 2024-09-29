@@ -42,6 +42,7 @@ class Ajax {
                 // 'X-CSRFToken': getCookie('csrftoken'),
             },
             body: JSON.stringify(body),
+            credentials: 'include',
         })
 
         const response = await fetch(request)

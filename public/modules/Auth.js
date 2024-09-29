@@ -7,7 +7,7 @@ import Ajax from './ajax.js'
  * @param {string} email
  * @returns {Promise<void>}
  */
-const register = async (username, password, email) => {
+export const register = async ({ username, password, email }) => {
     const url = 'http://localhost:8080/api/auth/register'
     const body = {
         username: username,
@@ -19,7 +19,7 @@ const register = async (username, password, email) => {
     console.log(responseData)
 }
 
-const login = async (username, password) => {
+export const login = async (username, password) => {
     const url = 'http://localhost:8080/api/auth/login'
     const body = {
         username: username,
@@ -28,6 +28,3 @@ const login = async (username, password) => {
     const responseData = Ajax.post({ url, body })
     console.log(responseData)
 }
-
-console.log(await register('123', '12', '12'))
-login()
