@@ -1,6 +1,6 @@
 'use strict';
 
-class Auth {
+class AuthPopup {
     constructor() {
         this.overlay = document.createElement('div');
         this.overlay.classList.add('overlay');
@@ -139,4 +139,4 @@ class Auth {
     }
 }
 
-export default Auth;
+export default AuthPopup;

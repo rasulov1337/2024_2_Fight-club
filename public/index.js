@@ -1,72 +1,55 @@
 'use strict';
 
 import Header from "./components/Header/Header.js";
-import Filter from "./components/Filter/Filter.js";
-import AdCard from "./components/AdCard/AdCard.js";
-import Auth from "./components/Auth/auth.js";
-import MainPhoto from "./components/MainPhoto/MainPhoto.js";
+import AuthPopup from "./components/AuthPopup/AuthPopup.js";
+import MainPage from "./components/MainPage/MainPage.js";
+
 
 const root = document.getElementById('root');
+const pageContainer = document.createElement('div');
 
 const headerCallbacks = {
-    mainPage: loadMainPage,
-    mapPage: loadMapPage,
-    articlesPage: loadArticlesPage,
-    messagesPage: loadMessagesPage,
-    favoritesPage: loadFavoritesPage,
-    notificationsPage: loadNotificationsPage,
-    signInPage: loadSignInPage,
+    mainPage: renderMainPage,
+    mapPage: renderMapPage,
+    articlesPage: renderArticlesPage,
+    messagesPage: renderMessagesPage,
+    favoritesPage: renderFavoritesPage,
+    notificationsPage: renderNotificationsPage,
+    signInPage: renderSignInPage,
 }
 
-async function loadMainPage() {
-    //Контент главной страницы
-    const pageContent = document.createElement('div');
-    pageContent.id = 'main-content';
-
-    //Фильтр
-    const filter = new Filter();
-    pageContent.appendChild(filter.getFilter());
-
-    //Здесь будет витрина
-    const adsContainer = document.createElement('div');
-    adsContainer.classList.add('advert');
-
-    const res = await fetch('http://localhost:8080/api/ads')
-    let data = await res.json();
-    data = data['places']
-    for (const [_, d] of Object.entries(data)) {
-        const card = new AdCard(d, adsContainer);
-        card.render()
-    }
-    pageContent.appendChild(adsContainer);
-
-    root.appendChild(pageContent);
+function renderMainPage() {
+    const mainPage = new MainPage(pageContainer)
+    mainPage.render()
 }
 
-function loadMapPage() {
+function renderMapPage() {
 }
 
-function loadArticlesPage() {
+function renderArticlesPage() {
 }
 
-function loadMessagesPage() {
+function renderMessagesPage() {
 }
 
-function loadFavoritesPage() {
+function renderFavoritesPage() {
 }
 
-function loadNotificationsPage() {
+function renderNotificationsPage() {
 }
 
-function loadSignInPage() {
-    const auth = new Auth();
+function renderSignInPage() {
+    const auth = new AuthPopup();
     root.appendChild(auth.getAuth());
 }
 
-const header = new Header(headerCallbacks);
-root.appendChild(header.getMainContainer());
 
-const mainPhotoContainer = new MainPhoto();
-root.appendChild(mainPhotoContainer.getMainPhoto());
+(() => {
+    const header = new Header(headerCallbacks);
+    root.appendChild(header.getMainContainer());
 
-await loadMainPage();
+    pageContainer.classList.add('page-container');
+    root.appendChild(pageContainer);
+
+    renderMainPage(pageContainer);
+})()

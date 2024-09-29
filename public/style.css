@@ -1,6 +1,6 @@
 @import "components/AdCard/AdCard.css";
 @import "components/Filter/Filter.css";
-@import "components/Auth/auth.css";
+@import "components/AuthPopup/AuthPopup.css";
 @import "components/MainPhoto/MainPhoto.css";
 
 * {
