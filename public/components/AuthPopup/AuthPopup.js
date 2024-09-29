@@ -26,11 +26,13 @@ class AuthPopup {
                         placeholder: 'Логин',
                         type: 'text',
                         minLen: 6,
+                        maxLen: 20,
                     },
                     password: {
                         placeholder: 'Пароль',
                         type: 'password',
                         minLen: 6,
+                        maxLen: 16,
                     },
                 },
                 buttonText: 'Войти',
@@ -45,26 +47,31 @@ class AuthPopup {
                         placeholder: 'Полное имя',
                         type: 'text',
                         minLen: 6,
+                        maxLen: 50,
                     },
                     username: {
                         placeholder: 'Логин',
                         type: 'text',
                         minLen: 6,
+                        maxLen: 20,
                     },
                     email: {
                         placeholder: 'Почта',
                         type: 'email',
                         minLen: 6,
+                        maxLen: 40,
                     },
                     password: {
                         placeholder: 'Пароль',
                         type: 'password',
                         minLen: 6,
+                        maxLen: 16,
                     },
                     password2: {
                         placeholder: 'Повторите пароль',
                         type: 'password',
                         minLen: 6,
+                        maxLen: 16,
                     },
                 },
                 buttonText: 'Создать аккаунт',
@@ -109,13 +116,14 @@ class AuthPopup {
 
     renderInputs(inputs) {
         Object.entries(inputs).forEach(
-            ([name, { placeholder, type, minLen }]) => {
+            ([name, { placeholder, type, minLen, maxLen }]) => {
                 const input = document.createElement('input')
                 input.classList.add('inputs')
                 input.name = name
                 input.placeholder = placeholder
                 input.type = type
                 input.minLength = minLen
+                input.maxLength = maxLen
                 this.popup.appendChild(input)
             }
         )
@@ -195,16 +203,24 @@ class AuthPopup {
             const { name, value } = el
             data[name] = value
         })
-        console.log(data)
 
-        // todo: validate data
-        register({
+        if (this.currentState === 'signup') {
+            // todo: validate data
+            register({
+                username: data['username'],
+                password: data['password'],
+                email: data['email'],
+            }).then((res) => {
+                if (res.ok) location.reload()
+            })
+            return
+        }
+
+        login({
             username: data['username'],
             password: data['password'],
-            email: data['email'],
-        }).then(() => {
-            // todo: on success
-            location.reload()
+        }).then((r) => {
+            if (r.ok) location.reload()
         })
     }
 }

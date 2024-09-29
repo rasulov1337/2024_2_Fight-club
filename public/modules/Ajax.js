@@ -1,23 +1,10 @@
-// function getCookie(name) {
-//     let cookieValue = null
-//     if (document.cookie && document.cookie !== '') {
-//         const cookies = document.cookie.split(';')
-//         for (let i = 0; i < cookies.length; i++) {
-//             const cookie = cookies[i].trim()
-//             // Does this cookie string begin with the name we want?
-//             if (cookie.substring(0, name.length + 1) === name + '=') {
-//                 cookieValue = decodeURIComponent(
-//                     cookie.substring(name.length + 1)
-//                 )
-//                 break
-//             }
-//         }
-//     }
-//     return cookieValue
-// }
-
 class Ajax {
-    static get() {}
+    static get(url) {
+        return this._makeRequest({
+            method: 'GET',
+            url: url,
+        })
+    }
 
     /**
      *
@@ -32,25 +19,32 @@ class Ajax {
      * @param {string} method
      * @param {string} url
      * @param {object} body
-     * @returns {Promise<any>}
+     * @returns {Promise<any>} response
      */
-    static async _makeRequest({ method, url, body }) {
-        const request = new Request(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                // 'X-CSRFToken': getCookie('csrftoken'),
-            },
-            body: JSON.stringify(body),
-            credentials: 'include',
-        })
-
-        const response = await fetch(request)
-        if (!response.ok) {
-            throw new Error(response.statusText)
+    static async _makeRequest({ method, url, body = undefined }) {
+        let request
+        if (method === 'GET') {
+            request = new Request(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'X-CSRFToken': getCookie('csrftoken'),
+                },
+                credentials: 'include',
+            })
+        } else if (method === 'POST') {
+            request = new Request(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'X-CSRFToken': getCookie('csrftoken'),
+                },
+                credentials: 'include',
+                body: JSON.stringify(body),
+            })
         }
 
-        return await response.json()
+        return await fetch(request)
     }
 }
 

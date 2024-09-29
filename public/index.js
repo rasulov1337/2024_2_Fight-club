@@ -3,10 +3,10 @@
 import Header from './components/Header/Header.js'
 import AuthPopup from './components/AuthPopup/AuthPopup.js'
 import MainPage from './components/MainPage/MainPage.js'
+import Ajax from './modules/Ajax.js'
 
 const root = document.getElementById('root')
 const pageContainer = document.createElement('div')
-let isAuthorized = false
 
 /** Объект с коллбеками для header`а */
 const headerCallbacks = {
@@ -40,7 +40,16 @@ function renderSignInPage() {
 }
 
 /** Главная функция */
-;(() => {
+;(async () => {
+    const response = await Ajax.get('http://localhost:8080/api/getSessionData')
+    let isAuthorized = true
+    if (!response.ok) {
+        console.log('not ok')
+        isAuthorized = false
+    } else {
+        const sessionInfo = await response.json()
+    }
+
     const header = new Header(headerCallbacks, isAuthorized)
     root.appendChild(header.getMainContainer())
 
