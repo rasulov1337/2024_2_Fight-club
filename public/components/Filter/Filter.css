@@ -1,10 +1,11 @@
 #main-content {
+    width: 93%;
+    margin: 100px auto auto;
     display: grid;
     grid-template-areas:
         "aside addvert";
 
     grid-template-columns: 25% 1fr;
-    margin-top: 100px;
 }
 
 .filter {
@@ -41,8 +42,8 @@
 }
 
 .filter-element {
-    position:relative;
-    padding-left:25px;
+    position: relative;
+    padding-left: 25px;
     margin-top: 2%;
     margin-bottom: 2%;
 }
@@ -51,15 +52,16 @@
     display: none;
 }
 
-.filter-element label{
+.filter-element label {
     font-size: 20px;
+
     &:after {
-        content:'';
-        display:block;
-        height:14px;
-        width:14px;
-        outline:1px solid #939598;
-        position:absolute;
+        content: '';
+        display: block;
+        height: 14px;
+        width: 14px;
+        outline: 1px solid #939598;
+        position: absolute;
         top: 20%;;
         left: 0;
         border-radius: 5px;
@@ -67,11 +69,11 @@
 }
 
 .filter-element input:checked + label:after {
-    outline:1px solid #939598;
-    border:2px solid #fff;
-    width:10px;
-    height:10px;
-    background-color:#FFA552;
+    outline: 1px solid #939598;
+    border: 2px solid #fff;
+    width: 10px;
+    height: 10px;
+    background-color: #FFA552;
 }
 
 .filter-element input {

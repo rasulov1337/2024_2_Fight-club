@@ -16,24 +16,23 @@ class AdCard {
 
     render() {
         const template = Handlebars.templates['AdCard.hbs']
-        this.parent.innerHTML = template(this.data)
+        this.parent.innerHTML += template(this.data)
 
         this.parent.querySelector('.fav-btn').addEventListener('click', this.addToFavorite)
 
         setTimeout(() => {
-            console.log(this.parent.querySelector('.ad-images-container').getBoundingClientRect())
             this.addImageScrolling()
         }, 0)  // setTimeout ensures the code will be called AFTER browser finished rendering innerHTML new content
     }
 
     addImageScrolling() {
-        const imageContainer = this.parent.querySelector('.ad-images-container');
-        const imagePaginationDiv = this.parent.querySelector('.image-pagination-div');
+        const thisElement = this.parent.querySelector(`#card-${this.data.id}`)
+        const imageContainer = thisElement.querySelector('.ad-images-container');
+        const imagePaginationDiv = thisElement.querySelector('.image-pagination-div');
         const imgElem = imageContainer.firstElementChild;
 
         const imagesAmount = Math.min(this.data.pictures.length, 7)  // We must only show max amount of 7!
         const areaFraction = imageContainer.getBoundingClientRect().width / imagesAmount
-
 
         for (let i = 0; i < imagesAmount; i++) {
             const circle = document.createElement('div');
