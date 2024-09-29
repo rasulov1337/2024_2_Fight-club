@@ -18,11 +18,12 @@ class AdCard {
     }
 
     render() {
+        // eslint-disable-next-line no-undef
         const template = Handlebars.templates['AdCard.hbs']
         this.parent.innerHTML += template(this.data)
 
         this.parent
-            .querySelector('.fav-btn')
+            .querySelector('.ad-card__button')
             .addEventListener('click', this.addToFavorite)
 
         setTimeout(() => {
@@ -35,29 +36,26 @@ class AdCard {
      */
     addImageScrolling() {
         const thisElement = this.parent.querySelector(`#card-${this.data.id}`)
-        const imageContainer = thisElement.querySelector('.ad-images-container')
         const imagePaginationDiv = thisElement.querySelector(
-            '.image-pagination-div'
+            '.ad-card__image-pagination-div'
         )
-        const imgElem = imageContainer.firstElementChild
+        const imgElem = thisElement.querySelector('.ad_card__img1')
 
         const imagesAmount = Math.min(this.data.pictures.length, 7) // We must only show max amount of 7!
         const areaFraction =
-            imageContainer.getBoundingClientRect().width / imagesAmount
+            imgElem.getBoundingClientRect().width / imagesAmount
 
         for (let i = 0; i < imagesAmount; i++) {
             const circle = document.createElement('div')
-            circle.classList.add('circle')
+            circle.classList.add('ad-card__circle')
             this.circles.push(circle)
             imagePaginationDiv.appendChild(circle)
         }
 
-        imageContainer.addEventListener('mousemove', (e) =>
+        imgElem.addEventListener('mousemove', (e) =>
             this.onMouseMove(e, areaFraction, imgElem)
         )
-        imageContainer.addEventListener('mouseout', () =>
-            this.onMouseOut(imgElem)
-        )
+        imgElem.addEventListener('mouseout', () => this.onMouseOut(imgElem))
 
         this.makeCircleActive(0)
     }
@@ -94,8 +92,10 @@ class AdCard {
      * @param {int} index -- индекс текущего фото
      */
     makeCircleActive(index) {
-        this.circles[this.currentImgIndex].classList.remove('circle-fill')
-        this.circles[index].classList.add('circle-fill')
+        this.circles[this.currentImgIndex].classList.remove(
+            'ad-card__circle--fill'
+        )
+        this.circles[index].classList.add('ad-card__circle--fill')
     }
 
     /**
