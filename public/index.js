@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-import Header from "./components/Header/Header.js";
-import AuthPopup from "./components/AuthPopup/AuthPopup.js";
-import MainPage from "./components/MainPage/MainPage.js";
+import Header from './components/Header/Header.js'
+import AuthPopup from './components/AuthPopup/AuthPopup.js'
+import MainPage from './components/MainPage/MainPage.js'
 
+const root = document.getElementById('root')
+const pageContainer = document.createElement('div')
 
-const root = document.getElementById('root');
-const pageContainer = document.createElement('div');
-
+/** Объект с коллбеками для header`а */
 const headerCallbacks = {
     mainPage: renderMainPage,
     mapPage: renderMapPage,
@@ -23,33 +23,28 @@ function renderMainPage() {
     mainPage.render()
 }
 
-function renderMapPage() {
-}
+function renderMapPage() {}
 
-function renderArticlesPage() {
-}
+function renderArticlesPage() {}
 
-function renderMessagesPage() {
-}
+function renderMessagesPage() {}
 
-function renderFavoritesPage() {
-}
+function renderFavoritesPage() {}
 
-function renderNotificationsPage() {
-}
+function renderNotificationsPage() {}
 
 function renderSignInPage() {
-    const auth = new AuthPopup();
-    root.appendChild(auth.getAuth());
+    const auth = new AuthPopup()
+    root.appendChild(auth.getAuth())
 }
 
+/** Главная функция */
+;(() => {
+    const header = new Header(headerCallbacks)
+    root.appendChild(header.getMainContainer())
 
-(() => {
-    const header = new Header(headerCallbacks);
-    root.appendChild(header.getMainContainer());
+    pageContainer.classList.add('page-container')
+    root.appendChild(pageContainer)
 
-    pageContainer.classList.add('page-container');
-    root.appendChild(pageContainer);
-
-    renderMainPage(pageContainer);
+    renderMainPage(pageContainer)
 })()

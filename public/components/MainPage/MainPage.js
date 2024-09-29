@@ -2,6 +2,7 @@ import Filter from '../Filter/Filter.js'
 import AdCard from '../AdCard/AdCard.js'
 import MainPhoto from '../MainPhoto/MainPhoto.js'
 
+/** Главная страница с витриной объявлений, поиском и фильтрами */
 class MainPage {
     constructor(root) {
         this.root = root
