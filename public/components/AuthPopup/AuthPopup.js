@@ -8,9 +8,66 @@ class AuthPopup {
         this.overlay.classList.add('overlay')
 
         this.popup = document.createElement('form')
+        this.popup.noValidate = true;
         this.popup.method = 'POST'
         this.popup.onsubmit = this.onFormSubmit
+
         this.popup.classList.add('popup')
+        this.popup.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            let longerThen6 = this.checkLongerThan(6);
+
+            if (this.currentState === 'auth'){
+                const loginInput = document.getElementById('login');
+                const passwordInput = document.getElementById('password');
+
+                const loginValidation = document.getElementById('loginValidationSign');
+                const passwordValidation = document.getElementById('passwordValidationSign');
+
+                this.makeValidationMessage(loginValidation, "loginValidation", "Минимальная длина логина - 6 символов");
+                this.makeValidationMessage(passwordValidation, "passwordValidation", "Минимальная длина пароля - 6 символов");
+
+                if (!longerThen6(loginInput, loginValidation)) return;
+                if (!longerThen6(passwordInput, passwordValidation)) return;
+
+            } else {
+                const nameInput = document.getElementById('name');
+                const loginInput = document.getElementById('login');
+                const passwordInput = document.getElementById('password');
+                const passwordRepeatInput = document.getElementById('password2');
+
+                const nameValidation = document.getElementById('nameValidationSign');
+                const loginValidation = document.getElementById('loginValidationSign');
+                const passwordValidation = document.getElementById('passwordValidationSign');
+                const passwordRepeatValidation = document.getElementById('password2ValidationSign');
+
+                this.makeValidationMessage(nameValidation, "nameValidation", "Минимальная длина имени - 6 символов");
+                this.makeValidationMessage(loginValidation, "loginValidation", "Минимальная длина логина - 6 символов");
+                this.makeValidationMessage(passwordValidation, "passwordValidation", "Минимальная длина пароля - 6 символов");
+                this.makeValidationMessage(passwordRepeatValidation, "passwordRepeatValidation", "Минимальная длина пароля - 6 символов");
+                
+                if (!longerThen6(nameInput, nameValidation)) return;
+                if (!longerThen6(loginInput, loginValidation)) return;
+                if (!longerThen6(passwordInput, passwordValidation)) return;
+                if (!longerThen6(passwordRepeatInput, passwordRepeatValidation)) return;
+
+                if (passwordInput.value !== passwordRepeatInput.value) {
+                    console.log(passwordInput);
+                    console.log(passwordRepeatInput);
+                    passwordInput.value = "";
+                    passwordRepeatInput.value = "";
+                    passwordInput.classList.add('popup__input__error');
+                    passwordRepeatInput.classList.add('popup__input__error');
+
+                    passwordValidation.classList.remove('none');
+
+                    this.makeValidationMessage(passwordValidation, "passwordValidation", "Пароли не совпадают");
+                    return;
+                }
+            }
+
+            this.popup.submit();
+        })
         this.overlay.appendChild(this.popup)
 
         this.isAuthorized = false
@@ -115,18 +172,32 @@ class AuthPopup {
     }
 
     renderInputs(inputs) {
-        Object.entries(inputs).forEach(
-            ([name, { placeholder, type, minLen, maxLen }]) => {
-                const input = document.createElement('input')
-                input.classList.add('inputs')
-                input.name = name
-                input.placeholder = placeholder
-                input.type = type
-                input.minLength = minLen
-                input.maxLength = maxLen
-                this.popup.appendChild(input)
-            }
-        )
+        Object.entries(inputs).forEach(([name, {placeholder, type, minLen}]) => {
+            const inputValidation = document.createElement('div');
+            inputValidation.classList.add('popup__inputValidation');
+            const input = document.createElement('input')
+            input.id = name;
+            input.name = name
+            input.placeholder = placeholder
+            input.type = type;
+            input.minLength = minLen;
+            input.required = true;
+
+            const validationSigh = document.createElement('a');
+            validationSigh.id = name + 'ValidationSign';
+            validationSigh.innerHTML = `<img src="/images/svg/exclamation.svg" width="20px" height="20px">`;
+            validationSigh.classList.add('none')
+            validationSigh.classList.add('popup__inputValidation__exclamation');
+
+            const validationMessage = document.createElement('div');
+            validationMessage.id = name + 'ValidationMessage';
+            validationMessage.classList.add('popup__inputValidation__validationMessage');
+
+            inputValidation.appendChild(input);
+            inputValidation.appendChild(validationSigh);
+            inputValidation.appendChild(validationMessage);
+            this.popup.appendChild(inputValidation);
+        })
     }
 
     renderButton(text) {
@@ -134,9 +205,8 @@ class AuthPopup {
         loginButton.classList.add('login-button')
         loginButton.textContent = text
         loginButton.addEventListener('click', () => {
-            this.isAuthorized = true
-            console.log(this.isAuthorized)
-        })
+            this.isAuthorized = true;
+        });
         this.popup.appendChild(loginButton)
     }
 
@@ -222,6 +292,36 @@ class AuthPopup {
         }).then((r) => {
             if (r.ok) location.reload()
         })
+    }
+
+    checkLongerThan(len) {
+        return function(input, exclamation) {
+            if (input.value.length < len) {
+                input.classList.add('popup__input__error');
+                exclamation.classList.remove('none');
+                return false;
+            } else {
+                input.classList.remove('popup__input__error');
+                exclamation.classList.add('none');
+                return true;
+            }
+        }
+    }
+
+    showPopup(validationContainer, message) {
+        validationContainer.innerHTML = `<p>${message}</p>`
+        validationContainer.classList.remove('none');
+    }
+
+    hidePopup(validationContainer) {
+        validationContainer.innerHTML = '';
+        validationContainer.classList.add('none');
+    }
+
+    makeValidationMessage(nameOfValidation, id, message) {
+        const validationMessage = document.getElementById(id + 'Message');
+        nameOfValidation.addEventListener('mouseover', _ => this.showPopup(validationMessage, message));
+        nameOfValidation.addEventListener('mouseout', _ => this.hidePopup(validationMessage));
     }
 }
 
