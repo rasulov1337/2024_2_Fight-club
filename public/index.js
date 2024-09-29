@@ -8,6 +8,8 @@ import Ajax from './modules/Ajax.js'
 const root = document.getElementById('root')
 const pageContainer = document.createElement('div')
 
+window.BACKEND_URL = 'http://localhost:8080/api'
+
 /** Объект с коллбеками для header`а */
 const headerCallbacks = {
     mainPage: renderMainPage,
@@ -41,7 +43,7 @@ function renderSignInPage() {
 
 /** Главная функция */
 ;(async () => {
-    const response = await Ajax.get('http://localhost:8080/api/getSessionData')
+    const response = await Ajax.get(BACKEND_URL + '/getSessionData')
     let isAuthorized = true
     if (!response.ok) {
         console.log('not ok')

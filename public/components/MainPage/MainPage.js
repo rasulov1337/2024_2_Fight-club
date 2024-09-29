@@ -22,7 +22,7 @@ class MainPage {
     }
 
     render() {
-        fetch('http://localhost:8080/api/ads')
+        fetch(BACKEND_URL + '/ads')
             .then((res) => res.json())
             .then((data) => {
                 data = data['places']
