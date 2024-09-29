@@ -4,24 +4,25 @@ class Header {
     constructor(headerCallbacks) {
         this.headerCallbacks = headerCallbacks
         this.menuContainer = document.createElement('header')
+        this.menuContainer.classList.add('header')
 
-        this.iconContainer = document.createElement('div')
+        this.logoImg = document.createElement('img')
         this.hrefs = document.createElement('div')
-        this.nameContainer = document.createElement('div')
+        this.nameImg = document.createElement('img')
         this.signsContainer = document.createElement('div')
-        this.buttonContainer = document.createElement('div')
+        this.entryButton = document.createElement('button')
 
-        this.iconContainer.classList.add('icon')
-        this.hrefs.classList.add('header-hrefs')
-        this.nameContainer.classList.add('name')
-        this.signsContainer.classList.add('signs')
-        this.buttonContainer.classList.add('entry-button')
+        this.logoImg.classList.add('header__img1')
+        this.hrefs.classList.add('header__hrefs')
+        this.nameImg.classList.add('header__img2')
+        this.signsContainer.classList.add('header__signs')
+        this.entryButton.classList.add('header__button')
 
-        this.menuContainer.appendChild(this.iconContainer)
+        this.menuContainer.appendChild(this.logoImg)
         this.menuContainer.appendChild(this.hrefs)
-        this.menuContainer.appendChild(this.nameContainer)
+        this.menuContainer.appendChild(this.nameImg)
         this.menuContainer.appendChild(this.signsContainer)
-        this.menuContainer.appendChild(this.buttonContainer)
+        this.menuContainer.appendChild(this.entryButton)
 
         this.config = {
             menu: {
@@ -70,18 +71,11 @@ class Header {
     }
 
     renderIcon() {
-        const imgElement = document.createElement('img')
-        imgElement.src = './images/icon.jpg'
-        imgElement.width = 100
-        imgElement.height = 100
-        this.iconContainer.appendChild(imgElement)
+        this.logoImg.src = './images/icon.jpg'
     }
 
     renderMainText() {
-        const imgElement = document.createElement('img')
-        imgElement.src = './images/name.png'
-        imgElement.height = 60
-        this.nameContainer.appendChild(imgElement)
+        this.nameImg.src = './images/name.png'
     }
 
     renderHrefs() {
@@ -94,10 +88,10 @@ class Header {
                     e.preventDefault()
                     callback()
                 })
-                menuElement.classList.add('hrefs')
+                menuElement.classList.add('header__hrefs__href')
 
                 if (index === 0) {
-                    menuElement.classList.add('active-href')
+                    menuElement.classList.add('header__hrefs__href_active')
                     this.headerState.activePageLink = menuElement
                 }
 
@@ -127,10 +121,11 @@ class Header {
     }
 
     renderButton() {
-        const button = document.createElement('button')
-        button.textContent = 'Войти!'
-        button.addEventListener('click', this.headerCallbacks.signInPage)
-        this.buttonContainer.appendChild(button)
+        this.entryButton.textContent = 'Войти!'
+        this.entryButton.addEventListener(
+            'click',
+            this.headerCallbacks.signInPage
+        )
     }
 
     render() {

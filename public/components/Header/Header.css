@@ -1,35 +1,37 @@
-
-header {
+.header {
     background-color: #ffffff;
     height: 156px;
     display: flex;
     align-items: center;
 }
 
-.header-hrefs {
+.header__hrefs {
     width: 300px;
     display: flex;
     justify-content: space-between;
     padding-left: 50px;
 }
 
-.hrefs {
+.header__hrefs__href {
     color: #635B5B;
     text-decoration: none;
     font-size: 24px;
     font-style: italic;
 }
 
-.icon {
+.header__img1 {
     padding-left: 50px;
+    object-fit: contain;
+    width: 100px;
+    height: 100px;
 }
 
-.active-href {
+.header__hrefs__href_active {
     font-weight: bold;
     position: relative;
 }
 
-.active-href::after {
+.header__hrefs__href_active::after {
     content: "";
     display: block;
     height: 2px;
@@ -41,12 +43,13 @@ header {
     background-color: #635B5B;
 }
 
-.name {
+.header__img2 {
     margin-left: auto;
     margin-right: auto;
+    height: 60px;
 }
 
-.signs {
+.header__signs {
     display: flex;
     width: 130px;
     justify-content: space-between;
@@ -54,7 +57,7 @@ header {
     padding-right: 20px;
 }
 
-.entry-button button {
+.header__button {
     color: #ffffff;
     font-size: 20px;
     font-weight: bold;
