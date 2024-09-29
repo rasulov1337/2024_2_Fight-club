@@ -1,4 +1,4 @@
-import Ajax from './ajax.js'
+import Ajax from './Ajax.js'
 
 /**
  * Кидает запрос на регистрацию пользователя
