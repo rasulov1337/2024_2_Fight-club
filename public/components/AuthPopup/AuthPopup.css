@@ -2,7 +2,6 @@
     position: fixed;
     width: 400px;
     height: 520px;
-    min-height: fit-content;
     top: 25%;
     left: 37%;
     background-color: #ffffff;
@@ -31,8 +30,8 @@
 }
 
 .auth-message {
-    padding-top: 20px;
-    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
     font-size: 20px;
     font-style: italic;
     font-weight: bold;
@@ -46,14 +45,13 @@
     font-size: 18px;
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 5px;
 }
 
 .login-button {
     background-color: #FFA552;
     color: #ffffff;
     cursor: pointer;
-    margin: 5% 20% 10%;
+    margin: 0% 20% 5%;
     border: none;
     border-radius: 10px;
     height: 40px;
@@ -63,7 +61,7 @@
 }
 
 .have-account {
-    /*position: absolute;*/
+    position: relative;
     bottom: 0;
     padding-bottom: 5%;
     display: flex;
