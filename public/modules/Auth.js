@@ -8,7 +8,7 @@ import Ajax from './Ajax.js'
  * @returns {Promise<any>}
  */
 export const register = async ({ username, password, email }) => {
-    const url = 'http://localhost:8080/api/auth/register'
+    const url = 'http://37.139.41.110:8080/api/auth/register'
     const body = {
         username: username,
         password: password,
@@ -21,7 +21,7 @@ export const register = async ({ username, password, email }) => {
 }
 
 export const login = async ({ username, password }) => {
-    const url = 'http://localhost:8080/api/auth/login'
+    const url = 'http://37.139.41.110:8080/api/auth/login'
     const body = {
         username: username,
         password: password,
