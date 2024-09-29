@@ -1,9 +1,9 @@
 'use strict';
 
 class Filter {
-    constructor(){
+    constructor() {
         this.config = {
-            geoposition:{
+            geoposition: {
                 name: "geo",
                 title: "По геопозиции",
                 variations: {
@@ -31,7 +31,7 @@ class Filter {
                 },
                 def: "true"
             },
-            gender :{
+            gender: {
                 name: "sex",
                 title: "Пол хоста",
                 variations: {
@@ -54,43 +54,46 @@ class Filter {
                 def: "nm"
             }
         }
-        
+
         this.filterContainer = document.createElement('form');
         this.filterContainer.classList.add('filter');
 
         this.render();
     }
 
-    render(){
-        Object.entries(this.config).forEach(([filterName, {name, title, variations, def}], index1)=>{
+    render() {
+        Object.entries(this.config).forEach(([filterName, {name, title, variations, def}], index1) => {
             const filterGroup = document.createElement('div');
             filterGroup.classList.add('filter-group');
-    
+
             if (index1 !== 0) {
                 const filterLine = document.createElement('hr');
                 filterGroup.appendChild(filterLine);
             }
-    
+
             if (title !== null) {
                 const filterSpan = document.createElement('span');
                 const arrowDown = document.createElement('a');
                 const filterTitle = document.createElement('p');
-    
+
                 filterTitle.textContent = title;
-                arrowDown.innerHTML = `<img src="./images/svg/down-arrow.svg" width="24px" height="24px">`;
+                const img = document.createElement('img');
+                img.src = "/images/svg/down-arrow.svg"
+                img.width = 24
+                arrowDown.appendChild(img);
                 arrowDown.href = "#"
-    
+
                 filterSpan.appendChild(arrowDown);
                 filterSpan.appendChild(filterTitle);
                 filterGroup.appendChild(filterSpan);
             }
-            
-            Object.entries(variations).forEach(([variant, label], index2)=>{
+
+            Object.entries(variations).forEach(([variant, label], index2) => {
                 const filterElement = document.createElement('div');
                 filterElement.classList.add('filter-element');
-    
+
                 const radio = document.createElement('input');
-                if (filterName === "rating" || filterName === "new"){
+                if (filterName === "rating" || filterName === "new") {
                     radio.type = 'checkbox';
                 } else {
                     radio.type = 'radio';
@@ -98,37 +101,37 @@ class Filter {
                 radio.id = '' + index1 + index2;
                 radio.name = name;
                 radio.value = variant;
-    
-                if (variant === def){
+
+                if (variant === def) {
                     radio.checked = true;
                 }
-    
+
                 const radioLabel = document.createElement('label');
                 radioLabel.setAttribute('for', '' + index1 + index2);
                 radioLabel.textContent = label
-    
+
                 filterElement.appendChild(radio);
                 filterElement.appendChild(radioLabel);
                 filterGroup.appendChild(filterElement);
             })
-    
+
             this.filterContainer.appendChild(filterGroup);
         });
-    
+
         const applyButton = document.createElement('button');
         const resetButton = document.createElement('button');
-    
+
         applyButton.textContent = "Применить";
         resetButton.textContent = "Сбросить";
-    
+
         applyButton.classList.add('apply-button');
         resetButton.classList.add('reset-button');
-        
+
         this.filterContainer.appendChild(applyButton);
         this.filterContainer.appendChild(resetButton);
     }
 
-    getFilter(){
+    getFilter() {
         return this.filterContainer;
     }
 }

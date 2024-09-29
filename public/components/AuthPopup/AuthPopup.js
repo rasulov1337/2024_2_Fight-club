@@ -45,7 +45,10 @@ class AuthPopup {
         const crossContainer = document.createElement('div');
         const cross = document.createElement('a');
         crossContainer.classList.add('close-cross');
-        cross.innerHTML = `<img src="./images/svg/cross.svg" width="30px" height="30px">`
+        const crossImg = document.createElement('img');
+        crossImg.src = "/images/svg/cross.svg"
+        crossImg.width = 30
+        cross.appendChild(crossImg);
         crossContainer.appendChild(cross);
         cross.addEventListener('click', (e) => {
             e.preventDefault();
@@ -58,8 +61,7 @@ class AuthPopup {
     renderImg() {
         const imgElement = document.createElement('img');
         imgElement.classList.add('auth-img');
-        imgElement.src = './images/name.png';
-        imgElement.height = 200;
+        imgElement.src = '/images/name.png';
         imgElement.height = 60;
         this.popup.appendChild(imgElement);
     }
@@ -106,7 +108,7 @@ class AuthPopup {
                 this.currentState = 'auth';
             }
 
-            this.popup.innerHTML = '';
+            this.popup.replaceChildren()
             this.render();
         });
 

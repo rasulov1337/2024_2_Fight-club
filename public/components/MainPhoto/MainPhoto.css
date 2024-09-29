@@ -54,7 +54,11 @@
 
 .custom-search button {
     background-color: #ffffff;
-    background-image: url('./images/svg/search.svg');
+    background-image: url('/images/search.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30px;
+
     border: none;
     border-radius: 0 10px 10px 0;
     width: 30px;

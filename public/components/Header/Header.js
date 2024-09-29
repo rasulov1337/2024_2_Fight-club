@@ -109,7 +109,10 @@ class Header {
         Object.entries(this.config.signs).forEach(([_, {href, src, callback}]) => {
             const signElement = document.createElement('a');
             signElement.href = href;
-            signElement.innerHTML = `<img src="${src}" width="30" height="30">`;
+            const img = document.createElement('img');
+            img.src = src;
+            img.width = 30;
+            signElement.appendChild(img);
             signElement.addEventListener('click', (e) => {
                 e.preventDefault()
                 callback()
