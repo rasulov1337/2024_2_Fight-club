@@ -30,7 +30,7 @@ class AuthPopup {
                         placeholder: 'Логин',
                         type: 'text',
                         minLen: 6,
-                        maxLen: 20,
+                        maxLen: 50,
                     },
                     password: {
                         placeholder: 'Пароль',
@@ -261,16 +261,19 @@ class AuthPopup {
 
     /**
      * @private
-     * @description Функция для валидации данных
+     * @description Функция для валидации данных\
+     * @returns boolean
      */
     validateData() {
         if (this.currentState === 'auth') {
-            this.validateAuthData()
-        } else {
-            this.validateRegistrationData()
+            return this.validateAuthData()
         }
+        return this.validateRegistrationData()
     }
 
+    /**
+     * @returns boolean
+     */
     validateAuthData() {
         const usernameInput = document.getElementById('username')
         const passwordInput = document.getElementById('password')
@@ -293,16 +296,15 @@ class AuthPopup {
             'Длина пароля - от 6 до 16 символов'
         )
 
-        if (
-            !this.checkLongerThan(usernameInput, usernameValidation) ||
-            !this.checkShorterThan(usernameInput, usernameValidation)
+        const correctUsername = this.validateLength(
+            usernameInput,
+            usernameValidation
         )
-            return
-        if (
-            !this.checkLongerThan(passwordInput, passwordValidation) ||
-            !this.checkShorterThan(passwordInput, usernameValidation)
+        const correctPassword = this.validateLength(
+            passwordInput,
+            passwordValidation
         )
-            return
+        return correctUsername && correctPassword
     }
 
     validateRegistrationData() {
@@ -350,43 +352,44 @@ class AuthPopup {
             'Пароль - от 6 до 16 символов'
         )
 
-        if (!this.checkLongerThan(nameInput, nameValidation)) return
-        if (!this.checkLongerThan(usernameInput, usernameValidation)) return
-        if (!this.checkLongerThan(emailInput, emailValidation)) return
-        if (!this.checkLongerThan(passwordInput, passwordValidation)) return
-        if (
-            !this.checkLongerThan(passwordRepeatInput, passwordRepeatValidation)
+        const validName = this.validateLength(nameInput, nameValidation)
+        const validUsername = this.validateLength(
+            usernameInput,
+            usernameValidation
         )
-            return
-
-        if (!this.checkLongerThan(nameInput, nameValidation)) return
-        if (!this.checkLongerThan(usernameInput, usernameValidation)) return
-        if (!this.checkLongerThan(emailInput, emailValidation)) return
-        if (!this.checkLongerThan(passwordInput, passwordValidation)) return
-        if (
-            !this.checkLongerThan(passwordRepeatInput, passwordRepeatValidation)
+        const validEmail = this.validateLength(emailInput, emailValidation)
+        const validPassword = this.validateLength(
+            passwordInput,
+            passwordValidation
         )
-            return
+        const validPasswordRepeat = this.validateLength(
+            passwordRepeatInput,
+            passwordRepeatValidation
+        )
 
-        if (!emailInput.value.includes('@')) {
-            emailInput.classList.add('popup__input__error')
-            emailValidation.classList.remove('none')
-            this.makeValidationMessage(
-                emailValidation,
-                'emailValidation',
-                `Почта должна содержать "@" `
+        if (
+            !(
+                validName &&
+                validUsername &&
+                validEmail &&
+                validPassword &&
+                validPasswordRepeat
             )
-            return
+        ) {
+            return false
         }
 
-        if (!emailInput.value.includes('.')) {
+        const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
+        if (!emailRegexp.test(emailInput.value)) {
             emailInput.classList.add('popup__input__error')
             emailValidation.classList.remove('none')
             this.makeValidationMessage(
                 emailValidation,
                 'emailValidation',
-                `Почта должна содержать "." `
+                `Почта должна иметь формат admin@example.com `
             )
+            return false
         }
 
         if (passwordInput.value !== passwordRepeatInput.value) {
@@ -402,8 +405,10 @@ class AuthPopup {
                 'passwordValidation',
                 'Пароли не совпадают'
             )
-            return
+            return false
         }
+
+        return true
     }
 
     /**
@@ -411,7 +416,10 @@ class AuthPopup {
      */
     onFormSubmit(e) {
         e.preventDefault()
-        this.validateData()
+
+        if (!this.validateData()) {
+            return
+        }
 
         const data = {}
         Array.from(e.target.elements).forEach((el) => {
@@ -450,23 +458,11 @@ class AuthPopup {
     /**
      * @private
      */
-    checkLongerThan(input, exclamation) {
-        if (input.value.length < input.minLength) {
-            input.classList.add('popup__input__error')
-            exclamation.classList.remove('none')
-            return false
-        } else {
-            input.classList.remove('popup__input__error')
-            exclamation.classList.add('none')
-            return true
-        }
-    }
-
-    /**
-     * @private
-     */
-    checkShorterThan(input, exclamation) {
-        if (input.value.length > input.minLength) {
+    validateLength(input, exclamation) {
+        if (
+            input.value.length > input.maxLength ||
+            input.value.length < input.minLength
+        ) {
             input.classList.add('popup__input__error')
             exclamation.classList.remove('none')
             return false
