@@ -415,7 +415,7 @@ class AuthPopup {
     /**
      * @private
      */
-    onFormSubmit(e) {
+    async onFormSubmit(e) {
         e.preventDefault()
 
         if (!this.validateData()) {
@@ -429,18 +429,20 @@ class AuthPopup {
         })
 
         if (this.currentState === 'signup') {
-            // todo: validate data
-            register({
-                username: data['username'],
-                password: data['password'],
-                email: data['email'],
-            })
-                .then((res) => {
-                    if (res.ok) location.reload()
+            try {
+                const res = await register({
+                    username: data['username'],
+                    password: data['password'],
+                    email: data['email'],
                 })
-                .catch((err) => {
-                    console.error(err)
-                })
+
+                if (res.ok) location.reload()
+                else if (res.status === 409)
+                    this.setFailureMessage('Такой аккаунт уже создан!')
+                else this.setFailureMessage('Неизвестная ошибка на сервере')
+            } catch (err) {
+                console.error(err)
+            }
             return
         }
 
