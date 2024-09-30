@@ -20,11 +20,14 @@ class AdCard {
     render() {
         // eslint-disable-next-line no-undef
         const template = Handlebars.templates['AdCard.hbs']
-        this.parent.innerHTML += template(this.data)
+        const templateContainer = document.createElement('div')
 
-        this.parent
+        templateContainer.innerHTML = template(this.data)
+
+        templateContainer
             .querySelector('.ad-card__button')
             .addEventListener('click', this.addToFavorite)
+        this.parent.appendChild(templateContainer)
 
         setTimeout(() => {
             this.addImageScrolling()
