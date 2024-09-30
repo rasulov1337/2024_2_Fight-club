@@ -16,44 +16,69 @@ class AuthPopup {
         this.popup.addEventListener('submit', (e)=>{
             e.preventDefault();
             let longerThen6 = this.checkLongerThan(6);
+            let shorterThan16 = this.checkShorterThan(16);
+            let shorterThan20 = this.checkShorterThan(20);
+            let shorterThan40 = this.checkShorterThan(40);
+            let shorterThan50 = this.checkShorterThan(50);
 
             if (this.currentState === 'auth'){
-                const loginInput = document.getElementById('login');
+                const usernameInput = document.getElementById('username');
                 const passwordInput = document.getElementById('password');
 
-                const loginValidation = document.getElementById('loginValidationSign');
+                const usernameValidation = document.getElementById('usernameValidationSign');
                 const passwordValidation = document.getElementById('passwordValidationSign');
 
-                this.makeValidationMessage(loginValidation, "loginValidation", "Минимальная длина логина - 6 символов");
-                this.makeValidationMessage(passwordValidation, "passwordValidation", "Минимальная длина пароля - 6 символов");
+                this.makeValidationMessage(usernameValidation, "usernameValidation", "Длина логина - от 6 до 20 символов");
+                this.makeValidationMessage(passwordValidation, "passwordValidation", "Длина пароля - от 6 до 16 символов");
 
-                if (!longerThen6(loginInput, loginValidation)) return;
-                if (!longerThen6(passwordInput, passwordValidation)) return;
+                if (!longerThen6(usernameInput, usernameValidation) || !shorterThan20(usernameInput, usernameValidation)) return;
+                if (!longerThen6(passwordInput, passwordValidation) || !shorterThan16(passwordInput, usernameValidation)) return;
 
             } else {
                 const nameInput = document.getElementById('name');
-                const loginInput = document.getElementById('login');
+                const usernameInput = document.getElementById('username');
+                const emailInput = document.getElementById('email');
                 const passwordInput = document.getElementById('password');
                 const passwordRepeatInput = document.getElementById('password2');
 
                 const nameValidation = document.getElementById('nameValidationSign');
-                const loginValidation = document.getElementById('loginValidationSign');
+                const usernameValidation = document.getElementById('usernameValidationSign');
+                const emailValidation = document.getElementById('emailValidationSign');
                 const passwordValidation = document.getElementById('passwordValidationSign');
                 const passwordRepeatValidation = document.getElementById('password2ValidationSign');
 
-                this.makeValidationMessage(nameValidation, "nameValidation", "Минимальная длина имени - 6 символов");
-                this.makeValidationMessage(loginValidation, "loginValidation", "Минимальная длина логина - 6 символов");
-                this.makeValidationMessage(passwordValidation, "passwordValidation", "Минимальная длина пароля - 6 символов");
-                this.makeValidationMessage(passwordRepeatValidation, "passwordRepeatValidation", "Минимальная длина пароля - 6 символов");
+                this.makeValidationMessage(nameValidation, "nameValidation", "Имя пользователя - от 6 до 50 символов");
+                this.makeValidationMessage(usernameValidation, "usernameValidation", "Длина логина - от 6 до 20 символов");
+                this.makeValidationMessage(emailValidation, "emailValidation", "Почта - от 6 до 40 символов");
+                this.makeValidationMessage(passwordValidation, "passwordValidation", "Пароль - от 6 до 16 символов");
+                this.makeValidationMessage(passwordRepeatValidation, "passwordRepeatValidation", "Пароль - от 6 до 16 символов");
                 
                 if (!longerThen6(nameInput, nameValidation)) return;
-                if (!longerThen6(loginInput, loginValidation)) return;
+                if (!longerThen6(usernameInput, usernameValidation)) return;
+                if (!longerThen6(emailInput, emailValidation)) return;
                 if (!longerThen6(passwordInput, passwordValidation)) return;
                 if (!longerThen6(passwordRepeatInput, passwordRepeatValidation)) return;
 
+                if (!shorterThan50(nameInput, nameValidation)) return;
+                if (!shorterThan20(usernameInput, usernameValidation)) return;
+                if (!shorterThan40(emailInput, emailValidation)) return;
+                if (!shorterThan16(passwordInput, passwordValidation)) return;
+                if (!shorterThan16(passwordRepeatInput, passwordRepeatValidation)) return;
+
+                if (!emailInput.value.includes('@')) {
+                    emailInput.classList.add('popup__input__error')
+                    emailValidation.classList.remove('none');
+                    this.makeValidationMessage(emailValidation, "emailValidation", `Почта должна содержать "@" `);
+                    return;
+                }
+
+                if (!emailInput.value.includes('.')) {
+                    emailInput.classList.add('popup__input__error')
+                    emailValidation.classList.remove('none');
+                    this.makeValidationMessage(emailValidation, "emailValidation", `Почта должна содержать "." `);
+                }
+
                 if (passwordInput.value !== passwordRepeatInput.value) {
-                    console.log(passwordInput);
-                    console.log(passwordRepeatInput);
                     passwordInput.value = "";
                     passwordRepeatInput.value = "";
                     passwordInput.classList.add('popup__input__error');
@@ -65,8 +90,6 @@ class AuthPopup {
                     return;
                 }
             }
-
-            this.popup.submit();
         })
         this.overlay.appendChild(this.popup)
 
@@ -296,7 +319,22 @@ class AuthPopup {
 
     checkLongerThan(len) {
         return function(input, exclamation) {
+            console.log()
             if (input.value.length < len) {
+                input.classList.add('popup__input__error');
+                exclamation.classList.remove('none');
+                return false;
+            } else {
+                input.classList.remove('popup__input__error');
+                exclamation.classList.add('none');
+                return true;
+            }
+        }
+    }
+
+    checkShorterThan(len) {
+        return function(input, exclamation) {
+            if (input.value.length > len) {
                 input.classList.add('popup__input__error');
                 exclamation.classList.remove('none');
                 return false;
