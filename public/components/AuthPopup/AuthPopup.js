@@ -135,7 +135,7 @@ class AuthPopup {
         const inputContainer = document.createElement('div')
         inputContainer.classList.add('popup__div')
         Object.entries(inputs).forEach(
-            ([name, { placeholder, type, minLen }]) => {
+            ([name, { placeholder, type, minLen, maxLen }]) => {
                 const inputValidation = document.createElement('div')
                 inputValidation.classList.add('popup__inputValidation')
                 const input = document.createElement('input')
@@ -144,6 +144,7 @@ class AuthPopup {
                 input.placeholder = placeholder
                 input.type = type
                 input.minLength = minLen
+                input.maxLength = maxLen
                 input.required = true
 
                 const validationSign = document.createElement('a')
@@ -271,10 +272,6 @@ class AuthPopup {
     }
 
     validateAuthData() {
-        let longerThen6 = this.checkLongerThan(6)
-        let shorterThan16 = this.checkShorterThan(16)
-        let shorterThan20 = this.checkShorterThan(20)
-
         const usernameInput = document.getElementById('username')
         const passwordInput = document.getElementById('password')
 
@@ -297,24 +294,18 @@ class AuthPopup {
         )
 
         if (
-            !longerThen6(usernameInput, usernameValidation) ||
-            !shorterThan20(usernameInput, usernameValidation)
+            !this.checkLongerThan(usernameInput, usernameValidation) ||
+            !this.checkShorterThan(usernameInput, usernameValidation)
         )
             return
         if (
-            !longerThen6(passwordInput, passwordValidation) ||
-            !shorterThan16(passwordInput, usernameValidation)
+            !this.checkLongerThan(passwordInput, passwordValidation) ||
+            !this.checkShorterThan(passwordInput, usernameValidation)
         )
             return
     }
 
     validateRegistrationData() {
-        let longerThen6 = this.checkLongerThan(6)
-        let shorterThan16 = this.checkShorterThan(16)
-        let shorterThan20 = this.checkShorterThan(20)
-        let shorterThan40 = this.checkShorterThan(40)
-        let shorterThan50 = this.checkShorterThan(50)
-
         const nameInput = document.getElementById('name')
         const usernameInput = document.getElementById('username')
         const emailInput = document.getElementById('email')
@@ -359,17 +350,22 @@ class AuthPopup {
             'Пароль - от 6 до 16 символов'
         )
 
-        if (!longerThen6(nameInput, nameValidation)) return
-        if (!longerThen6(usernameInput, usernameValidation)) return
-        if (!longerThen6(emailInput, emailValidation)) return
-        if (!longerThen6(passwordInput, passwordValidation)) return
-        if (!longerThen6(passwordRepeatInput, passwordRepeatValidation)) return
+        if (!this.checkLongerThan(nameInput, nameValidation)) return
+        if (!this.checkLongerThan(usernameInput, usernameValidation)) return
+        if (!this.checkLongerThan(emailInput, emailValidation)) return
+        if (!this.checkLongerThan(passwordInput, passwordValidation)) return
+        if (
+            !this.checkLongerThan(passwordRepeatInput, passwordRepeatValidation)
+        )
+            return
 
-        if (!shorterThan50(nameInput, nameValidation)) return
-        if (!shorterThan20(usernameInput, usernameValidation)) return
-        if (!shorterThan40(emailInput, emailValidation)) return
-        if (!shorterThan16(passwordInput, passwordValidation)) return
-        if (!shorterThan16(passwordRepeatInput, passwordRepeatValidation))
+        if (!this.checkLongerThan(nameInput, nameValidation)) return
+        if (!this.checkLongerThan(usernameInput, usernameValidation)) return
+        if (!this.checkLongerThan(emailInput, emailValidation)) return
+        if (!this.checkLongerThan(passwordInput, passwordValidation)) return
+        if (
+            !this.checkLongerThan(passwordRepeatInput, passwordRepeatValidation)
+        )
             return
 
         if (!emailInput.value.includes('@')) {
@@ -409,6 +405,7 @@ class AuthPopup {
             return
         }
     }
+
     /**
      * @private
      */
@@ -453,35 +450,30 @@ class AuthPopup {
     /**
      * @private
      */
-    checkLongerThan(len) {
-        return function (input, exclamation) {
-            console.log()
-            if (input.value.length < len) {
-                input.classList.add('popup__input__error')
-                exclamation.classList.remove('none')
-                return false
-            } else {
-                input.classList.remove('popup__input__error')
-                exclamation.classList.add('none')
-                return true
-            }
+    checkLongerThan(input, exclamation) {
+        if (input.value.length < input.minLength) {
+            input.classList.add('popup__input__error')
+            exclamation.classList.remove('none')
+            return false
+        } else {
+            input.classList.remove('popup__input__error')
+            exclamation.classList.add('none')
+            return true
         }
     }
 
     /**
      * @private
      */
-    checkShorterThan(len) {
-        return function (input, exclamation) {
-            if (input.value.length > len) {
-                input.classList.add('popup__input__error')
-                exclamation.classList.remove('none')
-                return false
-            } else {
-                input.classList.remove('popup__input__error')
-                exclamation.classList.add('none')
-                return true
-            }
+    checkShorterThan(input, exclamation) {
+        if (input.value.length > input.minLength) {
+            input.classList.add('popup__input__error')
+            exclamation.classList.remove('none')
+            return false
+        } else {
+            input.classList.remove('popup__input__error')
+            exclamation.classList.add('none')
+            return true
         }
     }
 
