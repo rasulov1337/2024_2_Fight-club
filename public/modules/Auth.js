@@ -41,8 +41,6 @@ export const login = async ({ username, password }) => {
 
 /**
  * @public
- * @param username
- * @param password
  * @returns {Promise<*>}
  */
 export const logout = async () => {

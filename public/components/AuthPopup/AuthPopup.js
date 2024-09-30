@@ -3,26 +3,26 @@
 import { register, login } from '../../modules/Auth.js'
 
 class AuthPopup {
+    #config
+    #currentState
+
     constructor() {
         this.overlay = document.createElement('div')
         this.overlay.classList.add('overlay')
 
-        this.popup = document.createElement('form')
-        this.popup.noValidate = true
-        this.popup.method = 'POST'
-        this.popup.onsubmit = (e) => this.onFormSubmit(e)
-        this.currentState = 'auth'
-        console.log(this.currentState)
+        this.form = document.createElement('form')
+        this.form.noValidate = true
+        this.form.method = 'POST'
+        this.form.onsubmit = (e) => this.#onFormSubmit(e)
+        this.#currentState = 'auth'
 
-        this.popup.classList.add('popup')
-        this.overlay.appendChild(this.popup)
-
-        this.isAuthorized = false
+        this.form.classList.add('popup')
+        this.overlay.appendChild(this.form)
 
         document.body.classList.add('no-scroll')
 
-        this.currentState = 'auth'
-        this.config = {
+        this.#currentState = 'auth'
+        this.#config = {
             auth: {
                 message: 'Войти в аккаунт',
                 inputs: {
@@ -84,14 +84,14 @@ class AuthPopup {
             },
         }
 
-        this.render()
+        this.#render()
     }
 
     /**
      * @private
      * Рисует крест для закрытия поп-апа
      */
-    renderCross() {
+    #renderCross() {
         const crossContainer = document.createElement('div')
         const cross = document.createElement('a')
         crossContainer.classList.add('close-cross')
@@ -105,33 +105,33 @@ class AuthPopup {
             this.overlay.remove()
             document.body.classList.remove('no-scroll')
         })
-        this.popup.appendChild(crossContainer)
+        this.form.appendChild(crossContainer)
     }
 
     /**
      * @private
      */
-    renderImg() {
+    #renderImg() {
         const imgElement = document.createElement('img')
         imgElement.classList.add('auth-img')
         imgElement.src = '/images/name.png'
-        this.popup.appendChild(imgElement)
+        this.form.appendChild(imgElement)
     }
 
     /**
      * @private
      */
-    renderMessage(message) {
+    #renderMessage(message) {
         const messageContainer = document.createElement('div')
         messageContainer.classList.add('auth-message')
         messageContainer.textContent = message
-        this.popup.appendChild(messageContainer)
+        this.form.appendChild(messageContainer)
     }
 
     /**
      * @private
      */
-    renderInputs(inputs) {
+    #renderInputs(inputs) {
         const inputContainer = document.createElement('div')
         inputContainer.classList.add('popup__div')
         Object.entries(inputs).forEach(
@@ -172,26 +172,23 @@ class AuthPopup {
                 inputContainer.appendChild(inputValidation)
             }
         )
-        this.popup.appendChild(inputContainer)
+        this.form.appendChild(inputContainer)
     }
 
     /**
      * @private
      */
-    renderButton(text) {
+    #renderButton(text) {
         const loginButton = document.createElement('button')
         loginButton.classList.add('login-button')
         loginButton.textContent = text
-        loginButton.addEventListener('click', () => {
-            this.isAuthorized = true
-        })
-        this.popup.appendChild(loginButton)
+        this.form.appendChild(loginButton)
     }
 
     /**
      * @private
      */
-    renderHaveAccount(text, hrefText) {
+    #renderHaveAccount(text, hrefText) {
         const haveAccount = document.createElement('div')
         haveAccount.classList.add('have-account')
 
@@ -204,36 +201,36 @@ class AuthPopup {
         haveAccountHref.addEventListener('click', (e) => {
             e.preventDefault()
 
-            if (this.currentState === 'auth') {
-                this.currentState = 'signup'
+            if (this.#currentState === 'auth') {
+                this.#currentState = 'signup'
             } else {
-                this.currentState = 'auth'
+                this.#currentState = 'auth'
             }
 
-            this.popup.replaceChildren()
-            this.render()
+            this.form.replaceChildren()
+            this.#render()
         })
 
         haveAccount.appendChild(haveAccountText)
         haveAccount.appendChild(haveAccountHref)
 
-        this.popup.appendChild(haveAccount)
+        this.form.appendChild(haveAccount)
     }
 
     /**
      * @private
      */
-    render() {
-        const method = this._getMethod()
-        const config = this.config[method]
+    #render() {
+        const method = this.#getMethod()
+        const config = this.#config[method]
 
-        this.renderCross()
-        this.renderImg()
-        this.renderMessage(config.message)
-        this.renderFailureMessage()
-        this.renderInputs(config.inputs)
-        this.renderButton(config.buttonText)
-        this.renderHaveAccount(
+        this.#renderCross()
+        this.#renderImg()
+        this.#renderMessage(config.message)
+        this.#renderFailureMessage()
+        this.#renderInputs(config.inputs)
+        this.#renderButton(config.buttonText)
+        this.#renderHaveAccount(
             config.haveAccountText,
             config.haveAccountHrefText
         )
@@ -242,8 +239,8 @@ class AuthPopup {
     /**
      * @private
      */
-    _getMethod() {
-        return this.currentState
+    #getMethod() {
+        return this.#currentState
     }
 
     /**
@@ -254,28 +251,21 @@ class AuthPopup {
     }
 
     /**
-     * @public
-     */
-    getAuthStatus() {
-        return this.isAuthorized
-    }
-
-    /**
      * @private
      * @description Функция для валидации данных\
      * @returns boolean
      */
-    validateData() {
-        if (this.currentState === 'auth') {
-            return this.validateAuthData()
+    #validateData() {
+        if (this.#currentState === 'auth') {
+            return this.#validateAuthData()
         }
-        return this.validateRegistrationData()
+        return this.#validateRegistrationData()
     }
 
     /**
      * @returns boolean
      */
-    validateAuthData() {
+    #validateAuthData() {
         const usernameInput = document.getElementById('username')
         const passwordInput = document.getElementById('password')
 
@@ -286,29 +276,29 @@ class AuthPopup {
             'passwordValidationSign'
         )
 
-        this.makeValidationMessage(
+        this.#makeValidationMessage(
             usernameValidation,
             'usernameValidation',
             'Длина логина - от 6 до 20 символов'
         )
-        this.makeValidationMessage(
+        this.#makeValidationMessage(
             passwordValidation,
             'passwordValidation',
             'Длина пароля - от 6 до 16 символов'
         )
 
-        const correctUsername = this.validateLength(
+        const correctUsername = this.#validateLength(
             usernameInput,
             usernameValidation
         )
-        const correctPassword = this.validateLength(
+        const correctPassword = this.#validateLength(
             passwordInput,
             passwordValidation
         )
         return correctUsername && correctPassword
     }
 
-    validateRegistrationData() {
+    #validateRegistrationData() {
         const nameInput = document.getElementById('name')
         const usernameInput = document.getElementById('username')
         const emailInput = document.getElementById('email')
@@ -327,43 +317,43 @@ class AuthPopup {
             'passwordAgainValidationSign'
         )
 
-        this.makeValidationMessage(
+        this.#makeValidationMessage(
             nameValidation,
             'nameValidation',
             'Имя пользователя - от 6 до 50 символов'
         )
-        this.makeValidationMessage(
+        this.#makeValidationMessage(
             usernameValidation,
             'usernameValidation',
             'Длина логина - от 6 до 20 символов'
         )
-        this.makeValidationMessage(
+        this.#makeValidationMessage(
             emailValidation,
             'emailValidation',
             'Почта - от 6 до 40 символов'
         )
-        this.makeValidationMessage(
+        this.#makeValidationMessage(
             passwordValidation,
             'passwordValidation',
             'Пароль - от 6 до 16 символов'
         )
-        this.makeValidationMessage(
+        this.#makeValidationMessage(
             passwordRepeatValidation,
             'passwordRepeatValidation',
             'Пароль - от 6 до 16 символов'
         )
 
-        const validName = this.validateLength(nameInput, nameValidation)
-        const validUsername = this.validateLength(
+        const validName = this.#validateLength(nameInput, nameValidation)
+        const validUsername = this.#validateLength(
             usernameInput,
             usernameValidation
         )
-        const validEmail = this.validateLength(emailInput, emailValidation)
-        const validPassword = this.validateLength(
+        const validEmail = this.#validateLength(emailInput, emailValidation)
+        const validPassword = this.#validateLength(
             passwordInput,
             passwordValidation
         )
-        const validPasswordRepeat = this.validateLength(
+        const validPasswordRepeat = this.#validateLength(
             passwordRepeatInput,
             passwordRepeatValidation
         )
@@ -385,7 +375,7 @@ class AuthPopup {
         if (!emailRegexp.test(emailInput.value)) {
             emailInput.classList.add('popup__input__error')
             emailValidation.classList.remove('none')
-            this.makeValidationMessage(
+            this.#makeValidationMessage(
                 emailValidation,
                 'emailValidation',
                 `Почта должна иметь формат admin@example.com `
@@ -401,7 +391,7 @@ class AuthPopup {
 
             passwordValidation.classList.remove('none')
 
-            this.makeValidationMessage(
+            this.#makeValidationMessage(
                 passwordValidation,
                 'passwordValidation',
                 'Пароли не совпадают'
@@ -415,10 +405,10 @@ class AuthPopup {
     /**
      * @private
      */
-    async onFormSubmit(e) {
+    async #onFormSubmit(e) {
         e.preventDefault()
 
-        if (!this.validateData()) {
+        if (!this.#validateData()) {
             return
         }
 
@@ -428,7 +418,7 @@ class AuthPopup {
             data[name] = value
         })
 
-        if (this.currentState === 'signup') {
+        if (this.#currentState === 'signup') {
             try {
                 const res = await register({
                     username: data['username'],
@@ -438,8 +428,8 @@ class AuthPopup {
 
                 if (res.ok) location.reload()
                 else if (res.status === 409)
-                    this.setFailureMessage('Такой аккаунт уже создан!')
-                else this.setFailureMessage('Неизвестная ошибка на сервере')
+                    this.#setFailureMessage('Такой аккаунт уже создан!')
+                else this.#setFailureMessage('Неизвестная ошибка на сервере')
             } catch (err) {
                 console.error(err)
             }
@@ -453,7 +443,7 @@ class AuthPopup {
             .then((r) => {
                 if (r.ok) location.reload()
                 else {
-                    this.setFailureMessage('Неверный логин или пароль!')
+                    this.#setFailureMessage('Неверный логин или пароль!')
                 }
             })
             .catch((err) => {
@@ -464,7 +454,7 @@ class AuthPopup {
     /**
      * @private
      */
-    validateLength(input, exclamation) {
+    #validateLength(input, exclamation) {
         if (
             input.value.length > input.maxLength ||
             input.value.length < input.minLength
@@ -482,7 +472,7 @@ class AuthPopup {
     /**
      * @private
      */
-    showPopup(validationContainer, message) {
+    #showPopup(validationContainer, message) {
         validationContainer.textContent = message
         validationContainer.classList.remove('none')
     }
@@ -490,7 +480,7 @@ class AuthPopup {
     /**
      * @private
      */
-    hidePopup(validationContainer) {
+    #hidePopup(validationContainer) {
         validationContainer.replaceChildren()
         validationContainer.classList.add('none')
     }
@@ -498,31 +488,31 @@ class AuthPopup {
     /**
      * @private
      */
-    makeValidationMessage(nameOfValidation, id, message) {
+    #makeValidationMessage(nameOfValidation, id, message) {
         const validationMessage = document.getElementById(id + 'Message')
         nameOfValidation.addEventListener('mouseover', (_) =>
-            this.showPopup(validationMessage, message)
+            this.#showPopup(validationMessage, message)
         )
         nameOfValidation.addEventListener('mouseout', (_) =>
-            this.hidePopup(validationMessage)
+            this.#hidePopup(validationMessage)
         )
     }
 
     /**
      * @private
      */
-    renderFailureMessage() {
+    #renderFailureMessage() {
         this.failureMessage = document.createElement('div')
         this.failureMessage.classList.add('popup__failure-message', 'none')
         this.failureMessage.textContent = 'Неверный логин или пароль'
-        this.popup.appendChild(this.failureMessage)
+        this.form.appendChild(this.failureMessage)
     }
 
     /**
      * @private
      * @param {string} message
      */
-    setFailureMessage(message) {
+    #setFailureMessage(message) {
         if (message === null) {
             this.failureMessage.classList.add('none')
         }
