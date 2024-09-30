@@ -15,152 +15,6 @@ class AuthPopup {
         console.log(this.currentState)
 
         this.popup.classList.add('popup')
-        this.popup.addEventListener('submit', (e) => {
-            e.preventDefault()
-            let longerThen6 = this.checkLongerThan(6)
-            let shorterThan16 = this.checkShorterThan(16)
-            let shorterThan20 = this.checkShorterThan(20)
-            let shorterThan40 = this.checkShorterThan(40)
-            let shorterThan50 = this.checkShorterThan(50)
-
-            if (this.currentState === 'auth') {
-                const usernameInput = document.getElementById('username')
-                const passwordInput = document.getElementById('password')
-
-                const usernameValidation = document.getElementById(
-                    'usernameValidationSign'
-                )
-                const passwordValidation = document.getElementById(
-                    'passwordValidationSign'
-                )
-
-                this.makeValidationMessage(
-                    usernameValidation,
-                    'usernameValidation',
-                    'Длина логина - от 6 до 20 символов'
-                )
-                this.makeValidationMessage(
-                    passwordValidation,
-                    'passwordValidation',
-                    'Длина пароля - от 6 до 16 символов'
-                )
-
-                if (
-                    !longerThen6(usernameInput, usernameValidation) ||
-                    !shorterThan20(usernameInput, usernameValidation)
-                )
-                    return
-                if (
-                    !longerThen6(passwordInput, passwordValidation) ||
-                    !shorterThan16(passwordInput, usernameValidation)
-                )
-                    return
-            } else {
-                const nameInput = document.getElementById('name')
-                const usernameInput = document.getElementById('username')
-                const emailInput = document.getElementById('email')
-                const passwordInput = document.getElementById('password')
-                const passwordRepeatInput =
-                    document.getElementById('passwordAgain')
-
-                const nameValidation =
-                    document.getElementById('nameValidationSign')
-                const usernameValidation = document.getElementById(
-                    'usernameValidationSign'
-                )
-                const emailValidation = document.getElementById(
-                    'emailValidationSign'
-                )
-                const passwordValidation = document.getElementById(
-                    'passwordValidationSign'
-                )
-                const passwordRepeatValidation = document.getElementById(
-                    'passwordAgainValidationSign'
-                )
-
-                this.makeValidationMessage(
-                    nameValidation,
-                    'nameValidation',
-                    'Имя пользователя - от 6 до 50 символов'
-                )
-                this.makeValidationMessage(
-                    usernameValidation,
-                    'usernameValidation',
-                    'Длина логина - от 6 до 20 символов'
-                )
-                this.makeValidationMessage(
-                    emailValidation,
-                    'emailValidation',
-                    'Почта - от 6 до 40 символов'
-                )
-                this.makeValidationMessage(
-                    passwordValidation,
-                    'passwordValidation',
-                    'Пароль - от 6 до 16 символов'
-                )
-                this.makeValidationMessage(
-                    passwordRepeatValidation,
-                    'passwordRepeatValidation',
-                    'Пароль - от 6 до 16 символов'
-                )
-
-                if (!longerThen6(nameInput, nameValidation)) return
-                if (!longerThen6(usernameInput, usernameValidation)) return
-                if (!longerThen6(emailInput, emailValidation)) return
-                if (!longerThen6(passwordInput, passwordValidation)) return
-                if (!longerThen6(passwordRepeatInput, passwordRepeatValidation))
-                    return
-
-                if (!shorterThan50(nameInput, nameValidation)) return
-                if (!shorterThan20(usernameInput, usernameValidation)) return
-                if (!shorterThan40(emailInput, emailValidation)) return
-                if (!shorterThan16(passwordInput, passwordValidation)) return
-                if (
-                    !shorterThan16(
-                        passwordRepeatInput,
-                        passwordRepeatValidation
-                    )
-                )
-                    return
-
-                if (!emailInput.value.includes('@')) {
-                    emailInput.classList.add('popup__input__error')
-                    emailValidation.classList.remove('none')
-                    this.makeValidationMessage(
-                        emailValidation,
-                        'emailValidation',
-                        `Почта должна содержать "@" `
-                    )
-                    return
-                }
-
-                if (!emailInput.value.includes('.')) {
-                    emailInput.classList.add('popup__input__error')
-                    emailValidation.classList.remove('none')
-                    this.makeValidationMessage(
-                        emailValidation,
-                        'emailValidation',
-                        `Почта должна содержать "." `
-                    )
-                }
-
-                if (passwordInput.value !== passwordRepeatInput.value) {
-                    passwordInput.value = ''
-                    passwordRepeatInput.value = ''
-                    passwordInput.classList.add('popup__input__error')
-                    passwordRepeatInput.classList.add('popup__input__error')
-
-                    passwordValidation.classList.remove('none')
-
-                    this.makeValidationMessage(
-                        passwordValidation,
-                        'passwordValidation',
-                        'Пароли не совпадают'
-                    )
-                    return
-                }
-            }
-        })
         this.overlay.appendChild(this.popup)
 
         this.isAuthorized = false
@@ -406,9 +260,161 @@ class AuthPopup {
 
     /**
      * @private
+     * @description Функция для валидации данных
+     */
+    validateData() {
+        if (this.currentState === 'auth') {
+            this.validateAuthData()
+        } else {
+            this.validateRegistrationData()
+        }
+    }
+
+    validateAuthData() {
+        let longerThen6 = this.checkLongerThan(6)
+        let shorterThan16 = this.checkShorterThan(16)
+        let shorterThan20 = this.checkShorterThan(20)
+
+        const usernameInput = document.getElementById('username')
+        const passwordInput = document.getElementById('password')
+
+        const usernameValidation = document.getElementById(
+            'usernameValidationSign'
+        )
+        const passwordValidation = document.getElementById(
+            'passwordValidationSign'
+        )
+
+        this.makeValidationMessage(
+            usernameValidation,
+            'usernameValidation',
+            'Длина логина - от 6 до 20 символов'
+        )
+        this.makeValidationMessage(
+            passwordValidation,
+            'passwordValidation',
+            'Длина пароля - от 6 до 16 символов'
+        )
+
+        if (
+            !longerThen6(usernameInput, usernameValidation) ||
+            !shorterThan20(usernameInput, usernameValidation)
+        )
+            return
+        if (
+            !longerThen6(passwordInput, passwordValidation) ||
+            !shorterThan16(passwordInput, usernameValidation)
+        )
+            return
+    }
+
+    validateRegistrationData() {
+        let longerThen6 = this.checkLongerThan(6)
+        let shorterThan16 = this.checkShorterThan(16)
+        let shorterThan20 = this.checkShorterThan(20)
+        let shorterThan40 = this.checkShorterThan(40)
+        let shorterThan50 = this.checkShorterThan(50)
+
+        const nameInput = document.getElementById('name')
+        const usernameInput = document.getElementById('username')
+        const emailInput = document.getElementById('email')
+        const passwordInput = document.getElementById('password')
+        const passwordRepeatInput = document.getElementById('passwordAgain')
+
+        const nameValidation = document.getElementById('nameValidationSign')
+        const usernameValidation = document.getElementById(
+            'usernameValidationSign'
+        )
+        const emailValidation = document.getElementById('emailValidationSign')
+        const passwordValidation = document.getElementById(
+            'passwordValidationSign'
+        )
+        const passwordRepeatValidation = document.getElementById(
+            'passwordAgainValidationSign'
+        )
+
+        this.makeValidationMessage(
+            nameValidation,
+            'nameValidation',
+            'Имя пользователя - от 6 до 50 символов'
+        )
+        this.makeValidationMessage(
+            usernameValidation,
+            'usernameValidation',
+            'Длина логина - от 6 до 20 символов'
+        )
+        this.makeValidationMessage(
+            emailValidation,
+            'emailValidation',
+            'Почта - от 6 до 40 символов'
+        )
+        this.makeValidationMessage(
+            passwordValidation,
+            'passwordValidation',
+            'Пароль - от 6 до 16 символов'
+        )
+        this.makeValidationMessage(
+            passwordRepeatValidation,
+            'passwordRepeatValidation',
+            'Пароль - от 6 до 16 символов'
+        )
+
+        if (!longerThen6(nameInput, nameValidation)) return
+        if (!longerThen6(usernameInput, usernameValidation)) return
+        if (!longerThen6(emailInput, emailValidation)) return
+        if (!longerThen6(passwordInput, passwordValidation)) return
+        if (!longerThen6(passwordRepeatInput, passwordRepeatValidation)) return
+
+        if (!shorterThan50(nameInput, nameValidation)) return
+        if (!shorterThan20(usernameInput, usernameValidation)) return
+        if (!shorterThan40(emailInput, emailValidation)) return
+        if (!shorterThan16(passwordInput, passwordValidation)) return
+        if (!shorterThan16(passwordRepeatInput, passwordRepeatValidation))
+            return
+
+        if (!emailInput.value.includes('@')) {
+            emailInput.classList.add('popup__input__error')
+            emailValidation.classList.remove('none')
+            this.makeValidationMessage(
+                emailValidation,
+                'emailValidation',
+                `Почта должна содержать "@" `
+            )
+            return
+        }
+
+        if (!emailInput.value.includes('.')) {
+            emailInput.classList.add('popup__input__error')
+            emailValidation.classList.remove('none')
+            this.makeValidationMessage(
+                emailValidation,
+                'emailValidation',
+                `Почта должна содержать "." `
+            )
+        }
+
+        if (passwordInput.value !== passwordRepeatInput.value) {
+            passwordInput.value = ''
+            passwordRepeatInput.value = ''
+            passwordInput.classList.add('popup__input__error')
+            passwordRepeatInput.classList.add('popup__input__error')
+
+            passwordValidation.classList.remove('none')
+
+            this.makeValidationMessage(
+                passwordValidation,
+                'passwordValidation',
+                'Пароли не совпадают'
+            )
+            return
+        }
+    }
+    /**
+     * @private
      */
     onFormSubmit(e) {
         e.preventDefault()
+        this.validateData()
 
         const data = {}
         Array.from(e.target.elements).forEach((el) => {
