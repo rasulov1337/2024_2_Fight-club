@@ -38,3 +38,15 @@ export const login = async ({ username, password }) => {
     }
     return Ajax.post({ url, body })
 }
+
+/**
+ * @public
+ * @param username
+ * @param password
+ * @returns {Promise<*>}
+ */
+export const logout = async () => {
+    const url = BACKEND_URL + '/auth/logout'
+    const body = {}
+    return Ajax.delete({ url, body })
+}

@@ -1,5 +1,7 @@
 'use strict'
 
+import { logout } from '../../modules/Auth.js'
+
 class Header {
     constructor(headerCallbacks, isAuth) {
         this.headerCallbacks = headerCallbacks
@@ -140,6 +142,33 @@ class Header {
             avatar.width = 50
             avatar.height = 50
             avatarContainer.appendChild(avatar)
+
+            this.actionMenuContainer = document.createElement('div')
+            this.actionMenuContainer.classList.add(
+                'header__action-menu-container',
+                'hide'
+            )
+            const logoutButton = document.createElement('button')
+            logoutButton.classList.add('header__logout-button')
+            logoutButton.textContent = 'Выйти из аккаунта'
+            logoutButton.addEventListener('click', async () => {
+                const response = await logout()
+                if (response.ok) {
+                    location.reload()
+                }
+                throw new Error('Failed to logout')
+            })
+            this.actionMenuContainer.appendChild(logoutButton)
+            document.body.appendChild(this.actionMenuContainer)
+
+            avatarContainer.addEventListener('mouseover', () => {
+                this.actionMenuContainer.classList.remove('hide')
+            })
+
+            logoutButton.addEventListener('mouseout', () => {
+                this.actionMenuContainer.classList.add('hide')
+            })
+
             this.menuContainer.appendChild(avatarContainer)
         } else {
             const entryButton = document.createElement('button')

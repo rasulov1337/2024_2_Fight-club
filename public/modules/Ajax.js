@@ -21,6 +21,10 @@ class Ajax {
         return this._makeRequest({ method: 'POST', url, body })
     }
 
+    static delete({ url, body }) {
+        return this._makeRequest({ method: 'DELETE', url, body })
+    }
+
     /**
      * @private
      * @param {string} method
@@ -39,7 +43,7 @@ class Ajax {
                 },
                 credentials: 'include',
             })
-        } else if (method === 'POST') {
+        } else if (method === 'POST' || method === 'DELETE') {
             request = new Request(url, {
                 method: method,
                 headers: {

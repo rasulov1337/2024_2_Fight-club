@@ -79,3 +79,36 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
+.header__action-menu-container {
+    position: absolute;
+    top: 100px;
+    right: 5px;
+    width: 300px;
+    height: fit-content;
+    padding: 30px 10px;
+    border: 1px solid black;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.header__logout-button {
+    cursor: pointer;
+    position: absolute;
+    border: none;
+    color: #ffffff;
+    background-color: #0077cc;
+    font-weight: bold;
+    font-size: 20px;
+    width: 90%;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.hide {
+    display: none;
+}
