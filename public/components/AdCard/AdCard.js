@@ -13,7 +13,7 @@ class AdCard {
         this.circles = []
 
         if (parent === undefined || parent === null) {
-            console.log('Wrong parent!')
+            throw new Error('Parent is not set!')
         }
     }
 

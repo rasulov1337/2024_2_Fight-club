@@ -26,17 +26,21 @@ class MainPage {
     /**
      * @public
      */
-    render() {
-        fetch(BACKEND_URL + '/ads')
-            .then((res) => res.json())
-            .then((data) => {
-                data = data['places']
-                for (const [_, d] of Object.entries(data)) {
-                    const card = new AdCard(d, this.adsContainer)
-                    card.render()
-                }
-                this.pageContent.appendChild(this.adsContainer)
-            })
+    async render() {
+        try {
+            const response = await fetch(BACKEND_URL + '/ads')
+            let data = await response.json()
+            data = data['places']
+            for (const [_, d] of Object.entries(data)) {
+                const card = new AdCard(d, this.adsContainer)
+                card.render()
+            }
+        } catch (error) {
+            console.error(error)
+        }
+
+        this.pageContent.appendChild(this.adsContainer)
+
         this.root.replaceChildren(
             this.mainPhotoContainer.getMainPhoto(),
             this.pageContent

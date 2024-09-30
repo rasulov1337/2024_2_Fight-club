@@ -60,7 +60,8 @@ class AuthPopup {
                 const usernameInput = document.getElementById('username')
                 const emailInput = document.getElementById('email')
                 const passwordInput = document.getElementById('password')
-                const passwordRepeatInput = document.getElementById('password2')
+                const passwordRepeatInput =
+                    document.getElementById('passwordAgain')
 
                 const nameValidation =
                     document.getElementById('nameValidationSign')
@@ -74,7 +75,7 @@ class AuthPopup {
                     'passwordValidationSign'
                 )
                 const passwordRepeatValidation = document.getElementById(
-                    'password2ValidationSign'
+                    'passwordAgainValidationSign'
                 )
 
                 this.makeValidationMessage(
@@ -216,7 +217,7 @@ class AuthPopup {
                         minLen: 6,
                         maxLen: 16,
                     },
-                    password2: {
+                    passwordAgain: {
                         placeholder: 'Повторите пароль',
                         type: 'password',
                         minLen: 6,
@@ -417,18 +418,26 @@ class AuthPopup {
                 username: data['username'],
                 password: data['password'],
                 email: data['email'],
-            }).then((res) => {
-                if (res.ok) location.reload()
             })
+                .then((res) => {
+                    if (res.ok) location.reload()
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
             return
         }
 
         login({
             username: data['username'],
             password: data['password'],
-        }).then((r) => {
-            if (r.ok) location.reload()
         })
+            .then((r) => {
+                if (r.ok) location.reload()
+            })
+            .catch((err) => {
+                console.error(err)
+            })
     }
 
     /**

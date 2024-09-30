@@ -42,7 +42,7 @@ function renderSignInPage() {
 }
 
 /** Главная функция */
-;(async () => {
+const main = async () => {
     const response = await Ajax.get(BACKEND_URL + '/getSessionData')
     let isAuthorized = true
     if (!response.ok) {
@@ -59,4 +59,6 @@ function renderSignInPage() {
     root.appendChild(pageContainer)
 
     renderMainPage()
-})()
+}
+
+main()
