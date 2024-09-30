@@ -150,3 +150,8 @@
 .none {
     display: none;
 }
+
+.popup__failure-message {
+    color: #E10505;
+    text-align: center;
+}

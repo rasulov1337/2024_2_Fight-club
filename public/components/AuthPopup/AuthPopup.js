@@ -230,6 +230,7 @@ class AuthPopup {
         this.renderCross()
         this.renderImg()
         this.renderMessage(config.message)
+        this.renderFailureMessage()
         this.renderInputs(config.inputs)
         this.renderButton(config.buttonText)
         this.renderHaveAccount(
@@ -449,6 +450,9 @@ class AuthPopup {
         })
             .then((r) => {
                 if (r.ok) location.reload()
+                else {
+                    this.setFailureMessage('Неверный логин или пароль!')
+                }
             })
             .catch((err) => {
                 console.error(err)
@@ -500,6 +504,28 @@ class AuthPopup {
         nameOfValidation.addEventListener('mouseout', (_) =>
             this.hidePopup(validationMessage)
         )
+    }
+
+    /**
+     * @private
+     */
+    renderFailureMessage() {
+        this.failureMessage = document.createElement('div')
+        this.failureMessage.classList.add('popup__failure-message', 'none')
+        this.failureMessage.textContent = 'Неверный логин или пароль'
+        this.popup.appendChild(this.failureMessage)
+    }
+
+    /**
+     * @private
+     * @param {string} message
+     */
+    setFailureMessage(message) {
+        if (message === null) {
+            this.failureMessage.classList.add('none')
+        }
+        this.failureMessage.classList.remove('none')
+        this.failureMessage.textContent = message
     }
 }
 
