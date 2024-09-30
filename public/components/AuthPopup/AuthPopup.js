@@ -264,6 +264,8 @@ class AuthPopup {
     }
 
     renderInputs(inputs) {
+        const inputContainer = document.createElement('div')
+        inputContainer.classList.add('popup__div')
         Object.entries(inputs).forEach(
             ([name, { placeholder, type, minLen }]) => {
                 const inputValidation = document.createElement('div')
@@ -293,9 +295,10 @@ class AuthPopup {
                 inputValidation.appendChild(input)
                 inputValidation.appendChild(validationSigh)
                 inputValidation.appendChild(validationMessage)
-                this.popup.appendChild(inputValidation)
+                inputContainer.appendChild(inputValidation)
             }
         )
+        this.popup.appendChild(inputContainer)
     }
 
     renderButton(text) {
