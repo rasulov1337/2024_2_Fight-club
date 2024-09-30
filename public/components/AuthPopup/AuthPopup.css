@@ -126,22 +126,25 @@
 .popup__inputValidation__validationMessage {
     position: absolute;
     background-color: #ffffff;
+    border: 1px solid #E10505;
     border-radius: 10px;
-    border-width: 2px !important;
-    border-color: black !important;
     margin: 0;
-    left: 102%;
-    min-width: min-content;
-    min-height: 40px;
-}
-
-.popup__inputValidation__validationMessage p {
+    left: 450px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    font-size: 16px;
+    white-space: nowrap;
+
+    min-width: 300px;
+    max-width: fit-content;
+
+    min-height: 40px;
+    max-height: 40px;
+
+    padding: 2px 10px;
+    font-size: 20px;
     font-style: italic;
-    color: #E10505;
-    margin: 5% 10%;
+
 }
 
 .none {

@@ -280,7 +280,7 @@ class AuthPopup {
 
                 const validationSigh = document.createElement('a')
                 validationSigh.id = name + 'ValidationSign'
-                validationSigh.innerHTML = `<img src="/images/svg/exclamation.svg" width="20px" height="20px">`
+                validationSigh.innerHTML = `<img src="/images/svg/exclamation.svg" width="20px" height="20px">` //todo: replace me
                 validationSigh.classList.add('none')
                 validationSigh.classList.add(
                     'popup__inputValidation__exclamation'
@@ -289,7 +289,8 @@ class AuthPopup {
                 const validationMessage = document.createElement('div')
                 validationMessage.id = name + 'ValidationMessage'
                 validationMessage.classList.add(
-                    'popup__inputValidation__validationMessage'
+                    'popup__inputValidation__validationMessage',
+                    'none'
                 )
 
                 inputValidation.appendChild(input)
@@ -426,7 +427,7 @@ class AuthPopup {
     }
 
     showPopup(validationContainer, message) {
-        validationContainer.innerHTML = `<p>${message}</p>`
+        validationContainer.textContent = message
         validationContainer.classList.remove('none')
     }
 
