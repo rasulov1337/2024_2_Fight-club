@@ -1,3 +1,5 @@
+'use strict'
+
 import Filter from '../Filter/Filter.js'
 import AdCard from '../AdCard/AdCard.js'
 import MainPhoto from '../MainPhoto/MainPhoto.js'
@@ -21,6 +23,9 @@ class MainPage {
         this.adsContainer.classList.add('advert')
     }
 
+    /**
+     * @public
+     */
     render() {
         fetch(BACKEND_URL + '/ads')
             .then((res) => res.json())

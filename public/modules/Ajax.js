@@ -1,4 +1,10 @@
+'use strict'
+
 class Ajax {
+    /**
+     * @public
+     * @param {string} url
+     */
     static get(url) {
         return this._makeRequest({
             method: 'GET',
@@ -7,7 +13,7 @@ class Ajax {
     }
 
     /**
-     *
+     * @public
      * @param {string} url
      * @param {object} body
      */
@@ -16,6 +22,7 @@ class Ajax {
     }
 
     /**
+     * @private
      * @param {string} method
      * @param {string} url
      * @param {object} body

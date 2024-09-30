@@ -8,6 +8,9 @@ class MainPhoto {
         this.render()
     }
 
+    /**
+     * @private
+     */
     render() {
         const hostsHrefs = document.createElement('div')
         const findHost = document.createElement('a')
@@ -38,6 +41,9 @@ class MainPhoto {
         this.mainPhotoContainer.appendChild(searchCityForm)
     }
 
+    /**
+     * @public
+     */
     getMainPhoto() {
         return this.mainPhotoContainer
     }

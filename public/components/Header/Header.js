@@ -6,7 +6,7 @@ class Header {
         this.menuContainer = document.createElement('header')
         this.menuContainer.classList.add('header')
 
-        this.isAuthorized = isAuth;
+        this.isAuthorized = isAuth
 
         this.config = {
             menu: {
@@ -54,6 +54,9 @@ class Header {
         this.render()
     }
 
+    /**
+     * @private
+     */
     renderIcon() {
         const logoImg = document.createElement('img')
         logoImg.src = './images/icon.jpg'
@@ -61,6 +64,9 @@ class Header {
         this.menuContainer.appendChild(logoImg)
     }
 
+    /**
+     * @private
+     */
     renderMainText() {
         const nameImg = document.createElement('img')
         nameImg.classList.add('header__img2')
@@ -68,6 +74,9 @@ class Header {
         this.menuContainer.appendChild(nameImg)
     }
 
+    /**
+     * @private
+     */
     renderHrefs() {
         const hrefs = document.createElement('div')
         hrefs.classList.add('header__hrefs')
@@ -94,6 +103,9 @@ class Header {
         this.menuContainer.appendChild(hrefs)
     }
 
+    /**
+     * @private
+     */
     renderSigns() {
         const signsContainer = document.createElement('div')
         signsContainer.classList.add('header__signs')
@@ -116,17 +128,19 @@ class Header {
         this.menuContainer.appendChild(signsContainer)
     }
 
+    /**
+     * @private
+     */
     renderButtonOrAvatar() {
         if (this.isAuthorized) {
-            const avatarContainer = document.createElement('div');
-            avatarContainer.classList.add('header__avatar-container');
-            const avatar = document.createElement('img');
-            avatar.src = "/images/default_user_icon.png"
-            avatar.width = 50;
-            avatar.height = 50;
-            avatarContainer.appendChild(avatar);
-            this.menuContainer.appendChild(avatarContainer);
-
+            const avatarContainer = document.createElement('div')
+            avatarContainer.classList.add('header__avatar-container')
+            const avatar = document.createElement('img')
+            avatar.src = '/images/default_user_icon.png'
+            avatar.width = 50
+            avatar.height = 50
+            avatarContainer.appendChild(avatar)
+            this.menuContainer.appendChild(avatarContainer)
         } else {
             const entryButton = document.createElement('button')
             entryButton.classList.add('header__button')
@@ -139,6 +153,9 @@ class Header {
         }
     }
 
+    /**
+     * @private
+     */
     render() {
         this.renderIcon()
         this.renderHrefs()
@@ -147,6 +164,9 @@ class Header {
         this.renderButtonOrAvatar()
     }
 
+    /**
+     * @public
+     */
     getMainContainer() {
         return this.menuContainer
     }

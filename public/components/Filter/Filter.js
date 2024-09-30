@@ -61,6 +61,9 @@ class Filter {
         this.render()
     }
 
+    /**
+     * @private
+     */
     render() {
         Object.entries(this.config).forEach(
             ([filterName, { name, title, variations, def }], index1) => {
@@ -135,6 +138,9 @@ class Filter {
         this.filterContainer.appendChild(resetButton)
     }
 
+    /**
+     * @public
+     */
     getFilter() {
         return this.filterContainer
     }

@@ -1,7 +1,10 @@
+'use strict'
+
 import Ajax from './Ajax.js'
 
 /**
- * Кидает запрос на регистрацию пользователя
+ * @public
+ * @description Посылает запрос на регистрацию пользователя
  * @param {string} username
  * @param {string} password
  * @param {string} email
@@ -20,6 +23,13 @@ export const register = async ({ username, password, email }) => {
     return responseData
 }
 
+/**
+ * @public
+ * @description Посылает запрос на вход пользователя в аккаунт
+ * @param {string} username
+ * @param {string} password
+ * @returns {Promise<any>}
+ */
 export const login = async ({ username, password }) => {
     const url = BACKEND_URL + '/auth/login'
     const body = {

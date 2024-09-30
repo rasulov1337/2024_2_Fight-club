@@ -232,6 +232,10 @@ class AuthPopup {
         this.render()
     }
 
+    /**
+     * @private
+     * Рисует крест для закрытия поп-апа
+     */
     renderCross() {
         const crossContainer = document.createElement('div')
         const cross = document.createElement('a')
@@ -249,6 +253,9 @@ class AuthPopup {
         this.popup.appendChild(crossContainer)
     }
 
+    /**
+     * @private
+     */
     renderImg() {
         const imgElement = document.createElement('img')
         imgElement.classList.add('auth-img')
@@ -256,6 +263,9 @@ class AuthPopup {
         this.popup.appendChild(imgElement)
     }
 
+    /**
+     * @private
+     */
     renderMessage(message) {
         const messageContainer = document.createElement('div')
         messageContainer.classList.add('auth-message')
@@ -263,6 +273,9 @@ class AuthPopup {
         this.popup.appendChild(messageContainer)
     }
 
+    /**
+     * @private
+     */
     renderInputs(inputs) {
         const inputContainer = document.createElement('div')
         inputContainer.classList.add('popup__div')
@@ -302,6 +315,9 @@ class AuthPopup {
         this.popup.appendChild(inputContainer)
     }
 
+    /**
+     * @private
+     */
     renderButton(text) {
         const loginButton = document.createElement('button')
         loginButton.classList.add('login-button')
@@ -312,6 +328,9 @@ class AuthPopup {
         this.popup.appendChild(loginButton)
     }
 
+    /**
+     * @private
+     */
     renderHaveAccount(text, hrefText) {
         const haveAccount = document.createElement('div')
         haveAccount.classList.add('have-account')
@@ -341,6 +360,9 @@ class AuthPopup {
         this.popup.appendChild(haveAccount)
     }
 
+    /**
+     * @private
+     */
     render() {
         const method = this._getMethod()
         const config = this.config[method]
@@ -356,18 +378,30 @@ class AuthPopup {
         )
     }
 
+    /**
+     * @private
+     */
     _getMethod() {
         return this.currentState
     }
 
+    /**
+     * @public
+     */
     getAuth() {
         return this.overlay
     }
 
+    /**
+     * @public
+     */
     getAuthStatus() {
         return this.isAuthorized
     }
 
+    /**
+     * @private
+     */
     onFormSubmit(e) {
         e.preventDefault()
 
@@ -397,6 +431,9 @@ class AuthPopup {
         })
     }
 
+    /**
+     * @private
+     */
     checkLongerThan(len) {
         return function (input, exclamation) {
             console.log()
@@ -412,6 +449,9 @@ class AuthPopup {
         }
     }
 
+    /**
+     * @private
+     */
     checkShorterThan(len) {
         return function (input, exclamation) {
             if (input.value.length > len) {
@@ -426,16 +466,25 @@ class AuthPopup {
         }
     }
 
+    /**
+     * @private
+     */
     showPopup(validationContainer, message) {
         validationContainer.textContent = message
         validationContainer.classList.remove('none')
     }
 
+    /**
+     * @private
+     */
     hidePopup(validationContainer) {
         validationContainer.innerHTML = ''
         validationContainer.classList.add('none')
     }
 
+    /**
+     * @private
+     */
     makeValidationMessage(nameOfValidation, id, message) {
         const validationMessage = document.getElementById(id + 'Message')
         nameOfValidation.addEventListener('mouseover', (_) =>
