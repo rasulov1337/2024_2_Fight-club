@@ -3,14 +3,20 @@
 import { logout } from '../../modules/Auth.js'
 
 class Header {
+    #config
+    #isAuthorized
+    #headerCallbacks
+    #headerState
+    #menuContainer
+
     constructor(headerCallbacks, isAuth) {
-        this.headerCallbacks = headerCallbacks
-        this.menuContainer = document.createElement('header')
-        this.menuContainer.classList.add('header')
+        this.#headerCallbacks = headerCallbacks
+        this.#menuContainer = document.createElement('header')
+        this.#menuContainer.classList.add('header')
 
-        this.isAuthorized = isAuth
+        this.#isAuthorized = isAuth
 
-        this.config = {
+        this.#config = {
             menu: {
                 Main: {
                     href: '/dashboard',
@@ -48,41 +54,41 @@ class Header {
             },
         }
 
-        this.headerState = {
+        this.#headerState = {
             activePageLink: null,
             headerElements: {},
         }
 
-        this.render()
+        this.#render()
     }
 
     /**
      * @private
      */
-    renderIcon() {
+    #renderIcon() {
         const logoImg = document.createElement('img')
         logoImg.src = './images/icon.jpg'
         logoImg.classList.add('header__img1')
-        this.menuContainer.appendChild(logoImg)
+        this.#menuContainer.appendChild(logoImg)
     }
 
     /**
      * @private
      */
-    renderMainText() {
+    #renderMainText() {
         const nameImg = document.createElement('img')
         nameImg.classList.add('header__img2')
         nameImg.src = './images/name.png'
-        this.menuContainer.appendChild(nameImg)
+        this.#menuContainer.appendChild(nameImg)
     }
 
     /**
      * @private
      */
-    renderHrefs() {
+    #renderHrefs() {
         const hrefs = document.createElement('div')
         hrefs.classList.add('header__hrefs')
-        Object.entries(this.config.menu).forEach(
+        Object.entries(this.#config.menu).forEach(
             ([key, { href, text, callback }], index) => {
                 const menuElement = document.createElement('a')
                 menuElement.href = href
@@ -95,23 +101,23 @@ class Header {
 
                 if (index === 0) {
                     menuElement.classList.add('header__hrefs__href_active')
-                    this.headerState.activePageLink = menuElement
+                    this.#headerState.activePageLink = menuElement
                 }
 
-                this.headerState.headerElements[key] = menuElement
+                this.#headerState.headerElements[key] = menuElement
                 hrefs.appendChild(menuElement)
             }
         )
-        this.menuContainer.appendChild(hrefs)
+        this.#menuContainer.appendChild(hrefs)
     }
 
     /**
      * @private
      */
-    renderSigns() {
+    #renderSigns() {
         const signsContainer = document.createElement('div')
         signsContainer.classList.add('header__signs')
-        Object.entries(this.config.signs).forEach(
+        Object.entries(this.#config.signs).forEach(
             ([_, { href, src, callback }]) => {
                 const signElement = document.createElement('a')
                 signElement.href = href
@@ -127,14 +133,14 @@ class Header {
                 signsContainer.appendChild(signElement)
             }
         )
-        this.menuContainer.appendChild(signsContainer)
+        this.#menuContainer.appendChild(signsContainer)
     }
 
     /**
      * @private
      */
-    renderButtonOrAvatar() {
-        if (this.isAuthorized) {
+    #renderButtonOrAvatar() {
+        if (this.#isAuthorized) {
             const avatarContainer = document.createElement('div')
             avatarContainer.classList.add('header__avatar-container')
             const avatar = document.createElement('img')
@@ -169,35 +175,35 @@ class Header {
                 this.actionMenuContainer.classList.add('hide')
             })
 
-            this.menuContainer.appendChild(avatarContainer)
+            this.#menuContainer.appendChild(avatarContainer)
         } else {
             const entryButton = document.createElement('button')
             entryButton.classList.add('header__button')
             entryButton.textContent = 'Войти!'
             entryButton.addEventListener(
                 'click',
-                this.headerCallbacks.signInPage
+                this.#headerCallbacks.signInPage
             )
-            this.menuContainer.appendChild(entryButton)
+            this.#menuContainer.appendChild(entryButton)
         }
     }
 
     /**
      * @private
      */
-    render() {
-        this.renderIcon()
-        this.renderHrefs()
-        this.renderMainText()
-        this.renderSigns()
-        this.renderButtonOrAvatar()
+    #render() {
+        this.#renderIcon()
+        this.#renderHrefs()
+        this.#renderMainText()
+        this.#renderSigns()
+        this.#renderButtonOrAvatar()
     }
 
     /**
      * @public
      */
     getMainContainer() {
-        return this.menuContainer
+        return this.#menuContainer
     }
 }
 

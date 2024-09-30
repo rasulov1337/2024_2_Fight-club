@@ -21,6 +21,12 @@ class Ajax {
         return this.#makeRequest({ method: 'POST', url, body })
     }
 
+    /**
+     * @public
+     * @param {string} url
+     * @param {object} body
+     * @returns {Promise<*>}
+     */
     static delete({ url, body }) {
         return this.#makeRequest({ method: 'DELETE', url, body })
     }
@@ -39,7 +45,6 @@ class Ajax {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'X-CSRFToken': getCookie('csrftoken'),
                 },
                 credentials: 'include',
             })
@@ -48,7 +53,6 @@ class Ajax {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'X-CSRFToken': getCookie('csrftoken'),
                 },
                 credentials: 'include',
                 body: JSON.stringify(body),
