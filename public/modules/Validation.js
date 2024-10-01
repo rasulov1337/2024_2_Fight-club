@@ -79,7 +79,7 @@ class Validation {
             res.text = errorMessages.WRONG_LENGTH
         }
 
-        if (res.ok && !EMAIL_REGEXP.test(inputElem.value)) {
+        if (res.ok && !regexp.test(inputElem.value)) {
             res.ok = false
             res.text = errorMessages.REGEXP_MISMATCH
         }
