@@ -1,5 +1,7 @@
 'use strict'
 
+const SCROLL_DELAY = 200
+
 /** Карточка объявления на главной странице */
 class AdCard {
     #data
@@ -80,9 +82,11 @@ class AdCard {
             return
         }
 
-        this.#makeCircleActive(toShowIndex)
-        this.#currentImgIndex = toShowIndex
-        imgElem.src = this.#data.pictures[toShowIndex]
+        setTimeout(() => {
+            this.#makeCircleActive(toShowIndex)
+            this.#currentImgIndex = toShowIndex
+            imgElem.src = this.#data.pictures[toShowIndex]
+        }, SCROLL_DELAY)
     }
 
     /**
@@ -90,9 +94,11 @@ class AdCard {
      * Функция, которая показывает первую фотографию, когда курсор вне карточки
      */
     #onMouseOut(imgElem) {
-        this.#makeCircleActive(0)
-        this.#currentImgIndex = 0
-        imgElem.src = this.#data.pictures[0]
+        setTimeout(() => {
+            this.#makeCircleActive(0)
+            this.#currentImgIndex = 0
+            imgElem.src = this.#data.pictures[0]
+        }, SCROLL_DELAY)
     }
 
     /**
