@@ -359,6 +359,7 @@ class AuthPopup {
         )
 
         const emailRegexp = /.+@.+/
+        let emailValid = true
 
         if (validEmailLen && !emailRegexp.test(emailInput.value)) {
             emailInput.classList.add('popup__input__error')
@@ -368,6 +369,7 @@ class AuthPopup {
                 'emailValidation',
                 `Почта должна иметь формат admin@example.com `
             )
+            emailValid = false
         }
 
         let passwordsMatch = true
@@ -395,6 +397,7 @@ class AuthPopup {
         const passwordRegexp = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/
         let validPasswords = true
         if (
+            passwordsMatch &&
             validPasswordLen &&
             validPasswordRepeatLen &&
             !passwordRegexp.test(passwordInput.value)
@@ -407,7 +410,6 @@ class AuthPopup {
             passwordRepeatInput.classList.add('popup__input__error')
 
             passwordValidation.classList.remove('none')
-
             this.#makeValidationMessage(
                 passwordValidation,
                 'passwordValidation',
@@ -416,6 +418,7 @@ class AuthPopup {
         }
 
         return (
+            emailValid &&
             validNameLen &&
             validUsernameLen &&
             validEmailLen &&
