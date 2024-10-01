@@ -27,7 +27,7 @@ class MainPhoto {
         findHost.href = '#'
         beHost.href = '#'
         searchCityForm.action = '#'
-        search.placeholder = 'Search location'
+        search.placeholder = 'Поиск по городам'
 
         searchButtonDiv.classList.add('custom-search')
         hostsHrefs.classList.add('hosts')
