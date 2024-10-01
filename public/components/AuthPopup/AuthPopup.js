@@ -71,7 +71,7 @@ class AuthPopup {
                         minLen: 6,
                         maxLen: 16,
                     },
-                    passwordAgain: {
+                    passwordRepeat: {
                         placeholder: 'Повторите пароль',
                         type: 'password',
                         minLen: 6,
@@ -284,7 +284,7 @@ class AuthPopup {
         this.#makeValidationMessage(
             passwordValidation,
             'passwordValidation',
-            'Длина пароля - от 6 до 16 символов'
+            'Длина пароля - от 8 до 16 символов'
         )
 
         const correctUsername = this.#validateLength(
@@ -303,7 +303,7 @@ class AuthPopup {
         const usernameInput = document.getElementById('username')
         const emailInput = document.getElementById('email')
         const passwordInput = document.getElementById('password')
-        const passwordRepeatInput = document.getElementById('passwordAgain')
+        const passwordRepeatInput = document.getElementById('passwordRepeat')
 
         const nameValidation = document.getElementById('nameValidationSign')
         const usernameValidation = document.getElementById(
@@ -314,7 +314,7 @@ class AuthPopup {
             'passwordValidationSign'
         )
         const passwordRepeatValidation = document.getElementById(
-            'passwordAgainValidationSign'
+            'passwordRepeatValidationSign'
         )
 
         this.#makeValidationMessage(
@@ -335,7 +335,7 @@ class AuthPopup {
         this.#makeValidationMessage(
             passwordValidation,
             'passwordValidation',
-            'Пароль - от 6 до 16 символов'
+            'Пароль - от 8 до 16 символов'
         )
         this.#makeValidationMessage(
             passwordRepeatValidation,
@@ -343,36 +343,24 @@ class AuthPopup {
             'Пароль - от 6 до 16 символов'
         )
 
-        const validName = this.#validateLength(nameInput, nameValidation)
-        const validUsername = this.#validateLength(
+        const validNameLen = this.#validateLength(nameInput, nameValidation)
+        const validUsernameLen = this.#validateLength(
             usernameInput,
             usernameValidation
         )
-        const validEmail = this.#validateLength(emailInput, emailValidation)
-        const validPassword = this.#validateLength(
+        const validEmailLen = this.#validateLength(emailInput, emailValidation)
+        const validPasswordLen = this.#validateLength(
             passwordInput,
             passwordValidation
         )
-        const validPasswordRepeat = this.#validateLength(
+        const validPasswordRepeatLen = this.#validateLength(
             passwordRepeatInput,
             passwordRepeatValidation
         )
 
-        if (
-            !(
-                validName &&
-                validUsername &&
-                validEmail &&
-                validPassword &&
-                validPasswordRepeat
-            )
-        ) {
-            return false
-        }
+        const emailRegexp = /.+@.+/
 
-        const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-
-        if (!emailRegexp.test(emailInput.value)) {
+        if (validEmailLen && !emailRegexp.test(emailInput.value)) {
             emailInput.classList.add('popup__input__error')
             emailValidation.classList.remove('none')
             this.#makeValidationMessage(
@@ -380,10 +368,15 @@ class AuthPopup {
                 'emailValidation',
                 `Почта должна иметь формат admin@example.com `
             )
-            return false
         }
 
-        if (passwordInput.value !== passwordRepeatInput.value) {
+        let passwordsMatch = true
+
+        if (
+            validPasswordLen &&
+            validPasswordRepeatLen &&
+            passwordInput.value !== passwordRepeatInput.value
+        ) {
             passwordInput.value = ''
             passwordRepeatInput.value = ''
             passwordInput.classList.add('popup__input__error')
@@ -396,10 +389,41 @@ class AuthPopup {
                 'passwordValidation',
                 'Пароли не совпадают'
             )
-            return false
+            passwordsMatch = false
         }
 
-        return true
+        const passwordRegexp = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/
+        let validPasswords = true
+        if (
+            validPasswordLen &&
+            validPasswordRepeatLen &&
+            !passwordRegexp.test(passwordInput.value)
+        ) {
+            validPasswords = false
+
+            passwordInput.value = ''
+            passwordRepeatInput.value = ''
+            passwordInput.classList.add('popup__input__error')
+            passwordRepeatInput.classList.add('popup__input__error')
+
+            passwordValidation.classList.remove('none')
+
+            this.#makeValidationMessage(
+                passwordValidation,
+                'passwordValidation',
+                'Пароль должен содержать только символы латинского алфавита, цифры или !@#$%^&*()_+=-'
+            )
+        }
+
+        return (
+            validNameLen &&
+            validUsernameLen &&
+            validEmailLen &&
+            validPasswordLen &&
+            validPasswordRepeatLen &&
+            passwordsMatch &&
+            validPasswords
+        )
     }
 
     /**
@@ -490,10 +514,10 @@ class AuthPopup {
      */
     #makeValidationMessage(nameOfValidation, id, message) {
         const validationMessage = document.getElementById(id + 'Message')
-        nameOfValidation.addEventListener('mouseover', (_) =>
+        nameOfValidation.addEventListener('mouseover', () => {
             this.#showPopup(validationMessage, message)
-        )
-        nameOfValidation.addEventListener('mouseout', (_) =>
+        })
+        nameOfValidation.addEventListener('mouseout', () =>
             this.#hidePopup(validationMessage)
         )
     }
