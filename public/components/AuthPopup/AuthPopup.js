@@ -1,6 +1,8 @@
 'use strict'
 
-import { register, login } from '../../modules/Auth.js'
+import Validation from '../../modules/Validation.js'
+
+import { login, register } from '../../modules/Auth.js'
 
 class AuthPopup {
     #config
@@ -276,26 +278,34 @@ class AuthPopup {
             'passwordValidationSign'
         )
 
-        this.#makeValidationMessage(
-            usernameValidation,
-            'usernameValidation',
-            'Длина логина - от 6 до 20 символов'
-        )
-        this.#makeValidationMessage(
-            passwordValidation,
-            'passwordValidation',
-            'Длина пароля - от 8 до 16 символов'
-        )
+        const usernameValidationInfo =
+            Validation.validateUsername(usernameInput)
 
-        const correctUsername = this.#validateLength(
-            usernameInput,
-            usernameValidation
-        )
-        const correctPassword = this.#validateLength(
-            passwordInput,
-            passwordValidation
-        )
-        return correctUsername && correctPassword
+        if (!usernameValidationInfo.ok) {
+            this.showErrorMessage(
+                usernameInput,
+                usernameValidation,
+                'usernameValidation',
+                usernameValidationInfo.text
+            )
+        } else {
+            this.hideErrorMsg(usernameInput, usernameValidation)
+        }
+
+        const passwordValidationInfo =
+            Validation.validatePassword(passwordInput)
+        if (!passwordValidationInfo.ok) {
+            this.showErrorMessage(
+                passwordInput,
+                passwordValidation,
+                'passwordValidation',
+                passwordValidationInfo.text
+            )
+        } else {
+            this.hideErrorMsg(passwordInput, passwordValidation)
+        }
+
+        return usernameValidationInfo.ok && passwordValidationInfo.ok
     }
 
     #validateRegistrationData() {
@@ -317,116 +327,100 @@ class AuthPopup {
             'passwordRepeatValidationSign'
         )
 
-        this.#makeValidationMessage(
-            nameValidation,
-            'nameValidation',
-            'Имя пользователя - от 6 до 50 символов'
-        )
-        this.#makeValidationMessage(
-            usernameValidation,
-            'usernameValidation',
-            'Длина логина - от 6 до 20 символов'
-        )
-        this.#makeValidationMessage(
-            emailValidation,
-            'emailValidation',
-            'Почта - от 6 до 40 символов'
-        )
-        this.#makeValidationMessage(
-            passwordValidation,
-            'passwordValidation',
-            'Пароль - от 8 до 16 символов'
-        )
-        this.#makeValidationMessage(
-            passwordRepeatValidation,
-            'passwordRepeatValidation',
-            'Пароль - от 6 до 16 символов'
-        )
-
-        const validNameLen = this.#validateLength(nameInput, nameValidation)
-        const validUsernameLen = this.#validateLength(
-            usernameInput,
-            usernameValidation
-        )
-        const validEmailLen = this.#validateLength(emailInput, emailValidation)
-        const validPasswordLen = this.#validateLength(
+        const nameValidInfo = Validation.validateName(nameInput)
+        const usernameValidInfo = Validation.validateUsername(usernameInput)
+        const emailValidInfo = Validation.validateEmail(emailInput)
+        const passwordValidInfo = Validation.validatePassword(passwordInput)
+        const passwordRepeatValidInfo =
+            Validation.validatePassword(passwordRepeatInput)
+        const passwordsValidInfo = Validation.validatePasswords(
             passwordInput,
-            passwordValidation
-        )
-        const validPasswordRepeatLen = this.#validateLength(
-            passwordRepeatInput,
-            passwordRepeatValidation
+            passwordRepeatInput
         )
 
-        const emailRegexp = /.+@.+/
-        let emailValid = true
+        if (!nameValidInfo.ok) {
+            this.showErrorMessage(
+                nameInput,
+                nameValidation,
+                'nameValidation',
+                nameValidInfo.text
+            )
+        } else {
+            this.hideErrorMsg(nameInput, nameValidation)
+        }
 
-        if (validEmailLen && !emailRegexp.test(emailInput.value)) {
-            emailInput.classList.add('popup__input__error')
-            emailValidation.classList.remove('none')
-            this.#makeValidationMessage(
+        if (!usernameValidInfo.ok) {
+            this.showErrorMessage(
+                usernameInput,
+                usernameValidation,
+                'usernameValidation',
+                usernameValidInfo.text
+            )
+        } else {
+            this.hideErrorMsg(usernameInput, usernameValidation)
+        }
+
+        if (!emailValidInfo.ok) {
+            this.showErrorMessage(
+                emailInput,
                 emailValidation,
                 'emailValidation',
-                `Почта должна иметь формат admin@example.com `
+                emailValidInfo.text
             )
-            emailValid = false
+        } else {
+            this.hideErrorMsg(emailInput, emailValidation)
         }
 
-        let passwordsMatch = true
-
-        if (
-            validPasswordLen &&
-            validPasswordRepeatLen &&
-            passwordInput.value !== passwordRepeatInput.value
-        ) {
-            passwordInput.value = ''
-            passwordRepeatInput.value = ''
-            passwordInput.classList.add('popup__input__error')
-            passwordRepeatInput.classList.add('popup__input__error')
-
-            passwordValidation.classList.remove('none')
-
-            this.#makeValidationMessage(
+        if (!passwordValidInfo.ok) {
+            this.showErrorMessage(
+                passwordInput,
                 passwordValidation,
                 'passwordValidation',
-                'Пароли не совпадают'
+                passwordValidInfo.text
             )
-            passwordsMatch = false
+        } else {
+            this.hideErrorMsg(passwordInput, passwordValidation)
         }
 
-        const passwordRegexp = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/
-        let validPasswords = true
-        if (
-            passwordsMatch &&
-            validPasswordLen &&
-            validPasswordRepeatLen &&
-            !passwordRegexp.test(passwordInput.value)
-        ) {
-            validPasswords = false
-
-            passwordInput.value = ''
-            passwordRepeatInput.value = ''
-            passwordInput.classList.add('popup__input__error')
-            passwordRepeatInput.classList.add('popup__input__error')
-
-            passwordValidation.classList.remove('none')
-            this.#makeValidationMessage(
-                passwordValidation,
-                'passwordValidation',
-                'Пароль должен содержать только символы латинского алфавита, цифры или !@#$%^&*()_+=-'
+        if (!passwordRepeatValidInfo.ok) {
+            this.showErrorMessage(
+                passwordRepeatInput,
+                passwordRepeatValidation,
+                'passwordRepeatValidation',
+                passwordRepeatValidInfo.text
             )
+        } else {
+            if (!passwordsValidInfo.ok) {
+                this.showErrorMessage(
+                    passwordRepeatInput,
+                    passwordRepeatValidation,
+                    'passwordRepeatValidation',
+                    passwordsValidInfo.text
+                )
+            } else {
+                this.hideErrorMsg(passwordRepeatInput, passwordRepeatValidation)
+            }
         }
 
         return (
-            emailValid &&
-            validNameLen &&
-            validUsernameLen &&
-            validEmailLen &&
-            validPasswordLen &&
-            validPasswordRepeatLen &&
-            passwordsMatch &&
-            validPasswords
+            nameValidInfo.ok &&
+            usernameValidInfo.ok &&
+            emailValidInfo.ok &&
+            passwordValidInfo.ok &&
+            passwordRepeatValidInfo.ok &&
+            passwordsValidInfo.ok
         )
+    }
+
+    showErrorMessage(inputElem, signElement, id, errorMsg) {
+        inputElem.classList.add('popup__input__error')
+        signElement.classList.remove('none')
+        this.#makeValidationMessage(signElement, id, errorMsg)
+    }
+
+    hideErrorMsg(inputElem, signElem) {
+        inputElem.classList.remove('popup__input__error')
+        signElem.classList.add('none')
     }
 
     /**
@@ -481,24 +475,6 @@ class AuthPopup {
     /**
      * @private
      */
-    #validateLength(input, exclamation) {
-        if (
-            input.value.length > input.maxLength ||
-            input.value.length < input.minLength
-        ) {
-            input.classList.add('popup__input__error')
-            exclamation.classList.remove('none')
-            return false
-        } else {
-            input.classList.remove('popup__input__error')
-            exclamation.classList.add('none')
-            return true
-        }
-    }
-
-    /**
-     * @private
-     */
     #showPopup(validationContainer, message) {
         validationContainer.textContent = message
         validationContainer.classList.remove('none')
@@ -513,6 +489,9 @@ class AuthPopup {
     }
 
     /**
+     * @param  nameOfValidation
+     * @param {string} id
+     * @param {string} message
      * @private
      */
     #makeValidationMessage(nameOfValidation, id, message) {
