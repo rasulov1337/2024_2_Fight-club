@@ -20,59 +20,26 @@ class Validation {
     }
 
     static validateUsername(usernameInput) {
-        const res = {
-            ok: true,
-            text: undefined,
-        }
-
-        if (!this.#validateLen(usernameInput)) {
-            res.ok = false
-            res.text = 'Длина логина - от 6 до 20 символов'
-        }
-
-        if (res.ok && !USERNAME_REGEXP.test(usernameInput.value)) {
-            res.ok = false
-            res.text =
-                'Логин может содержать только латинские буквы, цифры, -, _ или точку'
-        }
-        return res
+        return this.#validateAny(usernameInput, USERNAME_REGEXP, {
+            WRONG_LENGTH: 'Длина логина - от 6 до 20 символов',
+            REGEXP_MISMATCH:
+                'Логин может содержать только латинские буквы, цифры, -, _ или точку',
+        })
     }
+
     static validatePassword(passwordInput) {
-        const res = {
-            ok: true,
-            text: undefined,
-        }
-
-        if (!this.#validateLen(passwordInput)) {
-            res.ok = false
-            res.text = 'Длина пароля - от 8 до 16 символов'
-        }
-
-        if (res.ok && !PASSWORD_REGEXP.test(passwordInput.value)) {
-            res.ok = false
-            res.text =
-                'Пароль должен содержать только символы латинского алфавита, цифры или !@#$%^&*()_+=-'
-        }
-        return res
+        return this.#validateAny(passwordInput, PASSWORD_REGEXP, {
+            WRONG_LENGTH: 'Длина пароля - от 8 до 16 символов',
+            REGEXP_MISMATCH:
+                'Пароль должен содержать только символы латинского алфавита, цифры или !@#$%^&*()_+=-',
+        })
     }
 
     static validateEmail(emailInput) {
-        const res = {
-            ok: true,
-            text: undefined,
-        }
-
-        if (!this.#validateLen(emailInput)) {
-            res.ok = false
-            res.text = 'Почта - от 6 до 40 символов'
-        }
-
-        if (res.ok && !EMAIL_REGEXP.test(emailInput.value)) {
-            res.ok = false
-            res.text = 'Почта должна иметь формат admin@example.com'
-        }
-
-        return res
+        return this.#validateAny(emailInput, EMAIL_REGEXP, {
+            WRONG_LENGTH: 'Почта - от 6 до 40 символов',
+            REGEXP_MISMATCH: 'Почта должна иметь формат admin@example.com',
+        })
     }
 
     static validatePasswords(passwordInput, passwordRepeatInput) {
@@ -84,6 +51,37 @@ class Validation {
         if (passwordInput.value !== passwordRepeatInput.value) {
             res.ok = false
             res.text = 'Пароли не совпадают'
+        }
+
+        return res
+    }
+
+    /**
+     * @desc Abstract length & regexp validation
+     * @param {HTMLInputElement} inputElem
+     * @param {RegExp} regexp
+     * @param {Object} errorMessages contains messages to return on error
+     * @param {string} errorMessages.WRONG_LENGTH is used on input value is bigger or smaller than max or min lengths respectively
+     * @param {string} errorMessages.REGEXP_MISMATCH is used on regexp mismatch
+     * @returns {{ok: boolean, text: (string|undefined)}}
+     * @returns res.ok = if validation was successful
+     * @returns res.text contains validation error text
+     */
+
+    static #validateAny(inputElem, regexp, errorMessages) {
+        const res = {
+            ok: true,
+            text: undefined,
+        }
+
+        if (!this.#validateLen(inputElem)) {
+            res.ok = false
+            res.text = errorMessages.WRONG_LENGTH
+        }
+
+        if (res.ok && !EMAIL_REGEXP.test(inputElem.value)) {
+            res.ok = false
+            res.text = errorMessages.REGEXP_MISMATCH
         }
 
         return res
