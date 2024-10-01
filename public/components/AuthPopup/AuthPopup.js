@@ -32,7 +32,7 @@ class AuthPopup {
                         placeholder: 'Логин',
                         type: 'text',
                         minLen: 5,
-                        maxLen: 50,
+                        maxLen: 20,
                     },
                     password: {
                         placeholder: 'Пароль',

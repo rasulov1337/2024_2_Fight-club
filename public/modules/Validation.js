@@ -1,6 +1,6 @@
 'use strict'
 
-const USERNAME_REGEXP = /^[A-Za-z0-9][A-Za-z0-9-_.]{3,16}[A-Za-z0-9]$/
+const USERNAME_REGEXP = /^[A-Za-z0-9][A-Za-z0-9-_.]{3,19}[A-Za-z0-9]$/
 const EMAIL_REGEXP = /.+@.+/
 const PASSWORD_REGEXP = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/
 
@@ -94,8 +94,8 @@ class Validation {
      */
     static #validateLen(inputElem) {
         return (
-            inputElem.value.length < inputElem.maxLength &&
-            inputElem.value.length > inputElem.minLength
+            inputElem.value.length <= inputElem.maxLength &&
+            inputElem.value.length >= inputElem.minLength
         )
     }
 }
