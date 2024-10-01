@@ -44,12 +44,12 @@ function renderSignInPage() {
 /** Главная функция */
 const main = async () => {
     const response = await Ajax.get(BACKEND_URL + '/getSessionData')
-    let isAuthorized = true
-    if (!response.ok) {
-        console.log('not ok')
-        isAuthorized = false
-    } else {
+    let isAuthorized = false
+    if (response.ok) {
+        isAuthorized = true
         const sessionInfo = await response.json()
+    } else if (response.status !== 401) {
+        console.error('Wrong response from server', response)
     }
 
     const header = new Header(headerCallbacks, isAuthorized)
