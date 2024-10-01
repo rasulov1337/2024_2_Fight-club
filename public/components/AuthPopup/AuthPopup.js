@@ -35,7 +35,7 @@ class AuthPopup {
                     password: {
                         placeholder: 'Пароль',
                         type: 'password',
-                        minLen: 6,
+                        minLen: 8,
                         maxLen: 16,
                     },
                 },
@@ -458,7 +458,7 @@ class AuthPopup {
                     this.#setFailureMessage('Такой аккаунт уже создан!')
                 else this.#setFailureMessage('Неизвестная ошибка на сервере')
             } catch (err) {
-                console.error(err)
+                this.#setFailureMessage('Неизвестная ошибка: ' + err.message)
             }
             return
         }
@@ -474,7 +474,7 @@ class AuthPopup {
                 }
             })
             .catch((err) => {
-                console.error(err)
+                this.#setFailureMessage('Неизвестная ошибка: ' + err.message)
             })
     }
 
