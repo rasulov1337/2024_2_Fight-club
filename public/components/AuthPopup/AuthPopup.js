@@ -29,7 +29,7 @@ class AuthPopup {
                     username: {
                         placeholder: 'Логин',
                         type: 'text',
-                        minLen: 6,
+                        minLen: 5,
                         maxLen: 50,
                     },
                     password: {
@@ -50,7 +50,7 @@ class AuthPopup {
                     name: {
                         placeholder: 'Полное имя',
                         type: 'text',
-                        minLen: 6,
+                        minLen: 5,
                         maxLen: 50,
                     },
                     username: {
@@ -62,19 +62,19 @@ class AuthPopup {
                     email: {
                         placeholder: 'Почта',
                         type: 'email',
-                        minLen: 6,
+                        minLen: 3,
                         maxLen: 40,
                     },
                     password: {
                         placeholder: 'Пароль',
                         type: 'password',
-                        minLen: 6,
+                        minLen: 8,
                         maxLen: 16,
                     },
                     passwordRepeat: {
                         placeholder: 'Повторите пароль',
                         type: 'password',
-                        minLen: 6,
+                        minLen: 8,
                         maxLen: 16,
                     },
                 },
