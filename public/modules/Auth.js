@@ -10,9 +10,10 @@ import Ajax from './Ajax.js'
  * @param {string} email
  * @returns {Promise<any>}
  */
-export const register = async ({ username, password, email }) => {
+export const register = async ({ name, username, password, email }) => {
     const url = BACKEND_URL + '/auth/register'
     const body = {
+        name: name,
         username: username,
         password: password,
         email: email,
