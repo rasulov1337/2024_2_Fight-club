@@ -1,17 +1,19 @@
 'use strict'
 
 class MainPhoto {
-    constructor() {
-        this.mainPhotoContainer = document.createElement('div')
-        this.mainPhotoContainer.classList.add('photo-container')
+    #mainPhotoContainer
 
-        this.render()
+    constructor() {
+        this.#mainPhotoContainer = document.createElement('div')
+        this.#mainPhotoContainer.classList.add('photo-container')
+
+        this.#render()
     }
 
     /**
      * @private
      */
-    render() {
+    #render() {
         const hostsHrefs = document.createElement('div')
         const findHost = document.createElement('a')
         const beHost = document.createElement('a')
@@ -25,7 +27,7 @@ class MainPhoto {
         findHost.href = '#'
         beHost.href = '#'
         searchCityForm.action = '#'
-        search.placeholder = 'Search location'
+        search.placeholder = 'Поиск по городам'
 
         searchButtonDiv.classList.add('custom-search')
         hostsHrefs.classList.add('hosts')
@@ -33,19 +35,19 @@ class MainPhoto {
 
         hostsHrefs.appendChild(findHost)
         hostsHrefs.appendChild(beHost)
-        this.mainPhotoContainer.appendChild(hostsHrefs)
+        this.#mainPhotoContainer.appendChild(hostsHrefs)
 
         searchButtonDiv.appendChild(search)
         searchButtonDiv.appendChild(findButton)
         searchCityForm.appendChild(searchButtonDiv)
-        this.mainPhotoContainer.appendChild(searchCityForm)
+        this.#mainPhotoContainer.appendChild(searchCityForm)
     }
 
     /**
      * @public
      */
     getMainPhoto() {
-        return this.mainPhotoContainer
+        return this.#mainPhotoContainer
     }
 }
 

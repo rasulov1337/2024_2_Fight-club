@@ -6,7 +6,7 @@ class Ajax {
      * @param {string} url
      */
     static get(url) {
-        return this._makeRequest({
+        return this.#makeRequest({
             method: 'GET',
             url: url,
         })
@@ -18,11 +18,17 @@ class Ajax {
      * @param {object} body
      */
     static post({ url, body }) {
-        return this._makeRequest({ method: 'POST', url, body })
+        return this.#makeRequest({ method: 'POST', url, body })
     }
 
+    /**
+     * @public
+     * @param {string} url
+     * @param {object} body
+     * @returns {Promise<*>}
+     */
     static delete({ url, body }) {
-        return this._makeRequest({ method: 'DELETE', url, body })
+        return this.#makeRequest({ method: 'DELETE', url, body })
     }
 
     /**
@@ -32,14 +38,13 @@ class Ajax {
      * @param {object} body
      * @returns {Promise<any>} response
      */
-    static async _makeRequest({ method, url, body = undefined }) {
+    static async #makeRequest({ method, url, body = undefined }) {
         let request
         if (method === 'GET') {
             request = new Request(url, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'X-CSRFToken': getCookie('csrftoken'),
                 },
                 credentials: 'include',
             })
@@ -48,7 +53,6 @@ class Ajax {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'X-CSRFToken': getCookie('csrftoken'),
                 },
                 credentials: 'include',
                 body: JSON.stringify(body),

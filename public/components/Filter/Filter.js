@@ -1,8 +1,11 @@
 'use strict'
 
 class Filter {
+    #config
+    #filterContainer
+
     constructor() {
-        this.config = {
+        this.#config = {
             geoposition: {
                 name: 'geo',
                 title: 'По геопозиции',
@@ -55,17 +58,17 @@ class Filter {
             },
         }
 
-        this.filterContainer = document.createElement('form')
-        this.filterContainer.classList.add('filter')
+        this.#filterContainer = document.createElement('form')
+        this.#filterContainer.classList.add('filter')
 
-        this.render()
+        this.#render()
     }
 
     /**
      * @private
      */
-    render() {
-        Object.entries(this.config).forEach(
+    #render() {
+        Object.entries(this.#config).forEach(
             ([filterName, { name, title, variations, def }], index1) => {
                 const filterGroup = document.createElement('div')
                 filterGroup.classList.add('filter-group')
@@ -121,7 +124,7 @@ class Filter {
                     }
                 )
 
-                this.filterContainer.appendChild(filterGroup)
+                this.#filterContainer.appendChild(filterGroup)
             }
         )
 
@@ -134,15 +137,15 @@ class Filter {
         applyButton.classList.add('apply-button')
         resetButton.classList.add('reset-button')
 
-        this.filterContainer.appendChild(applyButton)
-        this.filterContainer.appendChild(resetButton)
+        this.#filterContainer.appendChild(applyButton)
+        this.#filterContainer.appendChild(resetButton)
     }
 
     /**
      * @public
      */
     getFilter() {
-        return this.filterContainer
+        return this.#filterContainer
     }
 }
 

@@ -133,13 +133,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 
     min-width: 300px;
     max-width: fit-content;
 
     min-height: 40px;
-    max-height: 40px;
+    max-height: fit-content;
 
     padding: 2px 10px;
     font-size: 20px;

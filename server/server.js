@@ -1,17 +1,17 @@
-'use strict';
+'use strict'
 
-const express = require('express');
-const body = require('body-parser');
-const path = require('path');
-const app = express();
+const express = require('express')
+const body = require('body-parser')
+const path = require('path')
+const app = express()
 
-app.use(express.static(path.resolve(__dirname, '..', 'public')));
-app.use(express.static(path.resolve(__dirname, '..', 'node_modules')));
-app.use(express.static(path.resolve(__dirname, 'images')));
-app.use(body.json());
+app.use(express.static(path.resolve(__dirname, '..', 'public')))
+app.use(express.static(path.resolve(__dirname, '..', 'node_modules')))
+app.use(express.static(path.resolve(__dirname, 'images')))
+app.use(body.json())
 
-const port = process.env.PORT || 8000;
+const port = 80
 
 app.listen(port, function () {
-    console.log(`Server listening port ${port}`);
-});
+    console.log(`Server listening port ${port}`)
+})

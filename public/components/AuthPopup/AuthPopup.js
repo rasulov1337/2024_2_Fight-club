@@ -1,41 +1,43 @@
 'use strict'
 
-import { register, login } from '../../modules/Auth.js'
+import Validation from '../../modules/Validation.js'
+
+import { login, register } from '../../modules/Auth.js'
 
 class AuthPopup {
+    #config
+    #currentState
+
     constructor() {
         this.overlay = document.createElement('div')
         this.overlay.classList.add('overlay')
 
-        this.popup = document.createElement('form')
-        this.popup.noValidate = true
-        this.popup.method = 'POST'
-        this.popup.onsubmit = (e) => this.onFormSubmit(e)
-        this.currentState = 'auth'
-        console.log(this.currentState)
+        this.form = document.createElement('form')
+        this.form.noValidate = true
+        this.form.method = 'POST'
+        this.form.onsubmit = (e) => this.#onFormSubmit(e)
+        this.#currentState = 'auth'
 
-        this.popup.classList.add('popup')
-        this.overlay.appendChild(this.popup)
-
-        this.isAuthorized = false
+        this.form.classList.add('popup')
+        this.overlay.appendChild(this.form)
 
         document.body.classList.add('no-scroll')
 
-        this.currentState = 'auth'
-        this.config = {
+        this.#currentState = 'auth'
+        this.#config = {
             auth: {
                 message: 'Войти в аккаунт',
                 inputs: {
                     username: {
                         placeholder: 'Логин',
                         type: 'text',
-                        minLen: 6,
-                        maxLen: 50,
+                        minLen: 5,
+                        maxLen: 20,
                     },
                     password: {
                         placeholder: 'Пароль',
                         type: 'password',
-                        minLen: 6,
+                        minLen: 8,
                         maxLen: 16,
                     },
                 },
@@ -50,7 +52,7 @@ class AuthPopup {
                     name: {
                         placeholder: 'Полное имя',
                         type: 'text',
-                        minLen: 6,
+                        minLen: 5,
                         maxLen: 50,
                     },
                     username: {
@@ -62,19 +64,19 @@ class AuthPopup {
                     email: {
                         placeholder: 'Почта',
                         type: 'email',
-                        minLen: 6,
+                        minLen: 3,
                         maxLen: 40,
                     },
                     password: {
                         placeholder: 'Пароль',
                         type: 'password',
-                        minLen: 6,
+                        minLen: 8,
                         maxLen: 16,
                     },
-                    passwordAgain: {
+                    passwordRepeat: {
                         placeholder: 'Повторите пароль',
                         type: 'password',
-                        minLen: 6,
+                        minLen: 8,
                         maxLen: 16,
                     },
                 },
@@ -84,14 +86,14 @@ class AuthPopup {
             },
         }
 
-        this.render()
+        this.#render()
     }
 
     /**
      * @private
      * Рисует крест для закрытия поп-апа
      */
-    renderCross() {
+    #renderCross() {
         const crossContainer = document.createElement('div')
         const cross = document.createElement('a')
         crossContainer.classList.add('close-cross')
@@ -105,33 +107,33 @@ class AuthPopup {
             this.overlay.remove()
             document.body.classList.remove('no-scroll')
         })
-        this.popup.appendChild(crossContainer)
+        this.form.appendChild(crossContainer)
     }
 
     /**
      * @private
      */
-    renderImg() {
+    #renderImg() {
         const imgElement = document.createElement('img')
         imgElement.classList.add('auth-img')
         imgElement.src = '/images/name.png'
-        this.popup.appendChild(imgElement)
+        this.form.appendChild(imgElement)
     }
 
     /**
      * @private
      */
-    renderMessage(message) {
+    #renderMessage(message) {
         const messageContainer = document.createElement('div')
         messageContainer.classList.add('auth-message')
         messageContainer.textContent = message
-        this.popup.appendChild(messageContainer)
+        this.form.appendChild(messageContainer)
     }
 
     /**
      * @private
      */
-    renderInputs(inputs) {
+    #renderInputs(inputs) {
         const inputContainer = document.createElement('div')
         inputContainer.classList.add('popup__div')
         Object.entries(inputs).forEach(
@@ -172,26 +174,23 @@ class AuthPopup {
                 inputContainer.appendChild(inputValidation)
             }
         )
-        this.popup.appendChild(inputContainer)
+        this.form.appendChild(inputContainer)
     }
 
     /**
      * @private
      */
-    renderButton(text) {
+    #renderButton(text) {
         const loginButton = document.createElement('button')
         loginButton.classList.add('login-button')
         loginButton.textContent = text
-        loginButton.addEventListener('click', () => {
-            this.isAuthorized = true
-        })
-        this.popup.appendChild(loginButton)
+        this.form.appendChild(loginButton)
     }
 
     /**
      * @private
      */
-    renderHaveAccount(text, hrefText) {
+    #renderHaveAccount(text, hrefText) {
         const haveAccount = document.createElement('div')
         haveAccount.classList.add('have-account')
 
@@ -204,36 +203,36 @@ class AuthPopup {
         haveAccountHref.addEventListener('click', (e) => {
             e.preventDefault()
 
-            if (this.currentState === 'auth') {
-                this.currentState = 'signup'
+            if (this.#currentState === 'auth') {
+                this.#currentState = 'signup'
             } else {
-                this.currentState = 'auth'
+                this.#currentState = 'auth'
             }
 
-            this.popup.replaceChildren()
-            this.render()
+            this.form.replaceChildren()
+            this.#render()
         })
 
         haveAccount.appendChild(haveAccountText)
         haveAccount.appendChild(haveAccountHref)
 
-        this.popup.appendChild(haveAccount)
+        this.form.appendChild(haveAccount)
     }
 
     /**
      * @private
      */
-    render() {
-        const method = this._getMethod()
-        const config = this.config[method]
+    #render() {
+        const method = this.#getMethod()
+        const config = this.#config[method]
 
-        this.renderCross()
-        this.renderImg()
-        this.renderMessage(config.message)
-        this.renderFailureMessage()
-        this.renderInputs(config.inputs)
-        this.renderButton(config.buttonText)
-        this.renderHaveAccount(
+        this.#renderCross()
+        this.#renderImg()
+        this.#renderMessage(config.message)
+        this.#renderFailureMessage()
+        this.#renderInputs(config.inputs)
+        this.#renderButton(config.buttonText)
+        this.#renderHaveAccount(
             config.haveAccountText,
             config.haveAccountHrefText
         )
@@ -242,8 +241,8 @@ class AuthPopup {
     /**
      * @private
      */
-    _getMethod() {
-        return this.currentState
+    #getMethod() {
+        return this.#currentState
     }
 
     /**
@@ -254,28 +253,21 @@ class AuthPopup {
     }
 
     /**
-     * @public
-     */
-    getAuthStatus() {
-        return this.isAuthorized
-    }
-
-    /**
      * @private
      * @description Функция для валидации данных\
      * @returns boolean
      */
-    validateData() {
-        if (this.currentState === 'auth') {
-            return this.validateAuthData()
+    #validateData() {
+        if (this.#currentState === 'auth') {
+            return this.#validateAuthData()
         }
-        return this.validateRegistrationData()
+        return this.#validateRegistrationData()
     }
 
     /**
      * @returns boolean
      */
-    validateAuthData() {
+    #validateAuthData() {
         const usernameInput = document.getElementById('username')
         const passwordInput = document.getElementById('password')
 
@@ -286,34 +278,42 @@ class AuthPopup {
             'passwordValidationSign'
         )
 
-        this.makeValidationMessage(
-            usernameValidation,
-            'usernameValidation',
-            'Длина логина - от 6 до 20 символов'
-        )
-        this.makeValidationMessage(
-            passwordValidation,
-            'passwordValidation',
-            'Длина пароля - от 6 до 16 символов'
-        )
+        const usernameValidationInfo =
+            Validation.validateUsername(usernameInput)
 
-        const correctUsername = this.validateLength(
-            usernameInput,
-            usernameValidation
-        )
-        const correctPassword = this.validateLength(
-            passwordInput,
-            passwordValidation
-        )
-        return correctUsername && correctPassword
+        if (!usernameValidationInfo.ok) {
+            this.showErrorMessage(
+                usernameInput,
+                usernameValidation,
+                'usernameValidation',
+                usernameValidationInfo.text
+            )
+        } else {
+            this.hideErrorMsg(usernameInput, usernameValidation)
+        }
+
+        const passwordValidationInfo =
+            Validation.validatePassword(passwordInput)
+        if (!passwordValidationInfo.ok) {
+            this.showErrorMessage(
+                passwordInput,
+                passwordValidation,
+                'passwordValidation',
+                passwordValidationInfo.text
+            )
+        } else {
+            this.hideErrorMsg(passwordInput, passwordValidation)
+        }
+
+        return usernameValidationInfo.ok && passwordValidationInfo.ok
     }
 
-    validateRegistrationData() {
+    #validateRegistrationData() {
         const nameInput = document.getElementById('name')
         const usernameInput = document.getElementById('username')
         const emailInput = document.getElementById('email')
         const passwordInput = document.getElementById('password')
-        const passwordRepeatInput = document.getElementById('passwordAgain')
+        const passwordRepeatInput = document.getElementById('passwordRepeat')
 
         const nameValidation = document.getElementById('nameValidationSign')
         const usernameValidation = document.getElementById(
@@ -324,101 +324,112 @@ class AuthPopup {
             'passwordValidationSign'
         )
         const passwordRepeatValidation = document.getElementById(
-            'passwordAgainValidationSign'
+            'passwordRepeatValidationSign'
         )
 
-        this.makeValidationMessage(
-            nameValidation,
-            'nameValidation',
-            'Имя пользователя - от 6 до 50 символов'
-        )
-        this.makeValidationMessage(
-            usernameValidation,
-            'usernameValidation',
-            'Длина логина - от 6 до 20 символов'
-        )
-        this.makeValidationMessage(
-            emailValidation,
-            'emailValidation',
-            'Почта - от 6 до 40 символов'
-        )
-        this.makeValidationMessage(
-            passwordValidation,
-            'passwordValidation',
-            'Пароль - от 6 до 16 символов'
-        )
-        this.makeValidationMessage(
-            passwordRepeatValidation,
-            'passwordRepeatValidation',
-            'Пароль - от 6 до 16 символов'
-        )
-
-        const validName = this.validateLength(nameInput, nameValidation)
-        const validUsername = this.validateLength(
-            usernameInput,
-            usernameValidation
-        )
-        const validEmail = this.validateLength(emailInput, emailValidation)
-        const validPassword = this.validateLength(
+        const nameValidInfo = Validation.validateName(nameInput)
+        const usernameValidInfo = Validation.validateUsername(usernameInput)
+        const emailValidInfo = Validation.validateEmail(emailInput)
+        const passwordValidInfo = Validation.validatePassword(passwordInput)
+        const passwordRepeatValidInfo =
+            Validation.validatePassword(passwordRepeatInput)
+        const passwordsValidInfo = Validation.validatePasswords(
             passwordInput,
-            passwordValidation
-        )
-        const validPasswordRepeat = this.validateLength(
-            passwordRepeatInput,
-            passwordRepeatValidation
+            passwordRepeatInput
         )
 
-        if (
-            !(
-                validName &&
-                validUsername &&
-                validEmail &&
-                validPassword &&
-                validPasswordRepeat
+        if (!nameValidInfo.ok) {
+            this.showErrorMessage(
+                nameInput,
+                nameValidation,
+                'nameValidation',
+                nameValidInfo.text
             )
-        ) {
-            return false
+        } else {
+            this.hideErrorMsg(nameInput, nameValidation)
         }
 
-        const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if (!usernameValidInfo.ok) {
+            this.showErrorMessage(
+                usernameInput,
+                usernameValidation,
+                'usernameValidation',
+                usernameValidInfo.text
+            )
+        } else {
+            this.hideErrorMsg(usernameInput, usernameValidation)
+        }
 
-        if (!emailRegexp.test(emailInput.value)) {
-            emailInput.classList.add('popup__input__error')
-            emailValidation.classList.remove('none')
-            this.makeValidationMessage(
+        if (!emailValidInfo.ok) {
+            this.showErrorMessage(
+                emailInput,
                 emailValidation,
                 'emailValidation',
-                `Почта должна иметь формат admin@example.com `
+                emailValidInfo.text
             )
-            return false
+        } else {
+            this.hideErrorMsg(emailInput, emailValidation)
         }
 
-        if (passwordInput.value !== passwordRepeatInput.value) {
-            passwordInput.value = ''
-            passwordRepeatInput.value = ''
-            passwordInput.classList.add('popup__input__error')
-            passwordRepeatInput.classList.add('popup__input__error')
-
-            passwordValidation.classList.remove('none')
-
-            this.makeValidationMessage(
+        if (!passwordValidInfo.ok) {
+            this.showErrorMessage(
+                passwordInput,
                 passwordValidation,
                 'passwordValidation',
-                'Пароли не совпадают'
+                passwordValidInfo.text
             )
-            return false
+        } else {
+            this.hideErrorMsg(passwordInput, passwordValidation)
         }
 
-        return true
+        if (!passwordRepeatValidInfo.ok) {
+            this.showErrorMessage(
+                passwordRepeatInput,
+                passwordRepeatValidation,
+                'passwordRepeatValidation',
+                passwordRepeatValidInfo.text
+            )
+        } else {
+            if (!passwordsValidInfo.ok) {
+                this.showErrorMessage(
+                    passwordRepeatInput,
+                    passwordRepeatValidation,
+                    'passwordRepeatValidation',
+                    passwordsValidInfo.text
+                )
+            } else {
+                this.hideErrorMsg(passwordRepeatInput, passwordRepeatValidation)
+            }
+        }
+
+        return (
+            nameValidInfo.ok &&
+            usernameValidInfo.ok &&
+            emailValidInfo.ok &&
+            passwordValidInfo.ok &&
+            passwordRepeatValidInfo.ok &&
+            passwordsValidInfo.ok
+        )
+    }
+
+    showErrorMessage(inputElem, signElement, id, errorMsg) {
+        inputElem.classList.add('popup__input__error')
+        signElement.classList.remove('none')
+        this.#makeValidationMessage(signElement, id, errorMsg)
+    }
+
+    hideErrorMsg(inputElem, signElem) {
+        inputElem.classList.remove('popup__input__error')
+        signElem.classList.add('none')
     }
 
     /**
      * @private
      */
-    async onFormSubmit(e) {
+    async #onFormSubmit(e) {
         e.preventDefault()
 
-        if (!this.validateData()) {
+        if (!this.#validateData()) {
             return
         }
 
@@ -428,7 +439,7 @@ class AuthPopup {
             data[name] = value
         })
 
-        if (this.currentState === 'signup') {
+        if (this.#currentState === 'signup') {
             try {
                 const res = await register({
                     username: data['username'],
@@ -438,10 +449,10 @@ class AuthPopup {
 
                 if (res.ok) location.reload()
                 else if (res.status === 409)
-                    this.setFailureMessage('Такой аккаунт уже создан!')
-                else this.setFailureMessage('Неизвестная ошибка на сервере')
+                    this.#setFailureMessage('Такой аккаунт уже создан!')
+                else this.#setFailureMessage('Неизвестная ошибка на сервере')
             } catch (err) {
-                console.error(err)
+                this.#setFailureMessage('Неизвестная ошибка: ' + err.message)
             }
             return
         }
@@ -453,36 +464,18 @@ class AuthPopup {
             .then((r) => {
                 if (r.ok) location.reload()
                 else {
-                    this.setFailureMessage('Неверный логин или пароль!')
+                    this.#setFailureMessage('Неверный логин или пароль!')
                 }
             })
             .catch((err) => {
-                console.error(err)
+                this.#setFailureMessage('Неизвестная ошибка: ' + err.message)
             })
     }
 
     /**
      * @private
      */
-    validateLength(input, exclamation) {
-        if (
-            input.value.length > input.maxLength ||
-            input.value.length < input.minLength
-        ) {
-            input.classList.add('popup__input__error')
-            exclamation.classList.remove('none')
-            return false
-        } else {
-            input.classList.remove('popup__input__error')
-            exclamation.classList.add('none')
-            return true
-        }
-    }
-
-    /**
-     * @private
-     */
-    showPopup(validationContainer, message) {
+    #showPopup(validationContainer, message) {
         validationContainer.textContent = message
         validationContainer.classList.remove('none')
     }
@@ -490,39 +483,42 @@ class AuthPopup {
     /**
      * @private
      */
-    hidePopup(validationContainer) {
+    #hidePopup(validationContainer) {
         validationContainer.replaceChildren()
         validationContainer.classList.add('none')
     }
 
     /**
+     * @param  nameOfValidation
+     * @param {string} id
+     * @param {string} message
      * @private
      */
-    makeValidationMessage(nameOfValidation, id, message) {
+    #makeValidationMessage(nameOfValidation, id, message) {
         const validationMessage = document.getElementById(id + 'Message')
-        nameOfValidation.addEventListener('mouseover', (_) =>
-            this.showPopup(validationMessage, message)
-        )
-        nameOfValidation.addEventListener('mouseout', (_) =>
-            this.hidePopup(validationMessage)
+        nameOfValidation.addEventListener('mouseover', () => {
+            this.#showPopup(validationMessage, message)
+        })
+        nameOfValidation.addEventListener('mouseout', () =>
+            this.#hidePopup(validationMessage)
         )
     }
 
     /**
      * @private
      */
-    renderFailureMessage() {
+    #renderFailureMessage() {
         this.failureMessage = document.createElement('div')
         this.failureMessage.classList.add('popup__failure-message', 'none')
         this.failureMessage.textContent = 'Неверный логин или пароль'
-        this.popup.appendChild(this.failureMessage)
+        this.form.appendChild(this.failureMessage)
     }
 
     /**
      * @private
      * @param {string} message
      */
-    setFailureMessage(message) {
+    #setFailureMessage(message) {
         if (message === null) {
             this.failureMessage.classList.add('none')
         }

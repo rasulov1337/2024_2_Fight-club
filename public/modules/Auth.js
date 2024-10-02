@@ -18,9 +18,7 @@ export const register = async ({ username, password, email }) => {
         email: email,
     }
 
-    const responseData = Ajax.post({ url, body })
-    console.log(responseData)
-    return responseData
+    return Ajax.post({ url, body })
 }
 
 /**
@@ -41,8 +39,6 @@ export const login = async ({ username, password }) => {
 
 /**
  * @public
- * @param username
- * @param password
  * @returns {Promise<*>}
  */
 export const logout = async () => {
