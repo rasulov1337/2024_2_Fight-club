@@ -442,6 +442,7 @@ class AuthPopup {
         if (this.#currentState === 'signup') {
             try {
                 const res = await register({
+                    name: data['name'],
                     username: data['username'],
                     password: data['password'],
                     email: data['email'],
