@@ -38,7 +38,7 @@ function renderNotificationsPage() {}
 
 function renderSignInPage() {
     const auth = new AuthPopup()
-    root.appendChild(auth.getAuth())
+    auth.render(root)
 }
 
 /** Главная функция */

@@ -8,7 +8,11 @@ class AuthPopup {
     #config
     #currentState
 
-    constructor() {
+    /**
+     *
+     * @param {('auth' | 'signup')} currentState
+     */
+    constructor(currentState = 'auth') {
         this.overlay = document.createElement('div')
         this.overlay.classList.add('overlay')
 
@@ -16,17 +20,16 @@ class AuthPopup {
         this.form.noValidate = true
         this.form.method = 'POST'
         this.form.onsubmit = (e) => this.#onFormSubmit(e)
-        this.#currentState = 'auth'
+        this.#currentState = currentState
 
         this.form.classList.add('popup')
         this.overlay.appendChild(this.form)
 
         document.body.classList.add('no-scroll')
 
-        this.#currentState = 'auth'
         this.#config = {
             auth: {
-                message: 'Войти в аккаунт',
+                authMessage: 'Войти в аккаунт',
                 inputs: {
                     username: {
                         placeholder: 'Логин',
@@ -42,12 +45,12 @@ class AuthPopup {
                     },
                 },
                 buttonText: 'Войти',
-                haveAccountText: 'Еще нет аккаунта?',
-                haveAccountHrefText: 'Создать',
+                bottomText: 'Еще нет аккаунта?',
+                bottomAText: 'Создать',
             },
 
             signup: {
-                message: 'Зарегистрироваться',
+                authMessage: 'Зарегистрироваться',
                 inputs: {
                     name: {
                         placeholder: 'Полное имя',
@@ -81,181 +84,16 @@ class AuthPopup {
                     },
                 },
                 buttonText: 'Создать аккаунт',
-                haveAccountText: 'Уже есть аккаунт?',
-                haveAccountHrefText: 'Войти',
+                bottomText: 'Уже есть аккаунт?',
+                bottomAText: 'Войти',
             },
         }
-
-        this.#render()
     }
 
     /**
      * @private
-     * Рисует крест для закрытия поп-апа
-     */
-    #renderCross() {
-        const crossContainer = document.createElement('div')
-        const cross = document.createElement('a')
-        crossContainer.classList.add('close-cross')
-        const crossImg = document.createElement('img')
-        crossImg.src = '/images/svg/cross.svg'
-        crossImg.width = 30
-        cross.appendChild(crossImg)
-        crossContainer.appendChild(cross)
-        cross.addEventListener('click', (e) => {
-            e.preventDefault()
-            this.overlay.remove()
-            document.body.classList.remove('no-scroll')
-        })
-        this.form.appendChild(crossContainer)
-    }
-
-    /**
-     * @private
-     */
-    #renderImg() {
-        const imgElement = document.createElement('img')
-        imgElement.classList.add('auth-img')
-        imgElement.src = '/images/name.png'
-        this.form.appendChild(imgElement)
-    }
-
-    /**
-     * @private
-     */
-    #renderMessage(message) {
-        const messageContainer = document.createElement('div')
-        messageContainer.classList.add('auth-message')
-        messageContainer.textContent = message
-        this.form.appendChild(messageContainer)
-    }
-
-    /**
-     * @private
-     */
-    #renderInputs(inputs) {
-        const inputContainer = document.createElement('div')
-        inputContainer.classList.add('popup__div')
-        Object.entries(inputs).forEach(
-            ([name, { placeholder, type, minLen, maxLen }]) => {
-                const inputValidation = document.createElement('div')
-                inputValidation.classList.add('popup__inputValidation')
-                const input = document.createElement('input')
-                input.id = name
-                input.name = name
-                input.placeholder = placeholder
-                input.type = type
-                input.minLength = minLen
-                input.maxLength = maxLen
-                input.required = true
-
-                const validationSign = document.createElement('a')
-                validationSign.id = name + 'ValidationSign'
-                const img = document.createElement('img')
-                img.src = '/images/svg/exclamation.svg'
-                img.width = 20
-
-                validationSign.appendChild(img)
-                validationSign.classList.add('none')
-                validationSign.classList.add(
-                    'popup__inputValidation__exclamation'
-                )
-
-                const validationMessage = document.createElement('div')
-                validationMessage.id = name + 'ValidationMessage'
-                validationMessage.classList.add(
-                    'popup__inputValidation__validationMessage',
-                    'none'
-                )
-
-                inputValidation.appendChild(input)
-                inputValidation.appendChild(validationSign)
-                inputValidation.appendChild(validationMessage)
-                inputContainer.appendChild(inputValidation)
-            }
-        )
-        this.form.appendChild(inputContainer)
-    }
-
-    /**
-     * @private
-     */
-    #renderButton(text) {
-        const loginButton = document.createElement('button')
-        loginButton.classList.add('login-button')
-        loginButton.textContent = text
-        this.form.appendChild(loginButton)
-    }
-
-    /**
-     * @private
-     */
-    #renderHaveAccount(text, hrefText) {
-        const haveAccount = document.createElement('div')
-        haveAccount.classList.add('have-account')
-
-        const haveAccountText = document.createElement('p')
-        haveAccountText.textContent = text
-
-        const haveAccountHref = document.createElement('a')
-        haveAccountHref.classList.add('bold')
-        haveAccountHref.textContent = hrefText
-        haveAccountHref.addEventListener('click', (e) => {
-            e.preventDefault()
-
-            if (this.#currentState === 'auth') {
-                this.#currentState = 'signup'
-            } else {
-                this.#currentState = 'auth'
-            }
-
-            this.form.replaceChildren()
-            this.#render()
-        })
-
-        haveAccount.appendChild(haveAccountText)
-        haveAccount.appendChild(haveAccountHref)
-
-        this.form.appendChild(haveAccount)
-    }
-
-    /**
-     * @private
-     */
-    #render() {
-        const method = this.#getMethod()
-        const config = this.#config[method]
-
-        this.#renderCross()
-        this.#renderImg()
-        this.#renderMessage(config.message)
-        this.#renderFailureMessage()
-        this.#renderInputs(config.inputs)
-        this.#renderButton(config.buttonText)
-        this.#renderHaveAccount(
-            config.haveAccountText,
-            config.haveAccountHrefText
-        )
-    }
-
-    /**
-     * @private
-     */
-    #getMethod() {
-        return this.#currentState
-    }
-
-    /**
-     * @public
-     */
-    getAuth() {
-        return this.overlay
-    }
-
-    /**
-     * @private
-     * @description Функция для валидации данных\
-     * @returns boolean
+     * @description Функция для валидации данных
+     * @returns {boolean} прошла ли валидацию форма
      */
     #validateData() {
         if (this.#currentState === 'auth') {
@@ -265,67 +103,45 @@ class AuthPopup {
     }
 
     /**
-     * @returns boolean
+     * @returns {boolean} прошла ли валидацию форма
      */
     #validateAuthData() {
-        const usernameInput = document.getElementById('username')
-        const passwordInput = document.getElementById('password')
+        const form = document.forms['auth-form']
 
-        const usernameValidation = document.getElementById(
-            'usernameValidationSign'
-        )
-        const passwordValidation = document.getElementById(
-            'passwordValidationSign'
-        )
+        const usernameInput = form.elements.username
+        const passwordInput = form.elements.password
 
         const usernameValidationInfo =
             Validation.validateUsername(usernameInput)
 
         if (!usernameValidationInfo.ok) {
-            this.showErrorMessage(
-                usernameInput,
-                usernameValidation,
-                'usernameValidation',
-                usernameValidationInfo.text
-            )
+            this.showErrorMessage(usernameInput, usernameValidationInfo.text)
         } else {
-            this.hideErrorMsg(usernameInput, usernameValidation)
+            this.hideErrorMsg(usernameInput)
         }
 
         const passwordValidationInfo =
             Validation.validatePassword(passwordInput)
         if (!passwordValidationInfo.ok) {
-            this.showErrorMessage(
-                passwordInput,
-                passwordValidation,
-                'passwordValidation',
-                passwordValidationInfo.text
-            )
+            this.showErrorMessage(passwordInput, passwordValidationInfo.text)
         } else {
-            this.hideErrorMsg(passwordInput, passwordValidation)
+            this.hideErrorMsg(passwordInput)
         }
 
         return usernameValidationInfo.ok && passwordValidationInfo.ok
     }
 
+    /**
+     * @returns {boolean} прошла ли валидацию форма
+     */
     #validateRegistrationData() {
-        const nameInput = document.getElementById('name')
-        const usernameInput = document.getElementById('username')
-        const emailInput = document.getElementById('email')
-        const passwordInput = document.getElementById('password')
-        const passwordRepeatInput = document.getElementById('passwordRepeat')
+        const form = document.forms['auth-form']
 
-        const nameValidation = document.getElementById('nameValidationSign')
-        const usernameValidation = document.getElementById(
-            'usernameValidationSign'
-        )
-        const emailValidation = document.getElementById('emailValidationSign')
-        const passwordValidation = document.getElementById(
-            'passwordValidationSign'
-        )
-        const passwordRepeatValidation = document.getElementById(
-            'passwordRepeatValidationSign'
-        )
+        const nameInput = form.elements.name
+        const usernameInput = form.elements.username
+        const emailInput = form.elements.email
+        const passwordInput = form.elements.password
+        const passwordRepeatInput = form.elements.passwordRepeat
 
         const nameValidInfo = Validation.validateName(nameInput)
         const usernameValidInfo = Validation.validateUsername(usernameInput)
@@ -339,66 +155,42 @@ class AuthPopup {
         )
 
         if (!nameValidInfo.ok) {
-            this.showErrorMessage(
-                nameInput,
-                nameValidation,
-                'nameValidation',
-                nameValidInfo.text
-            )
+            this.showErrorMessage(nameInput, nameValidInfo.text)
         } else {
-            this.hideErrorMsg(nameInput, nameValidation)
+            this.hideErrorMsg(nameInput)
         }
 
         if (!usernameValidInfo.ok) {
-            this.showErrorMessage(
-                usernameInput,
-                usernameValidation,
-                'usernameValidation',
-                usernameValidInfo.text
-            )
+            this.showErrorMessage(usernameInput, usernameValidInfo.text)
         } else {
-            this.hideErrorMsg(usernameInput, usernameValidation)
+            this.hideErrorMsg(usernameInput)
         }
 
         if (!emailValidInfo.ok) {
-            this.showErrorMessage(
-                emailInput,
-                emailValidation,
-                'emailValidation',
-                emailValidInfo.text
-            )
+            this.showErrorMessage(emailInput, emailValidInfo.text)
         } else {
-            this.hideErrorMsg(emailInput, emailValidation)
+            this.hideErrorMsg(emailInput)
         }
 
         if (!passwordValidInfo.ok) {
-            this.showErrorMessage(
-                passwordInput,
-                passwordValidation,
-                'passwordValidation',
-                passwordValidInfo.text
-            )
+            this.showErrorMessage(passwordInput, passwordValidInfo.text)
         } else {
-            this.hideErrorMsg(passwordInput, passwordValidation)
+            this.hideErrorMsg(passwordInput)
         }
 
         if (!passwordRepeatValidInfo.ok) {
             this.showErrorMessage(
                 passwordRepeatInput,
-                passwordRepeatValidation,
-                'passwordRepeatValidation',
                 passwordRepeatValidInfo.text
             )
         } else {
             if (!passwordsValidInfo.ok) {
                 this.showErrorMessage(
                     passwordRepeatInput,
-                    passwordRepeatValidation,
-                    'passwordRepeatValidation',
                     passwordsValidInfo.text
                 )
             } else {
-                this.hideErrorMsg(passwordRepeatInput, passwordRepeatValidation)
+                this.hideErrorMsg(passwordRepeatInput)
             }
         }
 
@@ -412,15 +204,26 @@ class AuthPopup {
         )
     }
 
-    showErrorMessage(inputElem, signElement, id, errorMsg) {
+    showErrorMessage(inputElem, errorMsg) {
         inputElem.classList.add('popup__input__error')
-        signElement.classList.remove('none')
-        this.#makeValidationMessage(signElement, id, errorMsg)
+        const exclamation = inputElem.parentElement.querySelector(
+            '.popup__exclamation'
+        )
+        exclamation.classList.remove('none')
+
+        const validationMessageContainer =
+            inputElem.parentElement.querySelector('.popup__validationMessage')
+
+        validationMessageContainer.textContent = errorMsg
     }
 
-    hideErrorMsg(inputElem, signElem) {
+    hideErrorMsg(inputElem) {
+        const parentElem = inputElem.parentElement
         inputElem.classList.remove('popup__input__error')
-        signElem.classList.add('none')
+        parentElem
+            .querySelector('.popup__validationMessage')
+            .classList.add('none')
+        parentElem.querySelector('.popup__exclamation').classList.add('none')
     }
 
     /**
@@ -475,56 +278,90 @@ class AuthPopup {
 
     /**
      * @private
-     */
-    #showPopup(validationContainer, message) {
-        validationContainer.textContent = message
-        validationContainer.classList.remove('none')
-    }
-
-    /**
-     * @private
-     */
-    #hidePopup(validationContainer) {
-        validationContainer.replaceChildren()
-        validationContainer.classList.add('none')
-    }
-
-    /**
-     * @param  nameOfValidation
-     * @param {string} id
-     * @param {string} message
-     * @private
-     */
-    #makeValidationMessage(nameOfValidation, id, message) {
-        const validationMessage = document.getElementById(id + 'Message')
-        nameOfValidation.addEventListener('mouseover', () => {
-            this.#showPopup(validationMessage, message)
-        })
-        nameOfValidation.addEventListener('mouseout', () =>
-            this.#hidePopup(validationMessage)
-        )
-    }
-
-    /**
-     * @private
-     */
-    #renderFailureMessage() {
-        this.failureMessage = document.createElement('div')
-        this.failureMessage.classList.add('popup__failure-message', 'none')
-        this.failureMessage.textContent = 'Неверный логин или пароль'
-        this.form.appendChild(this.failureMessage)
-    }
-
-    /**
-     * @private
      * @param {string} message
      */
     #setFailureMessage(message) {
+        const failureMessageElem = document.querySelector(
+            '.popup__failure-message'
+        )
+
         if (message === null) {
-            this.failureMessage.classList.add('none')
+            failureMessageElem.classList.add('none')
         }
-        this.failureMessage.classList.remove('none')
-        this.failureMessage.textContent = message
+        failureMessageElem.classList.remove('none')
+        failureMessageElem.textContent = message
+    }
+
+    #closeOverlay(parent) {
+        parent.querySelector('.overlay').remove()
+        document.body.classList.remove('no-scroll')
+    }
+
+    /**
+     *
+     * @param {HTMLElement} parent
+     *
+     */
+    render(parent) {
+        // eslint-disable-next-line no-undef
+        const template = Handlebars.templates['AuthPopup.hbs']
+        const templateContainer = document.createElement('div')
+
+        const data = this.#config[this.#currentState]
+
+        templateContainer.innerHTML = template(data)
+
+        parent.appendChild(templateContainer)
+        setTimeout(() => this.#addEventListeners(parent), 0)
+    }
+
+    #addEventListeners(parent) {
+        // Close overlay
+        const form = parent.querySelector('.popup')
+        form.onclick = (e) => e.stopPropagation()
+        form.onsubmit = (e) => this.#onFormSubmit(e)
+
+        parent
+            .querySelector('.close-cross')
+            .addEventListener('click', () => this.#closeOverlay(parent))
+
+        parent
+            .querySelector('.overlay')
+            .addEventListener('click', () => this.#closeOverlay(parent))
+
+        // Show auth/reg menu
+        parent.querySelector('.popup__a').addEventListener('click', (e) => {
+            e.preventDefault()
+
+            const newPopupWindow = new AuthPopup(
+                this.#currentState === 'auth' ? 'signup' : 'auth'
+            )
+            parent.querySelector('.overlay').remove()
+            newPopupWindow.render(parent)
+        })
+
+        // Adding mouse over and out inputs for exclamation marks
+        Array.prototype.forEach.call(
+            parent.querySelector('#auth-form').elements,
+            (element) => {
+                const exclamation = element.parentElement.querySelector(
+                    '.popup__exclamation'
+                )
+
+                if (exclamation === undefined) return // If element === button or smth else
+
+                const validationMessageContainer =
+                    element.parentElement.querySelector(
+                        '.popup__validationMessage'
+                    )
+
+                exclamation.onmouseover = () =>
+                    validationMessageContainer.classList.remove('none')
+
+                exclamation.onmouseout = () =>
+                    validationMessageContainer.classList.add('none')
+            }
+        )
     }
 }
 

@@ -51,11 +51,11 @@
     text-align: center;
 }
 
-.login-button {
+.popup__button {
     background-color: #FFA552;
     color: #ffffff;
     cursor: pointer;
-    margin: 0% 20% 5%;
+    margin: 0 20% 5%;
     border: none;
     border-radius: 10px;
     height: 40px;
@@ -110,7 +110,7 @@
     border-color: #E10505 !important;
 }
 
-.popup__inputValidation {
+.popup__inputAndValidationMessage {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -118,12 +118,12 @@
     padding-right: 5%;
 }
 
-.popup__inputValidation__exclamation {
+.popup__exclamation {
     padding-left: 10px;
     cursor: pointer;
 }
 
-.popup__inputValidation__validationMessage {
+.popup__validationMessage {
     position: absolute;
     background-color: #ffffff;
     border: 1px solid #E10505;
