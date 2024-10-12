@@ -3,7 +3,7 @@ import pluginJs from '@eslint/js';
 
 export default [
     {
-        files: ['**/*.js', '**/*.ts'],
+        files: ['**/*.js', '**/*.ts', '**/*.mjs'],
         languageOptions: {
             sourceType: 'module',
         },
@@ -21,6 +21,9 @@ export default [
     {
         rules: {
             'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+            semi: ['error', 'always'],
+            quotes: ['error', 'single'],
+            indent: ['error', 4],
         },
     },
 ];
