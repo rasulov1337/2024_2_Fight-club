@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 class Filter {
-    #config
-    #filterContainer
+    #config;
+    #filterContainer;
 
     constructor() {
         this.#config = {
@@ -56,12 +56,12 @@ class Filter {
                 },
                 def: 'nm',
             },
-        }
+        };
 
-        this.#filterContainer = document.createElement('form')
-        this.#filterContainer.classList.add('filter')
+        this.#filterContainer = document.createElement('form');
+        this.#filterContainer.classList.add('filter');
 
-        this.#render()
+        this.#render();
     }
 
     /**
@@ -70,83 +70,83 @@ class Filter {
     #render() {
         Object.entries(this.#config).forEach(
             ([filterName, { name, title, variations, def }], index1) => {
-                const filterGroup = document.createElement('div')
-                filterGroup.classList.add('filter-group')
+                const filterGroup = document.createElement('div');
+                filterGroup.classList.add('filter-group');
 
                 if (index1 !== 0) {
-                    const filterLine = document.createElement('hr')
-                    filterGroup.appendChild(filterLine)
+                    const filterLine = document.createElement('hr');
+                    filterGroup.appendChild(filterLine);
                 }
 
                 if (title !== null) {
-                    const filterSpan = document.createElement('span')
-                    const arrowDown = document.createElement('a')
-                    const filterTitle = document.createElement('p')
+                    const filterSpan = document.createElement('span');
+                    const arrowDown = document.createElement('a');
+                    const filterTitle = document.createElement('p');
 
-                    filterTitle.textContent = title
-                    const img = document.createElement('img')
-                    img.src = '/images/svg/down-arrow.svg'
-                    img.width = 24
-                    arrowDown.appendChild(img)
-                    arrowDown.href = '#'
+                    filterTitle.textContent = title;
+                    const img = document.createElement('img');
+                    img.src = '/images/svg/down-arrow.svg';
+                    img.width = 24;
+                    arrowDown.appendChild(img);
+                    arrowDown.href = '#';
 
-                    filterSpan.appendChild(arrowDown)
-                    filterSpan.appendChild(filterTitle)
-                    filterGroup.appendChild(filterSpan)
+                    filterSpan.appendChild(arrowDown);
+                    filterSpan.appendChild(filterTitle);
+                    filterGroup.appendChild(filterSpan);
                 }
 
                 Object.entries(variations).forEach(
                     ([variant, label], index2) => {
-                        const filterElement = document.createElement('div')
-                        filterElement.classList.add('filter-element')
+                        const filterElement = document.createElement('div');
+                        filterElement.classList.add('filter-element');
 
-                        const radio = document.createElement('input')
+                        const radio = document.createElement('input');
                         if (filterName === 'rating' || filterName === 'new') {
-                            radio.type = 'checkbox'
+                            radio.type = 'checkbox';
                         } else {
-                            radio.type = 'radio'
+                            radio.type = 'radio';
                         }
-                        radio.id = '' + index1 + index2
-                        radio.name = name
-                        radio.value = variant
+                        radio.id = '' + index1 + index2;
+                        radio.name = name;
+                        radio.value = variant;
 
                         if (variant === def) {
-                            radio.checked = true
+                            radio.checked = true;
                         }
 
-                        const radioLabel = document.createElement('label')
-                        radioLabel.setAttribute('for', '' + index1 + index2)
-                        radioLabel.textContent = label
+                        const radioLabel = document.createElement('label');
+                        radioLabel.setAttribute('for', '' + index1 + index2);
+                        radioLabel.textContent = label;
 
-                        filterElement.appendChild(radio)
-                        filterElement.appendChild(radioLabel)
-                        filterGroup.appendChild(filterElement)
+                        filterElement.appendChild(radio);
+                        filterElement.appendChild(radioLabel);
+                        filterGroup.appendChild(filterElement);
                     }
-                )
+                );
 
-                this.#filterContainer.appendChild(filterGroup)
+                this.#filterContainer.appendChild(filterGroup);
             }
-        )
+        );
 
-        const applyButton = document.createElement('button')
-        const resetButton = document.createElement('button')
+        const applyButton = document.createElement('button');
+        const resetButton = document.createElement('button');
 
-        applyButton.textContent = 'Применить'
-        resetButton.textContent = 'Сбросить'
+        applyButton.textContent = 'Применить';
+        resetButton.textContent = 'Сбросить';
 
-        applyButton.classList.add('apply-button')
-        resetButton.classList.add('reset-button')
+        applyButton.classList.add('apply-button');
+        resetButton.classList.add('reset-button');
 
-        this.#filterContainer.appendChild(applyButton)
-        this.#filterContainer.appendChild(resetButton)
+        this.#filterContainer.appendChild(applyButton);
+        this.#filterContainer.appendChild(resetButton);
     }
 
     /**
      * @public
      */
     getFilter() {
-        return this.#filterContainer
+        return this.#filterContainer;
     }
 }
 
-export default Filter
+export default Filter;

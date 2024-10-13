@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 interface PostParams {
     url: string
@@ -20,7 +20,7 @@ class Ajax {
         return this.#makeRequest({
             method: 'GET',
             url: url,
-        })
+        });
     }
 
     /**
@@ -28,7 +28,7 @@ class Ajax {
      * @param {PostParams} postParams
      */
     static post({ url, body }: PostParams): Promise<any> {
-        return this.#makeRequest({ method: 'POST', url, body })
+        return this.#makeRequest({ method: 'POST', url, body });
     }
 
     /**
@@ -38,7 +38,7 @@ class Ajax {
      * @returns {Promise<*>}
      */
     static delete({ url, body }: PostParams): Promise<any> {
-        return this.#makeRequest({ method: 'DELETE', url, body })
+        return this.#makeRequest({ method: 'DELETE', url, body });
     }
 
     /**
@@ -51,7 +51,7 @@ class Ajax {
         url,
         body = {},
     }: RequestParams): Promise<any> {
-        let request: Request
+        let request: Request;
         if (method === 'GET') {
             request = new Request(url, {
                 method: method,
@@ -59,7 +59,7 @@ class Ajax {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-            })
+            });
         } else {
             request = new Request(url, {
                 method: method,
@@ -68,11 +68,11 @@ class Ajax {
                 },
                 credentials: 'include',
                 body: JSON.stringify(body),
-            })
+            });
         }
 
-        return await fetch(request)
+        return await fetch(request);
     }
 }
 
-export default Ajax
+export default Ajax;

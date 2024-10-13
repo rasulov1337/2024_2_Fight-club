@@ -307,7 +307,6 @@ class AuthPopup {
      *
      */
     render(parent: HTMLElement): void {
-        // eslint-disable-next-line no-undef
         const template = Handlebars.templates['AuthPopup.hbs'];
         const templateContainer = document.createElement('div');
 

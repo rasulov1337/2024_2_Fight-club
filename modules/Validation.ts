@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
-const USERNAME_REGEXP = /^[A-Za-z0-9][A-Za-z0-9-_.]{3,19}[A-Za-z0-9]$/
-const EMAIL_REGEXP = /.+@.+/
-const PASSWORD_REGEXP = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/
+const USERNAME_REGEXP = /^[A-Za-z0-9][A-Za-z0-9-_.]{3,19}[A-Za-z0-9]$/;
+const EMAIL_REGEXP = /.+@.+/;
+const PASSWORD_REGEXP = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/;
 
 interface ErrorMessage {
     WRONG_LENGTH: string
@@ -19,14 +19,14 @@ class Validation {
         const res: ValidationResult = {
             ok: true,
             text: '',
-        }
+        };
 
         if (!this.#validateLen(nameInput)) {
-            res.ok = false
-            res.text = 'Имя пользователя - от 6 до 50 символов'
+            res.ok = false;
+            res.text = 'Имя пользователя - от 6 до 50 символов';
         }
 
-        return res
+        return res;
     }
 
     static validateUsername(usernameInput: HTMLInputElement) {
@@ -34,7 +34,7 @@ class Validation {
             WRONG_LENGTH: 'Длина логина - от 6 до 20 символов',
             REGEXP_MISMATCH:
                 'Логин может содержать только латинские буквы, цифры, -, _ или точку',
-        })
+        });
     }
 
     static validatePassword(passwordInput: HTMLInputElement) {
@@ -42,14 +42,14 @@ class Validation {
             WRONG_LENGTH: 'Длина пароля - от 8 до 16 символов',
             REGEXP_MISMATCH:
                 'Пароль должен содержать только символы латинского алфавита, цифры или !@#$%^&*()_+=-',
-        })
+        });
     }
 
     static validateEmail(emailInput: HTMLInputElement) {
         return this.#validateAny(emailInput, EMAIL_REGEXP, {
             WRONG_LENGTH: 'Почта - от 6 до 40 символов',
             REGEXP_MISMATCH: 'Почта должна иметь формат admin@example.com',
-        })
+        });
     }
 
     static validatePasswords(
@@ -59,14 +59,14 @@ class Validation {
         const res: ValidationResult = {
             ok: true,
             text: '',
-        }
+        };
 
         if (passwordInput.value !== passwordRepeatInput.value) {
-            res.ok = false
-            res.text = 'Пароли не совпадают'
+            res.ok = false;
+            res.text = 'Пароли не совпадают';
         }
 
-        return res
+        return res;
     }
 
     /**
@@ -89,19 +89,19 @@ class Validation {
         const res: ValidationResult = {
             ok: true,
             text: '',
-        }
+        };
 
         if (!this.#validateLen(inputElem)) {
-            res.ok = false
-            res.text = errorMessages.WRONG_LENGTH
+            res.ok = false;
+            res.text = errorMessages.WRONG_LENGTH;
         }
 
         if (res.ok && !regexp.test(inputElem.value)) {
-            res.ok = false
-            res.text = errorMessages.REGEXP_MISMATCH
+            res.ok = false;
+            res.text = errorMessages.REGEXP_MISMATCH;
         }
 
-        return res
+        return res;
     }
 
     /**
@@ -113,8 +113,8 @@ class Validation {
         return (
             inputElem.value.length <= inputElem.maxLength &&
             inputElem.value.length >= inputElem.minLength
-        )
+        );
     }
 }
 
-export default Validation
+export default Validation;
