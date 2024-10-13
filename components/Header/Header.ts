@@ -159,8 +159,8 @@ class Header {
             avatar.height = 50;
             avatarContainer.appendChild(avatar);
 
-            this.actionMenuContainer = document.createElement('div');
-            this.actionMenuContainer.classList.add(
+            const actionMenuContainer = document.createElement('div');
+            actionMenuContainer.classList.add(
                 'header__action-menu-container',
                 'hide'
             );
@@ -174,15 +174,15 @@ class Header {
                 }
                 throw new Error('Failed to logout');
             });
-            this.actionMenuContainer.appendChild(logoutButton);
-            document.body.appendChild(this.actionMenuContainer);
+            actionMenuContainer.appendChild(logoutButton);
+            document.body.appendChild(actionMenuContainer);
 
             avatarContainer.addEventListener('mouseover', () => {
-                this.actionMenuContainer.classList.remove('hide');
+                actionMenuContainer.classList.remove('hide');
             });
 
             logoutButton.addEventListener('mouseout', () => {
-                this.actionMenuContainer.classList.add('hide');
+                actionMenuContainer.classList.add('hide');
             });
 
             this.#menuContainer.appendChild(avatarContainer);
