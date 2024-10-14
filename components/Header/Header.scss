@@ -72,11 +72,24 @@
 }
 
 .header__avatar-container {
-    width: 50px;
+    width: 110px;
     height: 50px;
     margin-left: 50px;
     margin-right: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.header__avatar-container__avatar{
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
     border-radius: 50%;
+}
+
+.header__avatar-container__options{
+    border: none;
+    background-color: #ffffff;
     cursor: pointer;
 }
 

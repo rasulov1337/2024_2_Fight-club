@@ -10,6 +10,7 @@ interface HeaderCallbacks {
     favoritesPage: () => void;
     notificationsPage: () => void;
     signInPage: () => void;
+    profileList: ()=> void;
 }
 
 class Header {
@@ -157,33 +158,23 @@ class Header {
             avatar.src = '/images/default_user_icon.png';
             avatar.width = 50;
             avatar.height = 50;
-            avatarContainer.appendChild(avatar);
+            avatar.classList.add('header__avatar-container__avatar');
 
-            const actionMenuContainer = document.createElement('div');
-            actionMenuContainer.classList.add(
-                'header__action-menu-container',
-                'hide'
+            const options = document.createElement('button');
+            options.classList.add('header__avatar-container__options');
+            const optionsImage = document.createElement('img');
+            optionsImage.src = '/images/svg/options.svg';
+            optionsImage.width = 30;
+            optionsImage.height = 30;
+            options.appendChild(optionsImage);
+
+            options.addEventListener(
+                'click', 
+                this.#headerCallbacks.profileList
             );
-            const logoutButton = document.createElement('button');
-            logoutButton.classList.add('header__logout-button');
-            logoutButton.textContent = 'Выйти из аккаунта';
-            logoutButton.addEventListener('click', async () => {
-                const response = await logout();
-                if (response.ok) {
-                    location.reload();
-                }
-                throw new Error('Failed to logout');
-            });
-            actionMenuContainer.appendChild(logoutButton);
-            document.body.appendChild(actionMenuContainer);
 
-            avatarContainer.addEventListener('mouseover', () => {
-                actionMenuContainer.classList.remove('hide');
-            });
-
-            logoutButton.addEventListener('mouseout', () => {
-                actionMenuContainer.classList.add('hide');
-            });
+            avatarContainer.appendChild(options);
+            avatarContainer.appendChild(avatar);
 
             this.#menuContainer.appendChild(avatarContainer);
         } else {

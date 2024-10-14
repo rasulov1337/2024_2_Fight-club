@@ -3,6 +3,7 @@
 import Header from './components/Header/Header';
 import AuthPopup from './components/AuthPopup/AuthPopup';
 import MainPage from './components/MainPage/MainPage';
+import ProfilePopup from './components/ProfilePopup/ProfilePopup';
 import Ajax from './modules/Ajax';
 
 import { BACKEND_URL } from './modules/Consts';
@@ -19,6 +20,7 @@ const headerCallbacks = {
     favoritesPage: renderFavoritesPage,
     notificationsPage: renderNotificationsPage,
     signInPage: renderSignInPage,
+    profileList: renderProfileList,
 };
 
 function renderMainPage() {
@@ -39,6 +41,11 @@ function renderNotificationsPage() {}
 function renderSignInPage() {
     const auth = new AuthPopup();
     auth.render(root);
+}
+
+function renderProfileList() {
+    const profileList = new ProfilePopup();
+    profileList.render(root);
 }
 
 /** Главная функция */

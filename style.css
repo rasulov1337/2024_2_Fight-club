@@ -4,6 +4,7 @@
 @import "components/AuthPopup/AuthPopup.css";
 @import "components/MainPhoto/MainPhoto.css";
 @import "components/MainPage/MainPage.css";
+@import "components/ProfilePopup/ProfilePopup.css";
 
 * {
     margin: 0;

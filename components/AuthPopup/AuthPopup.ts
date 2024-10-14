@@ -7,26 +7,13 @@ import { login, register } from '../../modules/Auth';
 class AuthPopup {
     #config;
     #currentState;
-    #overlay;
-    #form;
 
     /**
      *
      * @param {('auth' | 'signup')} currentState
      */
     constructor(currentState: 'auth' | 'signup' = 'auth') {
-        this.#overlay = document.createElement('div');
-        this.#overlay.classList.add('overlay');
-
-        this.#form = document.createElement('form');
-        this.#form.noValidate = true;
-        this.#form.method = 'POST';
-        this.#form.onsubmit = (e) => this.#onFormSubmit(e);
         this.#currentState = currentState;
-
-        this.#form.classList.add('popup');
-        this.#overlay.appendChild(this.#form);
-
         document.body.classList.add('no-scroll');
 
         this.#config = {
