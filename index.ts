@@ -5,6 +5,7 @@ import AuthPopup from './components/AuthPopup/AuthPopup';
 import MainPage from './components/MainPage/MainPage';
 import ProfilePopup from './components/ProfilePopup/ProfilePopup';
 import Ajax from './modules/Ajax';
+import './components/precompiled-templates';
 
 import { BACKEND_URL } from './modules/Consts';
 
