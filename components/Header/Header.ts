@@ -1,6 +1,12 @@
 'use strict';
 
-import { logout } from '../../modules/Auth';
+import { logout } from '/modules/Auth';
+import headerIcon from '/images/icon.jpg';
+import headerName from '/images/name.png';
+import defaultUserIcon from '/images/default_user_icon.png';
+import messagesIcon from '/images/svg/messages.svg';
+import favoritesIcon from '/images/svg/favorites.svg';
+import notificationsIcon from '/images/svg/notifications.svg';
 
 interface HeaderCallbacks {
     mainPage: () => void;
@@ -48,17 +54,17 @@ class Header {
 
             signs: {
                 Messages: {
-                    src: './images/svg/messages.svg',
+                    src: messagesIcon,
                     href: '/messages',
                     callback: headerCallbacks.messagesPage,
                 },
                 Favorites: {
-                    src: './images/svg/favorites.svg',
+                    src: favoritesIcon,
                     href: '/favorites',
                     callback: headerCallbacks.favoritesPage,
                 },
                 Notifications: {
-                    src: './images/svg/notifications.svg',
+                    src: notificationsIcon,
                     href: '/notifications',
                     callback: headerCallbacks.notificationsPage,
                 },
@@ -78,7 +84,7 @@ class Header {
      */
     #renderIcon() {
         const logoImg = document.createElement('img');
-        logoImg.src = './images/icon.jpg';
+        logoImg.src = headerIcon;
         logoImg.classList.add('header__img1');
         this.#menuContainer.appendChild(logoImg);
     }
@@ -89,7 +95,7 @@ class Header {
     #renderMainText() {
         const nameImg = document.createElement('img');
         nameImg.classList.add('header__img2');
-        nameImg.src = './images/name.png';
+        nameImg.src = headerName;
         this.#menuContainer.appendChild(nameImg);
     }
 
@@ -155,7 +161,7 @@ class Header {
             const avatarContainer = document.createElement('div');
             avatarContainer.classList.add('header__avatar-container');
             const avatar = document.createElement('img');
-            avatar.src = '/images/default_user_icon.png';
+            avatar.src = defaultUserIcon;
             avatar.width = 50;
             avatar.height = 50;
             avatar.classList.add('header__avatar-container__avatar');
