@@ -2,37 +2,40 @@
 
 import { logout } from '../../modules/Auth';
 
+interface profilePopupCallbacks {
+    profilePage: () => void;
+    donatePage: null;
+}
+
 class ProfilePopup {
     #config;
-    #events = {
-        logoutEvent:
-            async () => {
-                const response = await logout();
-                if (response.ok) {
-                    location.reload();
-                }
-                throw new Error('Failed to logout');
-            },
-        profileEvent: null, //TODO
-        donateEvent: null   //TODO or DELETE
-    };
+    #logoutEvent =
+        async () => {
+            const response = await logout();
+            if (response.ok) {
+                location.reload();
+            }
+            throw new Error('Failed to logout');
+        };
+    #profilePopupCallbacks;
 
-    constructor() {
+    constructor(popupCallbacks: profilePopupCallbacks) {
+        this.#profilePopupCallbacks = popupCallbacks;
         this.#config = {
             profile : {
                 title: 'Профиль',
                 href: '/profile',
-                event: this.#events.profileEvent,
+                event: this.#profilePopupCallbacks.profilePage,
             },
             donate : {
                 title: 'Донаты',
                 href: '/donate',
-                event: this.#events.donateEvent,
+                event: this.#profilePopupCallbacks.donatePage,
             },
             logout : {
                 title: 'Выйти',
                 href: '#',
-                event: this.#events.logoutEvent
+                event: this.#logoutEvent
             },
         };
 
@@ -77,10 +80,10 @@ class ProfilePopup {
             if (event !== null) { //Временно пока нет других eventов
                 const listElement = document.getElementById(name);
                 if (listElement) {
-                    listElement.addEventListener(
-                        'click', 
-                        event
-                    );
+                    listElement.addEventListener('click', (e)=>{ 
+                        e.preventDefault();
+                        event();
+                    });
                 }
             }
         });
