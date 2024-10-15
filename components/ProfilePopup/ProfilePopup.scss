@@ -1,0 +1,37 @@
+.no-scroll {
+    overflow: hidden;
+    padding-right: 17px;
+}
+
+.profile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.profile-list{
+    position: relative;
+    top: 120px;
+    left: 88%;
+    min-width: min-content;
+    max-width: 120px;
+    padding: 20px 20px 0px 20px;
+    border: solid;
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: #635B5B;
+    background-color: #ffffff;
+    margin-right: 10px;
+}
+
+.profile-list__href {
+    text-decoration: none;
+    color: #635B5B;
+    font-style: italic;
+}
+
+.profile-list__underline{
+    margin-bottom: 20px;
+}
