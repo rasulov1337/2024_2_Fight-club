@@ -62,6 +62,6 @@ const handlebarsCompilePlugin = () => {
 export default handlebarsCompilePlugin;
 
 // If file was executed directly
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (process.argv && process.argv[1] === fileURLToPath(import.meta.url)) {
     recompileTemplates();
 }
